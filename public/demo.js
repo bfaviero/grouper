@@ -1,6 +1,18 @@
 var socket;
 var groupid, username;
+var latitude = 0, longitude = 0;
 $(function() {
+    var updateGeo = function() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                latitude = position.coords.latitude;
+                longitude = position.coords.longitude;
+            });
+            console.log(""+latitude+" "+longitude);
+        }
+        return navigator.geolocation;
+    }
+    updateGeo();
     $("#gengroups").on('click', function(e) {
         var request = $.ajax({url: "/search", type: "post", data: "name="+$("#groupsearch").val()});
         request.done(function (response, textStatus, jqXHR){
@@ -23,7 +35,7 @@ $(function() {
     });
     $("#create").on('click', function(e) {
         // Fake lat, lon now - add later
-        var request = $.ajax({url: "/create", type: "post", data: "lat=0&lon=0&name="+$("#groupsearch").val()});
+        var request = $.ajax({url: "/create", type: "post", data: "lat="+latitude+"&lon="+longitude+"&name="+$("#groupsearch").val()});
         request.done(function (response, textStatus, jqXHR){
             $("#groups").val($("#groups").append("<option value="+response._id+">"+response.name+"</option>").val());
             // set selected
@@ -45,7 +57,7 @@ $(function() {
         socket.on('connect', function() {
             groupid = $("#groups :selected").val();
             username = $("#username").val();
-            socket.emit('connect', {group: groupid, name: username}); // lat lon auth later
+            socket.emit('connect', {group: groupid, name: username}); // auth later
         });
         socket.on('connectresponse', function(data) {
             if (data.id < 0) {
@@ -68,7 +80,11 @@ $(function() {
         });
     });
     $("#send").on('click', function(e) {
-        var message = {group: groupid, name: username, body: $("#body").val(), type: 'text'}; // lat lon auth later
-        socket.emit('message', message);
+        if (updateGeo()) {
+            socket.emit('message', {group: groupid, name: username, body: $("#body").val(), type: 'text', lat: latitude, lon: longitude});
+        }
+        else {
+            socket.emit('message', {group: groupid, name: username, body: $("#body").val(), type: 'text'});
+        }
     });
 });
