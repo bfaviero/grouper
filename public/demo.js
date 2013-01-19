@@ -109,7 +109,9 @@ $(function() {
         });
         socket.on('message', function(data) {
             console.log("message");
-            $("#messages").append("<li>"+data.username+": "+data.body+"</li>");
+            var d = new Date(data.date);
+            var ampm = d.getHours() >=12 ? "pm" : "am";
+            $("#messages").append("<li>"+data.username+" ("+(d.getMonth()+1)+"/"+(d.getDate())+"/"+(d.getFullYear()%100)+" "+((d.getHours()+12)%12)+":"+d.getMinutes()+":"+d.getSeconds()+" "+ampm+"): "+data.body+"</li>");
         });
         socket.on('messageresponse', function(data) {
             if (!data.success) {
