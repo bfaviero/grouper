@@ -5,6 +5,7 @@ $(function() {
         var request = $.ajax({url: "/search", type: "post", data: "name="+$("#groupsearch").val()});
         request.done(function (response, textStatus, jqXHR){
             var obj = jQuery.parseJSON(response);
+            $("#groups").empty();
             for(var i=0;i<obj.length;i++) {
                 $("#groups").append("<option value="+obj[i]._id+">"+obj[i].name+"</option>");
             }
@@ -19,6 +20,25 @@ $(function() {
                 textStatus, errorThrown
             );
         });
+    });
+    $("#create").on('click', function(e) {
+        // Fake lat, lon now - add later
+        var request = $.ajax({url: "/create", type: "post", data: "lat=0&lon=0&name="+$("#groupsearch").val()});
+        request.done(function (response, textStatus, jqXHR){
+            $("#groups").val($("#groups").append("<option value="+response._id+">"+response.name+"</option>").val());
+            // set selected
+        });
+
+        // callback handler that will be called on failure
+        request.fail(function (jqXHR, textStatus, errorThrown){
+            alert("Error!");
+            // log the error to the console
+            console.error(
+                "The following error occured: "+
+                textStatus, errorThrown
+            );
+        });
+        
     });
     $("#connect").on('click', function(e) {
         socket = io.connect("http://localhost");
