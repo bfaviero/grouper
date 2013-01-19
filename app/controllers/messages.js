@@ -61,9 +61,9 @@ exports.post = function(req, res) {
                     message.loc = [Number(req.body.lon), Number(req.body.lat)];
                 }
                 if (req.body.user && req.body.user.length && req.body.token && req.body.token.length) {
-                    middleware.auth(req, res, function(success, doc) {
+                    middleware.auth(req, res, function(success, doc2) {
                         if (success) {
-                            message._user = doc._id;
+                            message._user = doc2._id;
                         }
                         else {
                             bad = true;
@@ -80,7 +80,17 @@ exports.post = function(req, res) {
                         }
                         else {
                             console.log(message);
-                            res.send("{'status':'received'}");
+                            doc.lastused = Date.now;
+                            doc.save(function(err) {
+                                if (err) {
+                                    console.log(err);
+                                    res.send(500);
+                                }
+                                else {
+                                    console.log(message);
+                                    res.send("{'status':'received'}");
+                                }
+                            });
                         }
                     });
                 }
