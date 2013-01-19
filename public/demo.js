@@ -61,10 +61,10 @@ $(function() {
         });
         socket.on('connectresponse', function(data) {
             if (data.id < 0) {
-                alert("ERROR ERROR ERROR"+data.id);
+                $("#status").text("Status: Error Connecting").attr('class','error');
             }
             else {
-                $("#messages").append("<li>CONNECTION SUCCESSFUL</li>");
+                $("#status").text("Username: "+username).attr('class','connected');
             }
         });
         socket.on('message', function(data) {
