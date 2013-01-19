@@ -6,8 +6,12 @@
 
         </script>
         <script type="text/javascript" src="socket.io/socket.io.js"></script>
+        <link rel="stylesheet" href="style.css" />
+        <script type="text/javascript" src="style.js"></script>
         <script type="text/javascript" src="demo.js"></script>
-            <script src="http://code.jquery.com/mobile/1.3.0-beta.1/jquery.mobile-1.3.0-beta.1.min.js"></script>
+            <script src="http://code.jquery.com/mobile/1.3.0-beta.1/jquery.mobile-1.3.0-beta.1.min.js">
+            $
+            </script>
 
     </head>
     <body>
@@ -17,18 +21,19 @@
                 <h3>
                     Grouper
                 </h3>
-  
-                        <label for="username">
-                        </label>
-                        <input name="" id="username" placeholder="nickname" value="" type="text" />
-  
+            
             </div>
             <div data-role="content">
-                <a data-role="button" data-theme="b" href="#page2l">
+
+                <img src="grouper.tiff" style="float:center;position:relative;left:35%;" >
+                <label for="username">
+                        </label>
+                        <input class = "sq" name="" id="username" placeholder="nickname" value="" type="text" />
+                <a id="hi" data-role="button" class = "sq" data-theme="b" href="#page2l">
                     Join
                 </a>
-                <a data-role="button" data-theme="b" href="#pagecreate">
-                    Create
+                <a data-role="button" class="sq"  data-theme="b" href="#pagecreate">
+                    Add
                 </a>
             </div>
 
@@ -53,22 +58,22 @@
                                 History
                             </a>
                         </li>
-                        <li>
-                            <a href="#page2s" data-transition="fade" data-theme="" data-icon="">
-                                Search
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </div>
             <div data-role="content">
-                <img src="https://maps.googleapis.com/maps/api/staticmap?center=Massachusetts institute of technology&amp;zoom=14&amp;size=288x200&amp;markers=&amp;sensor=false" width="288" height="200" />
+                <ul data-role="listview" data-filter="true" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow">
+                    <li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-up-c ui-btn-icon-right ui-li-has-arrow ui-li ui-li-has-icon"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a href="index.html" class="ui-link-inherit"><img src="grouper.tiff" class="ui-li-icon ui-li-thumb">Germany <span class="ui-li-count ui-btn-up-c ui-btn-corner-all">1.8 miles</span></a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>
+                </ul>
+
             </div>
 
         </div>
 
         <div data-role="page" id="page2h">
+
             <div id="sameheader" data-position="fixed" data-theme="b" data-role="header">
+                
                 <span class="ui-title">
                 </span>
                 <a data-role="button" data-inline="true" href="#page1" data-icon="home" data-iconpos="right" style="text-align:center;" class="ui-btn-right">
@@ -86,11 +91,7 @@
                                 History
                             </a>
                         </li>
-                        <li>
-                            <a href="#page2s" data-transition="fade" data-theme="" data-icon="">
-                                Search
-                            </a>
-                        </li>
+
                     </ul>
                 </div>
             </div>
@@ -110,44 +111,6 @@
                         </a>
                     </li>
                 </ul>
-            </div>
-            </div>
-
-            <div data-role="page" id="page2s">
-            <div id="sameheader" data-position="fixed" data-theme="b" data-role="header">
-                <span class="ui-title">
-                </span>
-                <a data-role="button" data-inline="true" href="#page1" data-icon="home" data-iconpos="right" style="float:center;" class="ui-btn-right">
-                    Grouper
-                </a>
-                <div data-role="navbar" data-iconpos="top">
-                    <ul>
-                        <li>
-                            <a href="#page2l" data-transition="fade" data-theme="" data-icon="" >
-                                Nearby
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#page2h" data-transition="fade" data-theme="" data-icon="" >
-                                History
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#page2s" data-transition="fade" data-theme="" data-icon="" class="ui-btn-active ui-state-persist">
-                                Search
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div data-role="content">
-                <div data-role="fieldcontain">
-                    <fieldset data-role="controlgroup">
-                        <label for="searchinput1">
-                        </label>
-                        <input name="" id="searchinput1" placeholder="" value="" type="search" />
-                    </fieldset>
-                </div>
             </div>
             </div>
 
