@@ -7,32 +7,39 @@ $(function() {
             navigator.geolocation.getCurrentPosition(function(position) {
                 latitude = position.coords.latitude;
                 longitude = position.coords.longitude;
+                return true;
+            },
+            function() {
+                return false;
             });
             console.log(""+latitude+" "+longitude);
         }
-        return navigator.geolocation;
     }
     updateGeo();
     $("#localgroups").on('click', function(e) {
-        updateGeo();
-        var request = $.ajax({url: "/search", type: "post", data: "lat="+latitude+"&lon="+longitude});
-        request.done(function (response, textStatus, jqXHR){
-            console.log(response);
-            var obj = jQuery.parseJSON(response);
-            $("#groups").empty();
-            for(var i=0;i<obj.length;i++) {
-                $("#groups").append("<option value="+obj[i]._id+">"+obj[i].name+"</option>");
-            }
-        });
-        // callback handler that will be called on failure
-        request.fail(function (jqXHR, textStatus, errorThrown){
-            alert("Error!");
-            // log the error to the console
-            console.error(
-                "The following error occured: "+
-                textStatus, errorThrown
-            );
-        });
+        if (updateGeo()) {
+            var request = $.ajax({url: "/search", type: "post", data: "lat="+latitude+"&lon="+longitude});
+            request.done(function (response, textStatus, jqXHR){
+                console.log(response);
+                var obj = jQuery.parseJSON(response);
+                $("#groups").empty();
+                for(var i=0;i<obj.length;i++) {
+                    $("#groups").append("<option value="+obj[i]._id+">"+obj[i].name+"</option>");
+                }
+            });
+            // callback handler that will be called on failure
+            request.fail(function (jqXHR, textStatus, errorThrown){
+                alert("Error!");
+                // log the error to the console
+                console.error(
+                    "The following error occured: "+
+                    textStatus, errorThrown
+                );
+            });
+        }
+        else {
+            $("#status").text("Error: Need Geolocation data to search for nearby").attr('class', 'error');
+        }
     });
 
     $("#gengroups").on('click', function(e) {
@@ -56,22 +63,26 @@ $(function() {
         });
     });
     $("#create").on('click', function(e) {
-        // Fake lat, lon now - add later
-        var request = $.ajax({url: "/create", type: "post", data: "lat="+latitude+"&lon="+longitude+"&name="+$("#groupsearch").val()});
-        request.done(function (response, textStatus, jqXHR){
-            $("#groups").val($("#groups").append("<option value="+response._id+">"+response.name+"</option>").val());
-            // set selected
-        });
+        if (updateGeo()) {
+            var request = $.ajax({url: "/create", type: "post", data: "lat="+latitude+"&lon="+longitude+"&name="+$("#groupsearch").val()});
+            request.done(function (response, textStatus, jqXHR){
+                $("#groups").val($("#groups").append("<option value="+response._id+">"+response.name+"</option>").val());
+                // set selected
+            });
 
-        // callback handler that will be called on failure
-        request.fail(function (jqXHR, textStatus, errorThrown){
-            alert("Error!");
-            // log the error to the console
-            console.error(
-                "The following error occured: "+
-                textStatus, errorThrown
-            );
-        });
+            // callback handler that will be called on failure
+            request.fail(function (jqXHR, textStatus, errorThrown){
+                alert("Error!");
+                // log the error to the console
+                console.error(
+                    "The following error occured: "+
+                    textStatus, errorThrown
+                );
+            });
+        }
+        else {
+            $("#status").text("Error: Need Geolocation data to create a group").attr('class', 'error');
+        }
         
     });
     $("#connect").on('click', function(e) {
