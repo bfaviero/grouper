@@ -67,7 +67,17 @@ exports.logout = function(req, res) {
             res.send(500);
         }
         else if (doc.token === req.body.token) {
-            // Delete cookies on page return
+            // Reset token
+            doc.genToken();
+            doc.save(function(err) {
+                if (err) {
+                    res.send(500);
+                }
+                else {
+                    // Delete cookies on page return
+                    res.redirect('/');
+                }
+            });
         }
         else {
             res.send(400);
