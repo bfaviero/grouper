@@ -75,7 +75,7 @@ exports.logout = function(req, res) {
                 }
                 else {
                     // Delete cookies on page return
-                    res.redirect('/');
+                    res.send('{"success": true}');
                 }
             });
         }
