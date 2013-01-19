@@ -4,39 +4,54 @@ var mongoose = require('mongoose')
 , PAGE_SIZE=20;
 
 exports.create = function(req, res) {
-    middleware.auth(req, res, function(success, doc) {
-        if (success) {
-            var group = new Group();
-            if (!((req.body.name && req.body.name.length) && req.body.lat && !isNaN(req.body.lat) && req.body.lon && !isNaN(req.body.lon))) {
-                res.send(400);
-                return;
-            }
-            else {
-                group.name = req.body.name;
-                group._user = doc._id;
-                group.loc = [Number(req.body.lon), Number(req.body.lat)];
-                if (req.body.pin) {
-                    if (!doc.paying) {
-                        res.send(400);
-                        return;
+    var group = new Group();
+    if (!(req.body.name && req.body.name.length && req.body.lat && !isNaN(req.body.lat) && req.body.lon && !isNaN(req.body.lon))) {
+        console.log(req.body);
+        res.send(400);
+    }
+    else {
+        group.name = req.body.name;
+        group.loc = [Number(req.body.lon), Number(req.body.lat)];
+        var bad = false;
+        if (req.body.email && req.body.email.length && req.body.token && req.body.token.length) {
+            middleware.auth(req, res, function(success, doc) {
+                if (success) {
+                        group._user = doc._id;
+                        if (req.body.pin) {
+                            if (!doc.paying) {
+                                res.send(400);
+                                bad = true;
+                            }
+                            else {
+                                group.pin = req.body.pin;
+                            }
+                        }
                     }
-                    else {
-                        group.pin = req.body.pin;
-                    }
+                else {
+                    res.send(400);
+                    bad = true;
                 }
-                group.save(function(err) {
-                    if (err) {
-                        console.log(err);
-                        res.send(500);
-                    }
-                    else {
-                        console.log(group);
-                        res.send(group.json);
-                    }
-                });
-            }
+            });
         }
-    });
+        else if (req.body.pin)
+        {
+            res.send(400);
+            bad = true;
+        }
+
+        if (!bad) {
+            group.save(function(err) {
+                if (err) {
+                    console.log(err);
+                    res.send(500);
+                }
+                else {
+                    console.log(group);
+                    res.send(group.toJSON());
+                }
+            });
+        }
+    }
 }
 
 exports.search = function(req, res) {
