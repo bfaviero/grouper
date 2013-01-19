@@ -4,6 +4,9 @@ var latitude = 0, longitude = 0, havegeo;
 $(function() {
     console.log($.cookie("email"));
     console.log($.cookie("token"));
+    if ($.cookie("username")) {
+        $("#username").attr('value',$.cookie("username"));
+    }
     if ($.cookie("email") && $.cookie("token")) {
         console.log("hi there");
         $("<h3>Hello, "+$.cookie("email")+"</h3><a id='logout' data-role='button' data-icon='arrow-r' data-iconpos='right' href='/'>Logout</a><a id='updatelink' data-role='button' data-icon='arrow-r' data-iconpos='right' href='#update'>Update Info</a>").insertBefore("#usernamelabel");
@@ -51,6 +54,7 @@ $(function() {
             alert("Enter a username to continue");
             return false;
         }
+        $.cookie("username", username);
         console.log(username);
     });
     $("#loginbutton").click(function(e) {

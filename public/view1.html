@@ -3,42 +3,7 @@
         <title>Grouper Demo App</title>
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0-beta.1/jquery.mobile-1.3.0-beta.1.min.css" />
 
-        <script type="text/javascript" src="jquery-1.9.0.min.js">        
-        </script>
-        <script type="text/javascript">
-
-        var socket = io.connect('http://192.168.186.153:3000');
-
-        socket.on('msg', function(data) {
-            var msg = JSON.parse(data);
-            appendMsg(msg);
-        });
-
-        socket.on('init', function(data) {
-            var messages = JSON.parse(data)
-            for (i in messages)
-                appendMsg(messages[i])
-        });
-
-        function appendMsg(msg) {
-            $('#msgs').append(function() {
-                var div = $('<div>');
-                div.html('<b>' + msg.username + ':</b> ' + msg.message);
-                return div;
-            });
-            $('#msgs')[0].scrollTop = $('#msgs')[0].scrollHeight;
-        }
-
-        function sendMsg() {
-            var msg = {};
-            $.each($('#chat').serializeArray(), function(i,v) {
-                msg[v.name] = v.value;
-            });
-            $("#msg").val("");
-            appendMsg(msg);
-            socket.emit('msg', JSON.stringify(msg));
-        }
-    </script>
+        <script type="text/javascript" src="jquery-1.9.0.min.js"></script>
         <script type="text/javascript" src="socket.io/socket.io.js"></script>
         <script src="http://code.jquery.com/mobile/1.3.0-beta.1/jquery.mobile-1.3.0-beta.1.min.js"></script>
         <script type="text/javascript" src="jquery.cookie.js"></script>
