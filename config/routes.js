@@ -15,7 +15,8 @@ module.exports = function(app) {
     app.post('/update', users.update); // Edit user info
 
     // Messages are socket.io for now, could be post later?
-    app.post('/messages', messages.get);
+    app.post('/messages', messages.get); // Get all the messages in a group
+    app.post('/post', messages.post); // Post a message
 
     // Groups
     app.post('/create', groups.create); // Create a new group - requires user auth

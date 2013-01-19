@@ -6,7 +6,7 @@ var MessageSchema = new Schema({
     _user: {type: Schema.ObjectId, ref: 'User'},
     username: {type: String, required: true},
     body: {type: String, required: true},
-    type: {type: String, required: true},
+    type: {type: String, enum: ['text'], required: true},
     loc: {type: [Number], index: '2d'},
     date: {type: Date, default: Date.now, required: true}
 });

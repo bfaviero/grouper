@@ -7,7 +7,7 @@ exports.create = function(req, res) {
     middleware.auth(req, res, function(success, doc) {
         if (success) {
             var group = new Group();
-            if (!((req.body.name && req.body.name.length) && req.body.lat && req.body.lon)) {
+            if (!((req.body.name && req.body.name.length) && req.body.lat && !isNaN(req.body.lat) && req.body.lon && !isNaN(req.body.lon))) {
                 res.send(400);
                 return;
             }
@@ -31,8 +31,8 @@ exports.create = function(req, res) {
                     }
                     else {
                         console.log(group);
+                        res.send(group.json);
                     }
-                    res.send(group.json);
                 });
             }
         }
@@ -45,7 +45,7 @@ exports.search = function(req, res) {
             console.log(docs);
             var out = "[";
             for(var i=0;i<docs.length;i++) {
-                out += docs[i].json;
+                out += JSON.stringify(docs[i]);
                 if (i < docs.length-1) {
                     out += ", ";
                 }
