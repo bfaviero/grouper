@@ -16,5 +16,6 @@ module.exports = function(app) {
     // Messages are socket.io for now, could be post later?
 
     // Groups
-    app.post('/create', groups.create);
+    app.post('/create', groups.create); // Create a new group - requires user auth
+    app.post('/search', groups.search); // Search for nearby groups if lat/lon provided, otherwise most popular
 }

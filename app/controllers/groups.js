@@ -36,3 +36,6 @@ exports.create = function(req, res) {
         }
     });
 }
+
+exports.search = function(req, res) {
+}
