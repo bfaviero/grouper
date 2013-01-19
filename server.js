@@ -50,51 +50,58 @@ io.sockets.on('connection', function(socket) {
         });
     });
     socket.on('message', function(data) {
-        Group.findOne({_id: data.group}, function(err, doc) {
-            if (!err && doc) {
-                console.log("good message");
-                var bad = false;
-                var message = new Message();
-                message._group = doc._id;
-                message.username = data.name;
-                message.body = data.body;
-                message.type = data.type;
-                if (data.lat && !isNaN(data.lat) && data.lon && !isNaN(data.lon)) {
-                    message.loc = [Number(data.lon), Number(data.lat)];
+        if (clients[socket.id]) {
+            Group.findOne({_id: data.group}, function(err, doc) {
+                if (!err && doc) {
+                    console.log("good message");
+                    var bad = false;
+                    var message = new Message();
+                    message._group = doc._id;
+                    message.username = data.name;
+                    message.body = data.body;
+                    message.type = data.type;
+                    if (data.lat && !isNaN(data.lat) && data.lon && !isNaN(data.lon)) {
+                        message.loc = [Number(data.lon), Number(data.lat)];
+                    }
+                    if (data.userid && data.token) {
+                        middleware.auth(req, res, function(success, doc2) {
+                            if (success) {
+                                message._user = doc2._id;
+                            }
+                            else {
+                                bad = true;
+                            }
+                        });
+                    }
+                    if (!bad) {
+                        var ret = 0;
+                        message.save(function (err) {
+                            if (err) {
+                                console.log(err)
+                                socket.emit('messageresponse', {success: false});
+                            }
+                            else {
+                                io.sockets.in(data.group).emit('message', message.toJSON());
+                                clients[socket.id].lasttime = Date.now;
+                                socket.emit('messageresponse', {success: true});
+                            }
+                        });
+                    }
+                    else {
+                        socket.emit('messageresponse', {success: false});
+                    }
                 }
-                if (data.userid && data.token) {
-                    middleware.auth(req, res, function(success, doc2) {
-                        if (success) {
-                            message._user = doc2._id;
-                        }
-                        else {
-                            bad = true;
-                        }
-                    });
-                }
-                if (!bad) {
-                    var ret = 0;
-                    message.save(function (err) {
-                        if (err) {
-                            console.log(err)
-                            socket.emit('messageresponse', {success: false});
-                        }
-                        else {
-                            io.sockets.in(data.group).emit('message', message.toJSON());
-                            clients[socket.id].lasttime = Date.now;
-                            socket.emit('messageresponse', {success: true});
-                        }
-                    });
-                }
-                else {
-                    socket.emit('messageresponse', {success: false});
-                }
-            }
-        });
+            });
+        }
+    });
+    socket.on('remove', function() {
+        // socket.leave already called
+        socket.leave(clients[socket.id].group);
+        socket.removeListener(clients[socket.id].group, function(data) {console.log(data)});
+        delete clients[socket.id];
     });
     socket.on('disconnect', function() {
-        // socket.leave already called
-        delete clients[socket.id];
+        delete clients[socket.id]; // memory leak?
     });
     // Need to geolocate chat room members
 });

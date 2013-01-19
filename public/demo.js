@@ -64,6 +64,7 @@ $(function() {
                 $("#status").text("Status: Error Connecting").attr('class','error');
             }
             else {
+                $("#connect").attr('disabled', 'disabled');
                 $("#status").text("Username: "+username).attr('class','connected');
             }
         });
@@ -80,6 +81,7 @@ $(function() {
         });
     });
     $("#send").on('click', function(e) {
+        console.log("sending");
         if (updateGeo()) {
             socket.emit('message', {group: groupid, name: username, body: $("#body").val(), type: 'text', lat: latitude, lon: longitude});
         }
