@@ -23,7 +23,7 @@ exports.register = function(req, res) {
             }
             else {
                 console.log(user);
-                res.send(doc.emailtokenjson);
+                res.send(user.emailtokenjson);
             }
         });
     }

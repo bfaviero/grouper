@@ -30,6 +30,39 @@ $(function() {
         }
         console.log(username);
     });
+    $("#loginbutton").click(function(e) {
+        var request = $.ajax({url: "/login", type: "post", data: "email="+$("#loginemail").val()+"&password="+$("#loginpassword").val()});
+        request.done(function (response, textStatus, jqXHR){
+            console.log(response);
+            var obj = jQuery.parseJSON(response);
+            $.cookie("email", obj.email);
+            $.cookie("token", obj.token);
+        });
+        // callback handler that will be called on failure
+        request.fail(function (jqXHR, textStatus, errorThrown){
+            alert("Login Failed.");
+            return false;
+        });
+    });
+    $("#registerbutton").click(function(e) {
+        if ($("#registerpassword").val() === $("#registerpassword2").val()) {
+            var request = $.ajax({url: "/register", type: "post", data: "email="+$("#registeremail").val()+"&password="+$("#registerpassword").val()});
+            request.done(function (response, textStatus, jqXHR){
+                console.log(response);
+                var obj = jQuery.parseJSON(response);
+                $.cookie("email", obj.email);
+                $.cookie("token", obj.token);
+            });
+            // callback handler that will be called on failure
+            request.fail(function (jqXHR, textStatus, errorThrown){
+                alert("Registration Failed.");
+                return false;
+            });
+        } else {
+            alert("Passwords don't match up");
+            return false;
+        }
+    });
     $("#localgroups").on('click', function(e) {
         e.preventDefault();
         if (updateGeo()) {
