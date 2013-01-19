@@ -10,8 +10,8 @@ $(function() {
     if ($.cookie("email") && $.cookie("token")) {
         console.log("hi there");
         $("<h3>Hello, "+$.cookie("email")+"</h3>"+
-            "<a id='logout' data-role='button' data-icon='arrow-r' data-iconpos='right' href='/'>Logout</a>"+
-            "<a id='updatelink' data-role='button' data-icon='arrow-r' data-iconpos='right' href='#update'>Update Info</a>").insertBefore("#usernamelabel");
+            "<p id='align'><a id='logout' data-role='button' data-inline='true' data-mini='true' data-icon='arrow-r' data-iconpos='right' href='/'>Logout</a>"+
+            "<a id='updatelink' data-role='button' data-icon='arrow-r' data-iconpos='right' href='#update'>Update Info</a></p>").insertBefore("#usernamelabel");
     }
     $("#updatelink").click(function(e) {
         $("#updateemail").attr('value',($.cookie("email")));
