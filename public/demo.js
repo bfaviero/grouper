@@ -1,17 +1,20 @@
 var socket;
 var groupid, username;
-var latitude = 0, longitude = 0;
+var latitude = 0, longitude = 0, havegeo;
 $(function() {
     var updateGeo = function() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
                 latitude = position.coords.latitude;
                 longitude = position.coords.longitude;
-                return true;
+                console.log('geo success');
+                havegeo = true;
             },
             function() {
-                return false;
+                console.log('geo fail');
+                havegeo = false;
             });
+            return havegeo;
             console.log(""+latitude+" "+longitude);
         }
     }
