@@ -11,10 +11,12 @@ require('./app/models/group.js');
 require('./app/models/message.js');
 
 
-var app = express();
+var app = express()
+, server = require('http').createServer(app)
+, io = require('socket.io').listen(server);
 
 require('./config/express')(app, config);
 require('./config/routes')(app);
 var port = process.env.PORT || 3000;
-app.listen(port);
+server.listen(port);
 console.log('Express started on port ' + port);
