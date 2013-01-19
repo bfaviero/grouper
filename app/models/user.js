@@ -22,6 +22,14 @@ UserSchema.methods.genToken = function() {
     return this.token;
 }
 
+UserSchema.virtual('emailidjson').get(function() {
+    return "{'email': '"+this.email+"', 'id': '"+this.id+"'}";
+});
+
+UserSchema.virtual('emailtokenjson').get(function() {
+    return "{'email': '"+this.email+"', 'token': '"+this.token+"'}";
+});
+
 UserSchema.methods.validatePassword = function(pass, cb) {
     if (this.passhash) {
         bcrypt.compare(pass, this.passhash, function(error, res) {

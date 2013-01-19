@@ -23,7 +23,7 @@ exports.register = function(req, res) {
             }
             else {
                 console.log(user);
-                res.send("{'email': '"+user.email+"', 'token': '"+user.token+"'}");
+                res.send(doc.emailtokenjson);
             }
         });
     }
@@ -49,7 +49,7 @@ exports.login = function(req, res) {
                                 res.send(500);
                             }
                             else {
-                                res.send("{'email': '"+doc.email+"', 'token': '"+token+"'}");
+                                res.send(doc.emailtokenjson);
                             }
                         });
                     }
@@ -84,7 +84,8 @@ exports.update = function(req, res) {
             if (req.body.newpassword) {
                 doc.password = req.body.newpassword;
             }
-            res.send("{'email': '"+doc.email+"', 'token': '"+doc.genToken()+"'}");
+            doc.genToken();
+            res.send(doc.emailtokenjson);
         }
     });
 }
@@ -93,7 +94,7 @@ exports.check = function(req, res) {
     if (req.body.email) {
         User.findOne({email: req.body.email}, function(err, doc) {
             if (doc && !err) {
-                res.send("{'email': '"+doc.email+"', 'id': '"+doc.id+"'}");
+                res.send(doc.emailidjson);
             }
             else {
                 res.send(400);
