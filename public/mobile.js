@@ -55,9 +55,34 @@ $(function() {
         if (!(username && username.length)) {
             alert("Enter a username to continue");
             return false;
+        } else {
+            $.cookie("username", username);
+            console.log(username);
+            if (updateGeo()) {
+                var request = $.ajax({url: "/search", type: "post", data: "lat="+latitude+"&lon="+longitude});
+                request.done(function (response, textStatus, jqXHR){
+                    console.log(response);
+                    var obj = jQuery.parseJSON(response);
+                    $("#localgrouplist").empty();
+                    for(var i=0;i<obj.length;i++) {
+                        $("#localgrouplist").append("<li value="+obj[i]._id+">"+obj[i].name+"</li>");
+                    }
+                    $("#localgrouplist").listview("refresh");
+                });
+                // callback handler that will be called on failure
+                request.fail(function (jqXHR, textStatus, errorThrown){
+                    alert("Error!");
+                    // log the error to the console
+                    console.error(
+                        "The following error occured: "+
+                        textStatus, errorThrown
+                    );
+                });
+            }
+            else {
+                alert("Error: Need Geolocation data to search for nearby");
+            }
         }
-        $.cookie("username", username);
-        console.log(username);
     });
     $("#loginbutton").click(function(e) {
         var request = $.ajax({url: "/login", type: "post", data: "email="+$("#loginemail").val()+"&password="+$("#loginpassword").val()});
@@ -96,30 +121,6 @@ $(function() {
     });
     $("#localgroups").on('click', function(e) {
         e.preventDefault();
-        if (updateGeo()) {
-            var request = $.ajax({url: "/search", type: "post", data: "lat="+latitude+"&lon="+longitude});
-            request.done(function (response, textStatus, jqXHR){
-                console.log(response);
-                var obj = jQuery.parseJSON(response);
-                $("#localgrouplist").empty();
-                for(var i=0;i<obj.length;i++) {
-                    $("#localgrouplist").append("<li value="+obj[i]._id+">"+obj[i].name+"</li>");
-                }
-                $("#localgrouplist").listview("refresh");
-            });
-            // callback handler that will be called on failure
-            request.fail(function (jqXHR, textStatus, errorThrown){
-                alert("Error!");
-                // log the error to the console
-                console.error(
-                    "The following error occured: "+
-                    textStatus, errorThrown
-                );
-            });
-        }
-        else {
-            alert("Error: Need Geolocation data to search for nearby");
-        }
     });
     $("#searchform").submit(function() {
         var data = $("#groupsearch").val();
@@ -151,14 +152,14 @@ $(function() {
         return false;
     });
 
-$('#chat').submit(function() {
-    console.log("sending");
-        if (updateGeo()) {
-            socket.emit('message', {group: groupid, name: username, body: $("#msg").val(), type: 'text', lat: latitude, lon: longitude});
-        }
-        else {
-            socket.emit('message', {group: groupid, name: username, body: $("#msg").val(), type: 'text'});
-        }
-});
+    $('#chat').submit(function() {
+        console.log("sending");
+            if (updateGeo()) {
+                socket.emit('message', {group: groupid, name: username, body: $("#msg").val(), type: 'text', lat: latitude, lon: longitude});
+            }
+            else {
+                socket.emit('message', {group: groupid, name: username, body: $("#msg").val(), type: 'text'});
+            }
+    });
 
 });
