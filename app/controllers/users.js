@@ -23,7 +23,7 @@ exports.register = function(req, res) {
             }
             else {
                 console.log(user);
-                res.send(doc.emailtokenjson);
+                res.send(user.emailtokenjson);
             }
         });
     }
@@ -75,7 +75,7 @@ exports.logout = function(req, res) {
                 }
                 else {
                     // Delete cookies on page return
-                    res.redirect('/');
+                    res.send('{"success": true}');
                 }
             });
         }

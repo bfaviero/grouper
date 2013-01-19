@@ -40,13 +40,14 @@
         }
     </script>
         <script type="text/javascript" src="socket.io/socket.io.js"></script>
-        <link rel="stylesheet" href="style.css" />
-        <script type="text/javascript" src="style.js"></script>
-        <script type="text/javascript" src="demo.js"></script>
-            <script src="http://code.jquery.com/mobile/1.3.0-beta.1/jquery.mobile-1.3.0-beta.1.min.js">
-            
-        });
-            </script>
+        <script src="http://code.jquery.com/mobile/1.3.0-beta.1/jquery.mobile-1.3.0-beta.1.min.js"></script>
+        <script type="text/javascript" src="jquery.cookie.js"></script>
+        <script type="text/javascript" src="mobile.js"></script>
+        <style>
+            #localgrouplist {
+                margin-top: 30px;
+            }
+        </style>
 
     </head>
     <body>
@@ -61,15 +62,17 @@
             <div data-role="content">
 
                 <img src="grouper.tiff" style="float:center;position:relative;left:35%;" >
-                <label for="username">
+                <label for="username" id="usernamelabel">
                         </label>
                         <input class = "sq" name="" id="username" placeholder="nickname" value="" type="text" />
-                <a id="hi" data-role="button" class = "sq" data-theme="b" href="#page2l">
-                    Join
+                <a id="joinbutton" data-role="button" data-theme="b" href="#page2l">
+                    Join a group
                 </a>
-                <a data-role="button" class="sq"  data-theme="b" href="#pagecreate">
-                    Add
+                <a data-role="button" data-theme="b" href="#pagecreate">
+                    Create a group
                 </a>
+                <a data-role="button" data-icon="arrow-r" data-iconpos="right" href="#register">Register an account</a>
+                <a data-role="button" data-icon="arrow-r" data-iconpos="right" href="#login">I already have an account</a>
             </div>
 
         </div>
@@ -152,6 +155,101 @@
             </div>
             </div>
 
+
+            <div data-role="page" id="update">
+            <div id="sameheader" data-position="fixed" data-theme="b" data-role="header">
+                <span class="ui-title">
+                </span>
+                <a data-role="button" data-inline="true" href="#page1" data-icon="home" data-iconpos="right" style="float:center;" class="ui-btn-right">
+                    Grouper
+                </a>
+            </div>
+            <div data-role="content">
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <label for="updateemail">
+                        </label>
+                        <input name="" id="updateemail" placeholder="Email" value="" type="email" />
+                    </fieldset>
+                </div>
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <label for="updatepassword">
+                        </label>
+                        <input name="" id="updatepassword" placeholder="Password" value="" type="password" />
+                    </fieldset>
+                </div>
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <label for="updatepassword2">
+                        </label>
+                        <input name="" id="updatepassword2" placeholder="Confirm Password" value="" type="password" />
+                    </fieldset>
+                </div>
+                <a id="updatebutton" data-role="button" data-theme="b" href="/">Register</a>
+            </div>
+            </div>
+
+            <div data-role="page" id="register">
+            <div id="sameheader" data-position="fixed" data-theme="b" data-role="header">
+                <span class="ui-title">
+                </span>
+                <a data-role="button" data-inline="true" href="#page1" data-icon="home" data-iconpos="right" style="float:center;" class="ui-btn-right">
+                    Grouper
+                </a>
+            </div>
+            <div data-role="content">
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <label for="registeremail">
+                        </label>
+                        <input name="" id="registeremail" placeholder="Email" value="" type="email" />
+                    </fieldset>
+                </div>
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <label for="registerpassword">
+                        </label>
+                        <input name="" id="registerpassword" placeholder="Password" value="" type="password" />
+                    </fieldset>
+                </div>
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <label for="registerpassword2">
+                        </label>
+                        <input name="" id="registerpassword2" placeholder="Confirm Password" value="" type="password" />
+                    </fieldset>
+                </div>
+                <a id="registerbutton" data-role="button" data-theme="b" href="/">Register</a>
+            </div>
+            </div>
+
+            <div data-role="page" id="login">
+            <div id="sameheader" data-position="fixed" data-theme="b" data-role="header">
+                <span class="ui-title">
+                </span>
+                <a data-role="button" data-inline="true" href="#page1" data-icon="home" data-iconpos="right" style="float:center;" class="ui-btn-right">
+                    Grouper
+                </a>
+            </div>
+            <div data-role="content">
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <label for="loginemail">
+                        </label>
+                        <input name="" id="loginemail" placeholder="Email" value="" type="email" />
+                    </fieldset>
+                </div>
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <label for="loginpassword">
+                        </label>
+                        <input name="" id="loginpassword" placeholder="Password" value="" type="password" />
+                    </fieldset>
+                </div>
+                <a id="loginbutton" data-role="button" data-theme="b" href="/">Login</a>
+            </div>
+            </div>
 
             <div data-role="page" id="pagecreate">
             <div id="sameheader" data-position="fixed" data-theme="b" data-role="header">
