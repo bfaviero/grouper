@@ -1,6 +1,6 @@
 var mongoose = require('mongoose')
 , Group = mongoose.model('Group')
-, middleware = require('../../config/middleware.js')
+, middleware = require('../../config/middleware')
 , PAGE_SIZE=20;
 
 exports.create = function(req, res) {

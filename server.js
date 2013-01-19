@@ -9,6 +9,8 @@ mongoose.connect(config.db);
 require('./app/models/user.js');
 require('./app/models/group.js');
 require('./app/models/message.js');
+var Group = mongoose.model('Group');
+var Message = mongoose.model('Message');
 
 var clients = new Object();
 
@@ -16,13 +18,15 @@ var app = express()
 , server = require('http').createServer(app)
 , io = require('socket.io').listen(server);
 io.set('transports', ['websocket', 'xhr-polling']);
+require('./config/express')(app, config);
+require('./config/routes')(app);
 
 // Assume data is good for now, fix bugs later
 io.sockets.on('connection', function(socket) {
     socket.on('connect', function(data) {
         var user = new Object();
+        var retval = -1;
         Group.findOne({_id: data.group}, function(err, doc) {
-            var retval = -1;
             if (!err && doc) {
                 user.group = data.group;
                 user.name = data.name;
@@ -39,19 +43,20 @@ io.sockets.on('connection', function(socket) {
                     });
                 }
                 clients[socket.id] = user;
-                socket.join(user.group);
-                retval = user.id
+                socket.join(data.group);
+                retval = socket.id
             }
+            socket.emit('connectresponse', {id: retval}); // -1: error
         });
-        socket.emit('connectresponse', {id: retval}); // -1: error
     });
     socket.on('message', function(data) {
-        Group.findOne({_id: req.body.group}, function(err, doc) {
-            if (!err & doc) {
+        Group.findOne({_id: data.group}, function(err, doc) {
+            if (!err && doc) {
+                console.log("good message");
                 var bad = false;
                 var message = new Message();
                 message._group = doc._id;
-                message.username = data.username;
+                message.username = data.name;
                 message.body = data.body;
                 message.type = data.type;
                 if (data.lat && !isNaN(data.lat) && data.lon && !isNaN(data.lon)) {
@@ -75,7 +80,7 @@ io.sockets.on('connection', function(socket) {
                             socket.emit('messageresponse', {success: false});
                         }
                         else {
-                            io.sockets.in(data.group).emit(message.toJSON());
+                            io.sockets.in(data.group).emit('message', message.toJSON());
                             clients[socket.id].lasttime = Date.now;
                             socket.emit('messageresponse', {success: true});
                         }
@@ -94,8 +99,6 @@ io.sockets.on('connection', function(socket) {
     // Need to geolocate chat room members
 });
 
-require('./config/express')(app, config);
-require('./config/routes')(app);
 var port = process.env.PORT || 3000;
 server.listen(port);
 console.log('Express started on port ' + port);
