@@ -19,10 +19,14 @@ $(function() {
         }
     }
     updateGeo();
+    $("#usernameform").submit(function(e) {
+        $("#joinbutton").click();
+    });
     $("#joinbutton").on('click', function(e) {
         username = $("#username").val();
         if (!(username && username.length)) {
             alert("Enter a username to continue");
+            return false;
         }
         console.log(username);
     });
