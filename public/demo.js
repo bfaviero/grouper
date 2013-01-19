@@ -13,6 +13,28 @@ $(function() {
         return navigator.geolocation;
     }
     updateGeo();
+    $("#localgroups").on('click', function(e) {
+        updateGeo();
+        var request = $.ajax({url: "/search", type: "post", data: "lat="+latitude+"&lon="+longitude});
+        request.done(function (response, textStatus, jqXHR){
+            console.log(response);
+            var obj = jQuery.parseJSON(response);
+            $("#groups").empty();
+            for(var i=0;i<obj.length;i++) {
+                $("#groups").append("<option value="+obj[i]._id+">"+obj[i].name+"</option>");
+            }
+        });
+        // callback handler that will be called on failure
+        request.fail(function (jqXHR, textStatus, errorThrown){
+            alert("Error!");
+            // log the error to the console
+            console.error(
+                "The following error occured: "+
+                textStatus, errorThrown
+            );
+        });
+    });
+
     $("#gengroups").on('click', function(e) {
         var request = $.ajax({url: "/search", type: "post", data: "name="+$("#groupsearch").val()});
         request.done(function (response, textStatus, jqXHR){
