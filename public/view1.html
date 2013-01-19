@@ -3,24 +3,21 @@
         <title>Grouper Demo App</title>
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0-beta.1/jquery.mobile-1.3.0-beta.1.min.css" />
         <script type="text/javascript" src="jquery-1.9.0.min.js">
+        $("input[name=langs]:radio").bind( "change", function(event, ui) {
+    console.log('Lang: '+$(this).val());
+});
 
+            
+        
         </script>
         <script type="text/javascript" src="socket.io/socket.io.js"></script>
- 
         <link rel="stylesheet" href="style.css" />
         <script type="text/javascript" src="style.js"></script>
         <script type="text/javascript" src="demo.js"></script>
             <script src="http://code.jquery.com/mobile/1.3.0-beta.1/jquery.mobile-1.3.0-beta.1.min.js">
-            $
+            
+        });
             </script>
-
-        <script src="http://code.jquery.com/mobile/1.3.0-beta.1/jquery.mobile-1.3.0-beta.1.min.js"></script>
-        <script type="text/javascript" src="mobile.js"></script>
-        <style>
-            #localgrouplist {
-                margin-top: 30px;
-            }
-        </style>
 
     </head>
     <body>
@@ -30,7 +27,6 @@
                 <h3>
                     Grouper
                 </h3>
- 
             
             </div>
             <div data-role="content">
@@ -40,17 +36,6 @@
                         </label>
                         <input class = "sq" name="" id="username" placeholder="nickname" value="" type="text" />
                 <a id="hi" data-role="button" class = "sq" data-theme="b" href="#page2l">
-
-  
-                        <label for="username">
-                        </label>
-                        <form id="usernameform">
-                            <input name="" id="username" placeholder="nickname" value="" type="text" />
-                        </form>
-  
-            </div>
-            <div data-role="content">
-                <a id="joinbutton" data-role="button" data-theme="b" href="#page2l">
                     Join
                 </a>
                 <a data-role="button" class="sq"  data-theme="b" href="#pagecreate">
@@ -86,11 +71,9 @@
                 <ul data-role="listview" data-filter="true" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow">
                     <li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-up-c ui-btn-icon-right ui-li-has-arrow ui-li ui-li-has-icon"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a href="index.html" class="ui-link-inherit"><img src="grouper.tiff" class="ui-li-icon ui-li-thumb">Germany <span class="ui-li-count ui-btn-up-c ui-btn-corner-all">1.8 miles</span></a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>
                 </ul>
-                <img src="https://maps.googleapis.com/maps/api/staticmap?center=Massachusetts institute of technology&amp;zoom=14&amp;size=288x200&amp;markers=&amp;sensor=false" width="288" height="200" />
-                <a id="localgroups" data-role="button" data-theme="b" href="#">
+     <a id="localgroups" data-role="button" data-theme="b" href="#">
                     Search Local
                 </a>
-                <ul id="localgrouplist" data-role="listview" data-theme="b" data-dividertheme="d"></ul>
 
             </div>
 
@@ -140,47 +123,6 @@
             </div>
             </div>
 
-            <div data-role="page" id="page2s">
-            <div id="sameheader" data-position="fixed" data-theme="b" data-role="header">
-                <span class="ui-title">
-                </span>
-                <a data-role="button" data-inline="true" href="#page1" data-icon="home" data-iconpos="right" style="float:center;" class="ui-btn-right">
-                    Grouper
-                </a>
-                <div data-role="navbar" data-iconpos="top">
-                    <ul>
-                        <li>
-                            <a href="#page2l" data-transition="fade" data-theme="" data-icon="" >
-                                Nearby
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#page2h" data-transition="fade" data-theme="" data-icon="" >
-                                History
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#page2s" data-transition="fade" data-theme="" data-icon="" class="ui-btn-active ui-state-persist">
-                                Search
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div data-role="content">
-                <div data-role="fieldcontain">
-                    <fieldset data-role="controlgroup">
-                        <label for="searchinput1">
-                        </label>
-                        <form id="searchform">
-                            <input name="" id="groupsearch" placeholder="" value="" type="search" />
-                        </form>
-                    </fieldset>
-                </div>
-                <ul id="searchgrouplist" data-role="listview" data-theme="b" data-dividertheme="d"></ul>
-            </div>
-            </div>
-
 
             <div data-role="page" id="pagecreate">
             <div id="sameheader" data-position="fixed" data-theme="b" data-role="header">
@@ -207,17 +149,25 @@
                         <label for="radio1">
                             Public
                         </label>
-                        <input id="radio2" name="" value="radio2" type="radio" />
+                        <input  id="radio2" name="" value="radio2" type="radio" />
                         <label for="radio2">
                             Private
                         </label>
                     </fieldset>
                 </div>
+                <div id="pin" style="visibility:hidden;" data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <label for="textinput5">
+                        </label>
+                        <input  name=""  placeholder="password" value="" type="text" />
+                    </fieldset>
+                </div>
+
                 <div data-role="fieldcontain">
                     <fieldset data-role="controlgroup">
                         <label for="textinput4">
                         </label>
-                        <input name="" id="textinput4" placeholder="Radius (in miles)" value="" type="tel" />
+                        <input name="" id="textinput4" placeholder="Radius (in miles)" value="" type="text" />
                     </fieldset>
                 </div>
                 <a data-role="button" data-theme="b" href="#groupmap">Create</a>
