@@ -62,26 +62,22 @@ exports.login = function(req, res) {
     }
 }
 exports.logout = function(req, res) {
+    console.log(req.body);
     User.findOne({email: req.body.email}, function(err, doc) {
         if (err) {
             res.send(500);
         }
-        else if (doc.token === req.body.token) {
-            // Reset token
-            doc.genToken();
-            doc.save(function(err) {
-                if (err) {
-                    res.send(500);
-                }
-                else {
-                    // Delete cookies on page return
-                    res.send('{"success": true}');
-                }
-            });
-        }
-        else {
-            res.send(400);
-        }
+        // Reset token
+        doc.genToken();
+        doc.save(function(err) {
+            if (err) {
+                res.send(500);
+            }
+            else {
+                // Delete cookies on page return
+                res.send('{"success": true}');
+            }
+        });
     });
 }
 exports.update = function(req, res) {
