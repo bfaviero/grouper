@@ -86,4 +86,15 @@ $(function() {
         }
         return false;
     });
+
+$('#chat').submit(function() {
+    console.log("sending");
+        if (updateGeo()) {
+            socket.emit('message', {group: groupid, name: username, body: $("#msg").val(), type: 'text', lat: latitude, lon: longitude});
+        }
+        else {
+            socket.emit('message', {group: groupid, name: username, body: $("#msg").val(), type: 'text'});
+        }
+});
+
 });
