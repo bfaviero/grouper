@@ -6,8 +6,13 @@
 
         </script>
         <script type="text/javascript" src="socket.io/socket.io.js"></script>
-        <script type="text/javascript" src="demo.js"></script>
-            <script src="http://code.jquery.com/mobile/1.3.0-beta.1/jquery.mobile-1.3.0-beta.1.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.3.0-beta.1/jquery.mobile-1.3.0-beta.1.min.js"></script>
+        <script type="text/javascript" src="mobile.js"></script>
+        <style>
+            #localgrouplist {
+                margin-top: 30px;
+            }
+        </style>
 
     </head>
     <body>
@@ -24,7 +29,7 @@
   
             </div>
             <div data-role="content">
-                <a data-role="button" data-theme="b" href="#page2l">
+                <a id="joinbutton" data-role="button" data-theme="b" href="#page2l">
                     Join
                 </a>
                 <a data-role="button" data-theme="b" href="#pagecreate">
@@ -63,6 +68,11 @@
             </div>
             <div data-role="content">
                 <img src="https://maps.googleapis.com/maps/api/staticmap?center=Massachusetts institute of technology&amp;zoom=14&amp;size=288x200&amp;markers=&amp;sensor=false" width="288" height="200" />
+                <a id="localgroups" data-role="button" data-theme="b" href="#">
+                    Search Local
+                </a>
+                <ul id="localgrouplist" data-role="listview" data-theme="b" data-dividertheme="d"></ul>
+
             </div>
 
         </div>

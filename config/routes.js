@@ -6,6 +6,7 @@ module.exports = function(app) {
     var messages = require('../app/controllers/messages');
     var groups = require('../app/controllers/groups');
     app.get('/', misc.home);
+    app.get('/demo', misc.demo);
 
     // Users
     app.post('/register', users.register); // Register new users
