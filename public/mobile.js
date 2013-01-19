@@ -21,6 +21,9 @@ $(function() {
     updateGeo();
     $("#joinbutton").on('click', function(e) {
         username = $("#username").val();
+        if (!(username && username.length)) {
+            alert("Enter a username to continue");
+        }
         console.log(username);
     });
     $("#localgroups").on('click', function(e) {
@@ -49,5 +52,34 @@ $(function() {
         else {
             alert("Error: Need Geolocation data to search for nearby");
         }
+    });
+    $("#searchform").submit(function() {
+        var data = $("#groupsearch").val();
+        if (data && data.length) {
+            var request = $.ajax({url: "/search", type: "post", data: "name="+data});
+            request.done(function (response, textStatus, jqXHR){
+                console.log("logging");
+                var obj = jQuery.parseJSON(response);
+                $("#searchgrouplist").empty();
+                for(var i=0;i<obj.length;i++) {
+                    $("#searchgrouplist").append("<li value="+obj[i]._id+">"+obj[i].name+"</li>");
+                }
+                $("#searchgrouplist").listview("refresh");
+            });
+
+            // callback handler that will be called on failure
+            request.fail(function (jqXHR, textStatus, errorThrown){
+                alert("Error!");
+                // log the error to the console
+                console.error(
+                    "The following error occured: "+
+                    textStatus, errorThrown
+                );
+            });
+        }
+        else {
+            $("#status").text("Error: No search term provided").attr('class', 'error');
+        }
+        return false;
     });
 });
