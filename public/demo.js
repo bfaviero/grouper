@@ -43,24 +43,30 @@ $(function() {
     });
 
     $("#gengroups").on('click', function(e) {
-        var request = $.ajax({url: "/search", type: "post", data: "name="+$("#groupsearch").val()});
-        request.done(function (response, textStatus, jqXHR){
-            var obj = jQuery.parseJSON(response);
-            $("#groups").empty();
-            for(var i=0;i<obj.length;i++) {
-                $("#groups").append("<option value="+obj[i]._id+">"+obj[i].name+"</option>");
-            }
-        });
+        var data = $("#groupsearch").val();
+        if (data && data.length) {
+            var request = $.ajax({url: "/search", type: "post", data: "name="+data});
+            request.done(function (response, textStatus, jqXHR){
+                var obj = jQuery.parseJSON(response);
+                $("#groups").empty();
+                for(var i=0;i<obj.length;i++) {
+                    $("#groups").append("<option value="+obj[i]._id+">"+obj[i].name+"</option>");
+                }
+            });
 
-        // callback handler that will be called on failure
-        request.fail(function (jqXHR, textStatus, errorThrown){
-            alert("Error!");
-            // log the error to the console
-            console.error(
-                "The following error occured: "+
-                textStatus, errorThrown
-            );
-        });
+            // callback handler that will be called on failure
+            request.fail(function (jqXHR, textStatus, errorThrown){
+                alert("Error!");
+                // log the error to the console
+                console.error(
+                    "The following error occured: "+
+                    textStatus, errorThrown
+                );
+            });
+        }
+        else {
+            $("#status").text("Error: No search term provided").attr('class', 'error');
+        }
     });
     $("#create").on('click', function(e) {
         if (updateGeo()) {
