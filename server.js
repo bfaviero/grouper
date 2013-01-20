@@ -26,26 +26,43 @@ io.sockets.on('connection', function(socket) {
     socket.on('connect', function(data) {
         var user = new Object();
         var retval = -1;
+        console.log("data:");
+        console.log(data);
         Group.findOne({_id: data.group}, function(err, doc) {
             if (!err && doc) {
-                user.group = data.group;
-                user.name = data.name;
-                user.lasttime = Date.now;
-                if (data.lat && data.lon) {
-                    user.loc = [data.lon, data.lat];
+                if (!(doc.pin && doc.pin.length) || (data.pin && doc.pin === data.pin)) {
+                    user.group = data.group;
+                    user.name = data.name;
+                    user.lasttime = new Date(Date.now);
+                    if (data.lat && data.lon) {
+                        user.loc = [data.lon, data.lat];
+                    }
+                    if (data.user && data.token) {
+                        middleware.auth(req, res, function(success, doc) {
+                            if (success)
+                            {
+                                user.userid = doc._id;
+                            }
+                        });
+                    }
+                    console.log(user);
+                    clients[socket.id] = user;
+                    socket.join(data.group);
+                    retval = socket.id
                 }
-                if (data.user && data.token) {
-                    middleware.auth(req, res, function(success, doc) {
-                        if (success)
-                        {
-                            user.userid = doc._id;
-                        }
-                    });
+                else {
+                    console.log(data);
+                    console.log("invalid pin");
+                    if (doc.pin) {
+                        console.log("doc: "+doc.pin);
+                    }
+                    if (data.pin) {
+                        console.log("doc: "+data.pin);
+                    }
+                    console.log("invalid pin");
                 }
-                clients[socket.id] = user;
-                socket.join(data.group);
-                retval = socket.id
             }
+            console.log(retval);
             socket.emit('connectresponse', {id: retval}); // -1: error
         });
     });

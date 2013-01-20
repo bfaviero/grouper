@@ -6,9 +6,21 @@ var addMarkerIcon = function(icon, map, lat, lon, html, open) {
     console.log(html);
     var loc = new google.maps.LatLng(lat, lon);
     var marker = new google.maps.Marker({ position: loc, map: map});
-    var popup = new google.maps.InfoWindow({
-        content: html,
-        maxwidth: $(window).width()*.2});
+    var popup;
+    if (true) {
+        popup = new google.maps.InfoWindow({
+            content: html,
+            maxwidth: $(window).width()*.2,
+            optimised: false,
+            zIndex: 1});
+    }
+    else {
+        popup = new google.maps.InfoWindow({
+            content: html,
+            maxwidth: $(window).width()*.2,
+            optimised: false,
+            zIndex: 5});
+    }
     google.maps.event.addListener(marker, 'click', function() {
         if (curPop) {
             curPop.close();
@@ -59,6 +71,12 @@ $(function() {
             return havegeo;
             console.log(""+latitude+" "+longitude);
         }
+    }
+    if ($.cookie("email") === "null") {
+        $.removeCookie("email");
+    }
+    if ($.cookie("token") === "null") {
+        $.removeCookie("token");
     }
     updateGeo();
     console.log(latitude);
@@ -128,17 +146,20 @@ $(function() {
         } else {
             $.cookie("username", username);
             console.log(username);
-            if (updateGeo()) {
+            updateGeo();
+            //if (updateGeo()) {
+            if (true) {
                 var request = $.ajax({url: "/search", type: "post", data: "lat="+latitude+"&lon="+longitude});
                 request.done(function (response, textStatus, jqXHR){
                     console.log(response);
                     var obj = jQuery.parseJSON(response);
                     $("#localgrouplist").empty();
                     for(var i=0;i<obj.length;i++) {
-                        $("#localgrouplist").append("<li><a groupid="+obj[i]._id+" href='#groupchat'>"+obj[i].name+"</a></li>");
+                        var str="<a id='groupchatconnect' pinned="+obj[i].pinned+" groupid='"+obj[i]._id+"' href='#groupchat'>"+obj[i].name+"</a>";
+                        $("#localgrouplist").append("<li>"+str+"</li>");
                         var lonlat=obj[i].loc;
                         //addMarker(groupmap, lonlat[1], lonlat[0], "<div>Lat: "+lonlat[1]+"</div><div>Lon: "+lonlat[0]+"</div>"+"<a id='groupchatconnect' groupid='"+obj[i]._id+"' href='#groupchat'>"+obj[i].name+"</a>");
-                        addMarker(groupmap, lonlat[1], lonlat[0], "<a id='groupchatconnect' groupid='"+obj[i]._id+"' href='#groupchat'>"+obj[i].name+"</a>");
+                        addMarker(groupmap, lonlat[1], lonlat[0], str);
                         console.log(lonlat);
                     }
                     $("#localgrouplist").listview("refresh");
@@ -325,14 +346,36 @@ $(function() {
     var conn = function(e) {
         e.preventDefault();
         groupid = $(this).attr('groupid');
-        $(".chattitle").text($(this).text());
+        var title = $(this).text();
+        var pinned = $(this).attr('pinned');
         socket = io.connect("http://localhost");
         socket.on('connect', function() {
             username = $("#username").val();
-            socket.emit('connect', {group: groupid, name: username}); // auth later
+            var obj={group: groupid, name: username};
+            console.log("pinned?");
+            if (pinned && pinned !== "false") {
+                console.log($(this).attr('pinned'));
+                var pinval = prompt("Enter the pin","");
+                console.log(pinval);
+                obj[pin]=pinval;
+            }
+            if ($.cookie("email") && $.cookie("token")) {
+                obj[email] = $.cookie("email");
+                obj[token] = $.cookie("token");
+            }
+            console.log(obj);
+            socket.emit('connect',obj);
         });
         socket.on('connectresponse', function(data) {
-            // Do something?
+            console.log(data);
+            if (data.id < 0) {
+                alert("Error connecting. Refresh and try again");
+            } else {
+                console.log("hi there");
+                console.log("hi there");
+                console.log(title);
+                $(".chattitle").text("Connected: "+title);
+            }
         });
         socket.on('message', function(data) {
             console.log("message");
