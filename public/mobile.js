@@ -138,7 +138,7 @@ $(function() {
     $("#joinbutton").on('click', function(e) {
         setTimeout(rsz, 500);
         addMarkerIcon(icon, groupmap, latitude, longitude, "<div>My Location</div>", true);
-        var icon = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/micons/purple.png", new google.maps.Size(64, 32), new google.maps.Point(0, 0), new google.maps.Point(16, 32));
+        var icon = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/micons/yen.png", new google.maps.Size(64, 32), new google.maps.Point(0, 0), new google.maps.Point(16, 32));
         username = $("#username").val();
         if (!(username && username.length)) {
             alert("Enter a username to continue");
@@ -361,11 +361,12 @@ $(function() {
                 console.log($(this).attr('pinned'));
                 var pinval = prompt("Enter the pin","");
                 console.log(pinval);
-                obj[pin]=pinval;
+                obj.pin=pinval;
+                console.log(obj);
             }
             if ($.cookie("email") && $.cookie("token")) {
-                obj[email] = $.cookie("email");
-                obj[token] = $.cookie("token");
+                obj.email = $.cookie("email");
+                obj.token = $.cookie("token");
             }
             console.log(obj);
             socket.emit('connect',obj);
