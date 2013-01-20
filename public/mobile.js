@@ -341,7 +341,7 @@ $(function() {
             var seconds=d.getSeconds()<10?"0"+d.getSeconds():d.getSeconds();
             var minutes=d.getMinutes()<10?"0"+d.getMinutes():d.getMinutes();
 
-            $("#messages").append(
+            $("#messages").prepend(
                 //"<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'>"+data.username+": "+data.body+" <span class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+" "+ampm+"</span></li>"
                 //"<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'><div class='ui-grid-a'><div class='ui-block-a'>"+data.username+": "+data.body+"</div><div class='ui-block-b'></div>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+" "+ampm+"</div><span class='ui-li-count ui-btn-up-c ui-btn-corner-all'></span></li>" 
             //"<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'><table data-role='table' data-mode='reflow' class='ui-responsive table-stroke ui-table ui-table-reflow'><tbody><tr><td valign='top'><p style='margin: 0px; padding: 0px;'>name</p> <p style='font-weight: 200; font-size: 12px; margin: 0px; padding: 0px;'>"+((d.getHours()+12)%12)+":"+minutes+"</p></td><td style='font-weight: normal;'>content</td></tr></li>"
