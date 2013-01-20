@@ -1,6 +1,32 @@
 var socket;
 var groupid, username;
 var latitude = 0, longitude = 0, havegeo;
+var groupmap, peermap, person;
+var rsz = function() {
+    console.log($(window).width());
+    console.log($(window).height());
+    $("#peermapcanvas").width($(window).width()*.9+"px");
+    $("#peermapcanvas").height($(window).height()*.4+"px");
+    $("#groupmapcanvas").width($(window).width()*.9+"px");
+    $("#groupmapcanvas").height($(window).height()*.4+"px");
+    if (groupmap) {
+        console.log('map update');
+        google.maps.event.trigger(groupmap,"resize");
+        google.maps.event.trigger(groupmap,"bounds_changed");
+        if (person) {
+            groupmap.setCenter(person);
+        }
+    }
+    if (peermap) {
+        console.log('map update');
+        google.maps.event.trigger(peermap,"resize");
+        google.maps.event.trigger(peermap,"bounds_changed");
+        if (person) {
+            peermap.setCenter(person);
+        }
+    }
+}
+$(window).resize(rsz);
 $(function() {
     var updateGeo = function() {
         if (navigator.geolocation) {
@@ -18,6 +44,24 @@ $(function() {
             console.log(""+latitude+" "+longitude);
         }
     }
+    updateGeo();
+    person = new google.maps.LatLng(latitude, longitude);
+    groupmap = new google.maps.Map($("#groupmapcanvas")[0], {zoom: 15, center: person, mapTypeControl: true, navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, mapTypeId: google.maps.MapTypeId.ROADMAP});
+    peermap = new google.maps.Map($("#peermapcanvas")[0], {zoom: 15, center: person, mapTypeControl: true, navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, mapTypeId: google.maps.MapTypeId.ROADMAP});
+    var groupmarker = new google.maps.Marker({ position: person, map: groupmap, title:"My Location" });
+    var peermarker = new google.maps.Marker({ position: person, map: peermap, title:"My Location" });
+    var opts = {
+	center:person,
+	radius:200,
+	strokeColor:"",
+	strokeOpacity:0.8,
+	strokeWeight:2,
+	fillColor:"#0000FF",
+  	fillOpacity:0.1};
+    var groupcircle= new google.maps.Circle(opts);
+    var peercircle= new google.maps.Circle(opts);
+    groupcircle.setMap(groupmap);
+    peercircle.setMap(peermap);
     console.log($.cookie("email"));
     console.log($.cookie("token"));
     if (document.URL.indexOf("#") > -1) {
@@ -69,8 +113,16 @@ $(function() {
                     $("#localgrouplist").empty();
                     for(var i=0;i<obj.length;i++) {
                         $("#localgrouplist").append("<li><a value="+obj[i]._id+" href='#groupchat'>"+obj[i].name+"</a></li>");
+                        var lonlat=obj[i].loc;
+                        //var loc = new google.maps.LatLng(lonlat[1], lonlat[0]);
+                        var loc = new google.maps.LatLng(latitude+.001*i, longitude+.001*i)
+                        console.log(loc);
+                        var marker = new google.maps.Marker({ position: loc, map: groupmap, title:obj[i].name });
+                        console.log(marker);
                     }
                     $("#localgrouplist").listview("refresh");
+                    console.log('resizing');
+                    rsz();
                 });
                 // callback handler that will be called on failure
                 request.fail(function (jqXHR, textStatus, errorThrown){
@@ -83,8 +135,7 @@ $(function() {
                 });
             }
             else {
-                alert("Error: Need Geolocation data to search for nearby");
-                return false;
+                $("#localgrouplist").append("<li>Error: Need Geolocation data to search for nearby</li><li>Try refreshing or using the search tab</li>");
             }
         }
     });
@@ -169,13 +220,15 @@ $(function() {
         return false;
     });
 
-    $("#chattitle").on('click', function(e) {$("#messages").empty();});
+    //$("#chattitle").on('click', function(e) {$("#messages").empty();});
+    $(".chattitle").on('click', function(e) {
+    });
 
     $("#localgrouplist").on('click', 'li div div a', function(e) {
         e.preventDefault();
         console.log("zomg");
         groupid = $(this).attr('value');
-        $("#chattitle").text($(this).text());
+        $(".chattitle").text($(this).text());
         socket = io.connect("http://localhost");
         socket.on('connect', function() {
             username = $("#username").val();
