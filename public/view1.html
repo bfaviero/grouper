@@ -162,7 +162,7 @@
                         <input name="" id="updatepassword2" placeholder="Confirm Password" value="" type="password" />
                     </fieldset>
                 </div>
-                <a id="updatebutton" data-role="button" data-theme="b" href="/">Register</a>
+                <a id="updatebutton" data-role="button" data-theme="b" href="/">Update</a>
             </div>
             </div>
 
@@ -240,7 +240,7 @@
                     <fieldset data-role="controlgroup">
                         <label for="textinput3">
                         </label>
-                        <input name="" id="textinput3" placeholder="Channel Name" value="" type="text" />
+                        <input name="" id="creategroupname" placeholder="Group Name" value="" type="text" />
                     </fieldset>
                 </div>
                 <div data-role="fieldcontain">
@@ -248,13 +248,13 @@
                         <legend>
                             Choose:
                         </legend>
-                        <input id="radio1" name="" value="radio1" type="radio" />
+                        <input id="radio1" name="" value="private" type="radio" checked="checked" />
                         <label for="radio1">
-                            Public
-                        </label>
-                        <input  id="radio2" name="" value="radio2" type="radio" />
-                        <label for="radio2">
                             Private
+                        </label>
+                        <input  id="radio2" name="" value="public" type="radio" />
+                        <label for="radio2">
+                            Public
                         </label>
                     </fieldset>
                 </div>
@@ -262,18 +262,13 @@
                     <fieldset data-role="controlgroup">
                         <label for="textinput5">
                         </label>
-                        <input  name=""  placeholder="password (if private)" value="" type="text" />
+                        <input  id="creategrouppass" name=""  placeholder="password (if private)" value="" type="password" />
                     </fieldset>
                 </div>
 
                 <div data-role="fieldcontain">
-                    <fieldset data-role="controlgroup">
-                        <label for="textinput4">
-                        </label>
-                        <input name="" id="textinput4" placeholder="Radius (in miles)" value="" type="text" />
-                    </fieldset>
                 </div>
-                <a data-role="button" data-theme="b" href="#groupmap">Create</a>
+                <a id="creategroup" data-role="button" data-theme="b" href="#">Create</a>
             </div>
             </div>
 

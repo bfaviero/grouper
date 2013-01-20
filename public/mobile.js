@@ -64,8 +64,8 @@ $(function() {
     console.log(latitude);
     console.log(longitude);
     person = new google.maps.LatLng(latitude, longitude);
-    groupmap = new google.maps.Map($("#groupmapcanvas")[0], {zoom: 15, center: person, mapTypeControl: true, navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, mapTypeId: google.maps.MapTypeId.ROADMAP});
-    peermap = new google.maps.Map($("#peermapcanvas")[0], {zoom: 15, center: person, mapTypeControl: true, navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, mapTypeId: google.maps.MapTypeId.ROADMAP});
+    groupmap = new google.maps.Map($("#groupmapcanvas")[0], {zoom: 30, center: person, mapTypeControl: true, navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, mapTypeId: google.maps.MapTypeId.ROADMAP});
+    peermap = new google.maps.Map($("#peermapcanvas")[0], {zoom: 30, center: person, mapTypeControl: true, navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, mapTypeId: google.maps.MapTypeId.ROADMAP});
     //alert(latitude);
     //alert(longitude);
     /*
@@ -135,9 +135,10 @@ $(function() {
                     var obj = jQuery.parseJSON(response);
                     $("#localgrouplist").empty();
                     for(var i=0;i<obj.length;i++) {
-                        $("#localgrouplist").append("<li><a value="+obj[i]._id+" href='#groupchat'>"+obj[i].name+"</a></li>");
+                        $("#localgrouplist").append("<li><a groupid="+obj[i]._id+" href='#groupchat'>"+obj[i].name+"</a></li>");
                         var lonlat=obj[i].loc;
-                        addMarker(groupmap, lonlat[1], lonlat[0], "<div>Name: "+obj[i].name+"</div><div>Lat: "+lonlat[1]+"</div><div>Lon: "+lonlat[0]+"</div>");
+                        //addMarker(groupmap, lonlat[1], lonlat[0], "<div>Lat: "+lonlat[1]+"</div><div>Lon: "+lonlat[0]+"</div>"+"<a id='groupchatconnect' groupid='"+obj[i]._id+"' href='#groupchat'>"+obj[i].name+"</a>");
+                        addMarker(groupmap, lonlat[1], lonlat[0], "<a id='groupchatconnect' groupid='"+obj[i]._id+"' href='#groupchat'>"+obj[i].name+"</a>");
                         console.log(lonlat);
                     }
                     $("#localgrouplist").listview("refresh");
@@ -244,6 +245,75 @@ $(function() {
         var icon = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/micons/purple.png", new google.maps.Size(64, 32), new google.maps.Point(0, 0), new google.maps.Point(16, 32));
         addMarkerIcon(icon, peermap, latitude, longitude, "<div>My Location</div>", true);
     });
+    $("#pagecreate").on('click', function(e) {
+        if (!updateGeo()) {
+            alert("Geo location info needed to create a group. Try reloading the page");
+            return false;
+        }
+    });
+    $("#creategroup").on('click', function(e) {
+        if (!updateGeo()) {
+            alert("Geo location info needed to create a group. Try reloading the page");
+        }
+        else {
+            var name = $("#creategroupname").val();
+            var pub = $("#radio2").is(":checked");
+            var priv = $("#radio1").is(":checked");
+            var pass = $("#creategrouppass").val();
+            if (!(name && name.length)) {
+                alert("Please enter the group name");
+            }
+            else {
+                if (pub) {
+                    if ($.cookie("email") && $.cookie("token")) {
+                        var request = $.ajax({url: "/create", type: "post", data: "email="+$.cookie("email")+"&token="+$.cookie("token")+"&lat="+latitude+"&lon="+longitude+"&name="+name});
+                        request.done(function (response, textStatus, jqXHR){
+                            console.log(response);
+                            alert("\""+name+"\" Created Successfully");
+                            location.reload();
+                        });
+                        // callback handler that will be called on failure
+                        request.fail(function (jqXHR, textStatus, errorThrown){
+                            alert("Group Creation Failed");
+                            return false;
+                        });
+                    }
+                    else {
+                        alert("Error: Must be logged in to create a public group");
+                        location.href = '#login';
+                    }
+                }
+                else if (priv) {
+                    if (!(pass && pass.length)) {
+                        alert("Please enter a password for the group");
+                    }
+                    else {
+                        var request;
+                        if ($.cookie("email") && $.cookie("token")) {
+                            request = $.ajax({url: "/create", type: "post", data: "email="+$.cookie("email")+"&token="+$.cookie("token")+"&lat="+latitude+"&lon="+longitude+"&name="+name+"&pin="+pass});
+                        }
+                        else {
+                            request = $.ajax({url: "/create", type: "post", data: "lat="+latitude+"&lon="+longitude+"&name="+name+"&pin="+pass});
+                        }
+                        request.done(function (response, textStatus, jqXHR){
+                            console.log(response);
+                            alert("\""+name+"\" Created Successfully");
+                            location.reload();
+                        });
+                        // callback handler that will be called on failure
+                        request.fail(function (jqXHR, textStatus, errorThrown){
+                            alert("Group Creation Failed. Try another group name?");
+                            return false;
+                        });
+                    }
+                }
+                else {
+                    alert("uh oh something went wrong");
+                }
+            }
+        }
+        return false;
+    });
 
     $(".gohome").on('click', function(e) {
         console.log('homing missile');
@@ -251,10 +321,10 @@ $(function() {
         return false;
     });
 
-    $("#localgrouplist").on('click', 'li div div a', function(e) {
+    //$("#groupchatconnect").on('click', conn);
+    var conn = function(e) {
         e.preventDefault();
-        console.log("zomg");
-        groupid = $(this).attr('value');
+        groupid = $(this).attr('groupid');
         $(".chattitle").text($(this).text());
         socket = io.connect("http://localhost");
         socket.on('connect', function() {
@@ -278,5 +348,7 @@ $(function() {
                 console.log("yay");
             }
         });
-    });
+    }
+    $("#groupmapcanvas").on('click', 'div > a#groupchatconnect', conn);
+    $("#localgrouplist").on('click', 'li div div a', conn);
 });

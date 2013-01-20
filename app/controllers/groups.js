@@ -4,8 +4,10 @@ var mongoose = require('mongoose')
 , PAGE_SIZE=20;
 
 exports.create = function(req, res) {
+    console.log(req.body);
     var group = new Group();
     if (!(req.body.name && req.body.name.length && req.body.lat && !isNaN(req.body.lat) && req.body.lon && !isNaN(req.body.lon))) {
+        console.log("invalid");
         console.log(req.body);
         res.send(400);
     }
@@ -16,37 +18,39 @@ exports.create = function(req, res) {
         if (req.body.email && req.body.email.length && req.body.token && req.body.token.length) {
             middleware.auth(req, res, function(success, doc) {
                 if (success) {
-                        group._user = doc._id;
-                        if (req.body.pin) {
-                            if (!doc.paying) {
-                                res.send(400);
-                                bad = true;
-                            }
-                            else {
-                                group.pin = req.body.pin;
-                            }
-                        }
+                    group._user = doc._id;
+                    if (req.body.pin) {
+                        group.pin = req.body.pin;
                     }
+                }
                 else {
-                    res.send(400);
+                    console.log("badgirl");
+                    console.log(req.body);
                     bad = true;
+                    res.send(400);
                 }
             });
         }
-        else if (req.body.pin)
+        else if (req.body.pin && req.body.pin.length)
         {
-            res.send(400);
+            group.pin = req.body.pin;
+        }
+        else {
             bad = true;
+            res.send(400);
         }
 
         if (!bad) {
+            console.log("baddy");
             group.save(function(err) {
                 if (err) {
+                    console.log("hullo");
                     console.log(err);
                     res.send(500);
                 }
                 else {
-                    console.log(group);
+                    console.log("hi there");
+                    console.log(group.toJSON());
                     res.send(group.toJSON());
                 }
             });
