@@ -155,7 +155,7 @@ $(function() {
                     var obj = jQuery.parseJSON(response);
                     $("#localgrouplist").empty();
                     for(var i=0;i<obj.length;i++) {
-                        icon = "<img src='http://png-1.findicons.com/files/icons/1580/devine_icons_part_2/128/home.png' class='ui-li-icon ui-li-thumb'>"
+                        icon = "<img src='http://png-1.findicons.com/files/icons/1743/ecqlipse/128/wifi.png' class='ui-li-icon ui-li-thumb'>"
                         if (obj[i].pinned) {
                         icon = "<img src='http://a.dryicons.com/images/icon_sets/stickers_icon_set/png/128x128/lock.png' class='ui-li-icon ui-li-thumb'>"
                         }
