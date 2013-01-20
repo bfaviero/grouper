@@ -17,7 +17,7 @@ var addMarkerIcon = function(icon, map, lat, lon, html, open) {
         curPop = popup;
     });
     if (open) {
-        marker.trigger('click');
+        new google.maps.event.trigger( marker, 'click' );
     }
     return marker;
 }
@@ -26,21 +26,17 @@ var addMarker = function(map, lat, lon, html) {
     addMarkerIcon(icon, map, lat, lon, html);
 }
 var rsz = function() {
-    console.log($(window).width());
-    console.log($(window).height());
     $("#peermapcanvas").width($(window).width()*.9+"px");
     $("#peermapcanvas").height($(window).height()*.4+"px");
     $("#groupmapcanvas").width($(window).width()*.9+"px");
     $("#groupmapcanvas").height($(window).height()*.4+"px");
     person = new google.maps.LatLng(latitude, longitude);
     if (groupmap) {
-        console.log('map update');
         google.maps.event.trigger(groupmap,"resize");
         google.maps.event.trigger(groupmap,"bounds_changed");
         groupmap.setCenter(person);
     }
     if (peermap) {
-        console.log('map update');
         google.maps.event.trigger(peermap,"resize");
         google.maps.event.trigger(peermap,"bounds_changed");
         peermap.setCenter(person);
@@ -123,9 +119,8 @@ $(function() {
     });
     $("#joinbutton").on('click', function(e) {
         setTimeout(rsz, 500);
-        var icon = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/micons/purple.png", new google.maps.Size(64, 32), new google.maps.Point(0, 0), new google.maps.Point(16, 32));
-        addMarkerIcon(icon, peermap, latitude, longitude, "<div>My Location</div>", true);
         addMarkerIcon(icon, groupmap, latitude, longitude, "<div>My Location</div>", true);
+        var icon = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/micons/purple.png", new google.maps.Size(64, 32), new google.maps.Point(0, 0), new google.maps.Point(16, 32));
         username = $("#username").val();
         if (!(username && username.length)) {
             alert("Enter a username to continue");
@@ -245,6 +240,15 @@ $(function() {
 
     //$("#chattitle").on('click', function(e) {$("#messages").empty();});
     $("#chattitle").on('click', function(e) {
+        setTimeout(rsz, 500);
+        var icon = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/micons/purple.png", new google.maps.Size(64, 32), new google.maps.Point(0, 0), new google.maps.Point(16, 32));
+        addMarkerIcon(icon, peermap, latitude, longitude, "<div>My Location</div>", true);
+    });
+
+    $(".gohome").on('click', function(e) {
+        console.log('homing missile');
+        location.href = '/';
+        return false;
     });
 
     $("#localgrouplist").on('click', 'li div div a', function(e) {
