@@ -155,7 +155,11 @@ $(function() {
                     var obj = jQuery.parseJSON(response);
                     $("#localgrouplist").empty();
                     for(var i=0;i<obj.length;i++) {
-                        var str="<a id='groupchatconnect' pinned="+obj[i].pinned+" groupid='"+obj[i]._id+"' href='#groupchat'>"+obj[i].name+"</a>";
+                        icon = "<img src='http://png-1.findicons.com/files/icons/1580/devine_icons_part_2/128/home.png' class='ui-li-icon ui-li-thumb'>"
+                        if (obj[i].pinned) {
+                        icon = "<img src='http://a.dryicons.com/images/icon_sets/stickers_icon_set/png/128x128/lock.png' class='ui-li-icon ui-li-thumb'>"
+                        }
+                        var str="<a id='groupchatconnect' pinned="+obj[i].pinned+" groupid='"+obj[i]._id+"' href='#groupchat'>"+icon+" "+obj[i].name+"</a>";
                         $("#localgrouplist").append("<li>"+str+"</li>");
                         var lonlat=obj[i].loc;
                         //addMarker(groupmap, lonlat[1], lonlat[0], "<div>Lat: "+lonlat[1]+"</div><div>Lon: "+lonlat[0]+"</div>"+"<a id='groupchatconnect' groupid='"+obj[i]._id+"' href='#groupchat'>"+obj[i].name+"</a>");
