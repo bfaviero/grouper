@@ -1,8 +1,8 @@
 var socket;
 var groupid, username;
 var latitude = 42.3616447, longitude = -71.0899869, havegeo;
-var groupmap, peermap, person;
-var addMarker = function(map, lat, lon, html) {
+var groupmap, peermap, person, curPop;
+var addMarkerIcon = function(icon, map, lat, lon, html, open) {
     console.log(html);
     var loc = new google.maps.LatLng(lat, lon);
     var marker = new google.maps.Marker({ position: loc, map: map});
@@ -10,9 +10,20 @@ var addMarker = function(map, lat, lon, html) {
         content: html,
         maxwidth: $(window).width()*.2});
     google.maps.event.addListener(marker, 'click', function() {
+        if (curPop) {
+            curPop.close();
+        }
         popup.open(map, marker);
+        curPop = popup;
     });
+    if (open) {
+        marker.trigger('click');
+    }
     return marker;
+}
+var addMarker = function(map, lat, lon, html) {
+    var icon = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/micons/red.png", new google.maps.Size(32, 32), new google.maps.Point(0, 0), new google.maps.Point(16, 32));
+    addMarkerIcon(icon, map, lat, lon, html);
 }
 var rsz = function() {
     console.log($(window).width());
@@ -61,8 +72,6 @@ $(function() {
     peermap = new google.maps.Map($("#peermapcanvas")[0], {zoom: 15, center: person, mapTypeControl: true, navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, mapTypeId: google.maps.MapTypeId.ROADMAP});
     //alert(latitude);
     //alert(longitude);
-    addMarker(groupmap, latitude, longitude, "<div>My Location</div>");
-    addMarker(peermap, latitude, longitude, "<div>My Location</div>");
     /*
     var opts = {
 	center:person,
@@ -114,6 +123,9 @@ $(function() {
     });
     $("#joinbutton").on('click', function(e) {
         setTimeout(rsz, 500);
+        var icon = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/micons/purple.png", new google.maps.Size(64, 32), new google.maps.Point(0, 0), new google.maps.Point(16, 32));
+        addMarkerIcon(icon, peermap, latitude, longitude, "<div>My Location</div>", true);
+        addMarkerIcon(icon, groupmap, latitude, longitude, "<div>My Location</div>", true);
         username = $("#username").val();
         if (!(username && username.length)) {
             alert("Enter a username to continue");
@@ -134,8 +146,6 @@ $(function() {
                         console.log(lonlat);
                     }
                     $("#localgrouplist").listview("refresh");
-                    console.log('resizing');
-                    rsz();
                 });
                 // callback handler that will be called on failure
                 request.fail(function (jqXHR, textStatus, errorThrown){
@@ -234,7 +244,7 @@ $(function() {
     });
 
     //$("#chattitle").on('click', function(e) {$("#messages").empty();});
-    $(".chattitle").on('click', function(e) {
+    $("#chattitle").on('click', function(e) {
     });
 
     $("#localgrouplist").on('click', 'li div div a', function(e) {
