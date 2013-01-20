@@ -36,7 +36,7 @@ exports.login = function(req, res) {
     }
     else {
         User.findOne({email: req.body.email}, function(err, doc) {
-            if (err)
+            if (err || !doc)
             {
                 res.send(500);
             }
@@ -64,20 +64,21 @@ exports.login = function(req, res) {
 exports.logout = function(req, res) {
     console.log(req.body);
     User.findOne({email: req.body.email}, function(err, doc) {
-        if (err) {
+        if (err || !doc) {
             res.send(500);
+        } else {
+            // Reset token
+            doc.genToken();
+            doc.save(function(err) {
+                if (err) {
+                    res.send(500);
+                }
+                else {
+                    // Delete cookies on page return
+                    res.send('{"success": true}');
+                }
+            });
         }
-        // Reset token
-        doc.genToken();
-        doc.save(function(err) {
-            if (err) {
-                res.send(500);
-            }
-            else {
-                // Delete cookies on page return
-                res.send('{"success": true}');
-            }
-        });
     });
 }
 exports.update = function(req, res) {

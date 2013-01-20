@@ -10,4 +10,9 @@ var GroupSchema = new Schema({
     lastused: {type: Date, default: Date.now, required: true}
 });
 
+GroupSchema.virtual('json').get(function() {
+    var pinned = this.pin ? true : false;
+    return '{"name": "'+this.name+'", "_user": "'+this._user+'", "_id": "'+this._id+'", "pinned": '+pinned+', "loc": ['+this.loc+'], "date": "'+(new Date(this.date))+'", "lastused": "'+this.lastused+'"}';
+});
+
 module.exports = mongoose.model('Group', GroupSchema);

@@ -64,7 +64,7 @@ exports.search = function(req, res) {
             console.log(docs);
             var out = "[";
             for(var i=0;i<docs.length;i++) {
-                out += JSON.stringify(docs[i]);
+                out += docs[i].json;
                 if (i < docs.length-1) {
                     out += ", ";
                 }
