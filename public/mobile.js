@@ -1,7 +1,19 @@
 var socket;
 var groupid, username;
-var latitude = 0, longitude = 0, havegeo;
+var latitude = 42.3616447, longitude = -71.0899869, havegeo;
 var groupmap, peermap, person;
+var addMarker = function(map, lat, lon, html) {
+    console.log(html);
+    var loc = new google.maps.LatLng(lat, lon);
+    var marker = new google.maps.Marker({ position: loc, map: map});
+    var popup = new google.maps.InfoWindow({
+        content: html,
+        maxwidth: $(window).width()*.2});
+    google.maps.event.addListener(marker, 'click', function() {
+        popup.open(map, marker);
+    });
+    return marker;
+}
 var rsz = function() {
     console.log($(window).width());
     console.log($(window).height());
@@ -9,21 +21,18 @@ var rsz = function() {
     $("#peermapcanvas").height($(window).height()*.4+"px");
     $("#groupmapcanvas").width($(window).width()*.9+"px");
     $("#groupmapcanvas").height($(window).height()*.4+"px");
+    person = new google.maps.LatLng(latitude, longitude);
     if (groupmap) {
         console.log('map update');
         google.maps.event.trigger(groupmap,"resize");
         google.maps.event.trigger(groupmap,"bounds_changed");
-        if (person) {
-            groupmap.setCenter(person);
-        }
+        groupmap.setCenter(person);
     }
     if (peermap) {
         console.log('map update');
         google.maps.event.trigger(peermap,"resize");
         google.maps.event.trigger(peermap,"bounds_changed");
-        if (person) {
-            peermap.setCenter(person);
-        }
+        peermap.setCenter(person);
     }
 }
 $(window).resize(rsz);
@@ -45,11 +54,16 @@ $(function() {
         }
     }
     updateGeo();
+    console.log(latitude);
+    console.log(longitude);
     person = new google.maps.LatLng(latitude, longitude);
     groupmap = new google.maps.Map($("#groupmapcanvas")[0], {zoom: 15, center: person, mapTypeControl: true, navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, mapTypeId: google.maps.MapTypeId.ROADMAP});
     peermap = new google.maps.Map($("#peermapcanvas")[0], {zoom: 15, center: person, mapTypeControl: true, navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, mapTypeId: google.maps.MapTypeId.ROADMAP});
-    var groupmarker = new google.maps.Marker({ position: person, map: groupmap, title:"My Location" });
-    var peermarker = new google.maps.Marker({ position: person, map: peermap, title:"My Location" });
+    //alert(latitude);
+    //alert(longitude);
+    addMarker(groupmap, latitude, longitude, "<div>My Location</div>");
+    addMarker(peermap, latitude, longitude, "<div>My Location</div>");
+    /*
     var opts = {
 	center:person,
 	radius:200,
@@ -62,6 +76,7 @@ $(function() {
     var peercircle= new google.maps.Circle(opts);
     groupcircle.setMap(groupmap);
     peercircle.setMap(peermap);
+    */
     console.log($.cookie("email"));
     console.log($.cookie("token"));
     if (document.URL.indexOf("#") > -1) {
@@ -98,6 +113,7 @@ $(function() {
         $("#joinbutton").click();
     });
     $("#joinbutton").on('click', function(e) {
+        setTimeout(rsz, 500);
         username = $("#username").val();
         if (!(username && username.length)) {
             alert("Enter a username to continue");
@@ -114,11 +130,8 @@ $(function() {
                     for(var i=0;i<obj.length;i++) {
                         $("#localgrouplist").append("<li><a value="+obj[i]._id+" href='#groupchat'>"+obj[i].name+"</a></li>");
                         var lonlat=obj[i].loc;
-                        //var loc = new google.maps.LatLng(lonlat[1], lonlat[0]);
-                        var loc = new google.maps.LatLng(latitude+.001*i, longitude+.001*i)
-                        console.log(loc);
-                        var marker = new google.maps.Marker({ position: loc, map: groupmap, title:obj[i].name });
-                        console.log(marker);
+                        addMarker(groupmap, lonlat[1], lonlat[0], "<div>Name: "+obj[i].name+"</div><div>Lat: "+lonlat[1]+"</div><div>Lon: "+lonlat[0]+"</div>");
+                        console.log(lonlat);
                     }
                     $("#localgrouplist").listview("refresh");
                     console.log('resizing');
