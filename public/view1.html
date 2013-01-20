@@ -295,89 +295,14 @@
     <article>
       <p><span id="status">Please wait whilst we try to locate you...</span></p>
     </article>
-<script>
-function success(position) {
-  var s = document.querySelector('#status');
-   
-  if (s.className == 'success') {
-    return;
-  }
-   
-  s.innerHTML = "found you!";
-  s.className = 'success';
-   
-  var mapcanvas = document.createElement('div');
-  mapcanvas.id = 'mapcanvas';
-  mapcanvas.style.height = '400px';
-  mapcanvas.style.width = '560px';
-     
-  document.querySelector('article').appendChild(mapcanvas);
-   
-  var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-  var latlng2 = new google.maps.LatLng(42.361858,-71.091177);
-  var myOptions = {
-    zoom: 15,
-    center: latlng,
-    mapTypeControl: true,
-    navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  };
-
-  var map = new google.maps.Map(document.getElementById("mapcanvas"), myOptions);
-   
-  var marker = new google.maps.Marker({
-      position: latlng,
-      map: map,
-      title:"You are here!"
-  });
- var pinImage = new google.maps.MarkerImage("http://www.google.com/intl/en_us/mapfiles/ms/micons/blue-dot.png");
-  var participant = new google.maps.Marker({
-      position: latlng2,
-      map: map,
-      icon: pinImage,
-      pinColor:"#00FFFF",
-      title:"You are here3!"
-  });
-var grpCircle= new google.maps.Circle({
-    center:latlng,
-    radius:200,
-    strokeColor:"",
-    strokeOpacity:0.8,
-    strokeWeight:2,
-    fillColor:"#0000FF",
-    fillOpacity:0.1
-  });
-grpCircle.setMap(map);
-}
- 
-function error(msg) {
-  var s = document.querySelector('#status');
-  s.innerHTML = typeof msg == 'string' ? msg : "failed";
-  s.className = 'fail';
-   
-  // console.log(arguments);
-}
- 
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(success, error);
-} else {
-  error('not supported');
-}
- 
-</script>
 </section>
 
-<script language="javascript">
-document.write (position.coords.latitude, position.coords.longitude);
-
-</script>
-
             </div>
             </div>
 
 
 
-			<div data-role="page" id="groupchat">
+        <div data-role="page" id="groupchat">
             <div id="sameheader" data-position="fixed" data-theme="b" data-role="header">
                 <span class="ui-title">
                 </span>
@@ -385,62 +310,23 @@ document.write (position.coords.latitude, position.coords.longitude);
                     Grouper
                 </a>
             </div>
+            <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li>
+                            <a id="chattitle" href="#" data-transition="fade" data-theme="" data-icon="" >
+                            </a>
+                        </li>
+                    </ul>
+            </div>
             <div data-role="content">
-                <a data-role="button" data-inline="true" data-theme="b" href="#groupmap" data-icon="gear" data-iconpos="left">
-                    Map
-                </a>
-                <div data-role="fieldcontain">
-                    <fieldset data-role="controlgroup">
-                        <label for="toggleswitch2">
-                            Auto play
-                        </label>
-                        <select name="toggleswitch2" id="toggleswitch2" data-theme="" data-role="slider">
-                            <option value="off">
-                                Off
-                            </option>
-                            <option value="on">
-                                On
-                            </option>
-                        </select>
-                    </fieldset>
-                </div>
-
-
-
-                <div>
-        <p class="chat-title" onclick="javascript: toggleChat();">Real Time Chat</p>
-        <div id="msgs"></div>
-
-        <div id="form">
-            <form id="chat">
-                <label for="username">Username: </label><input name="username" type="text"><br/>
-                <label for="msg"> Message: </label><input id="msg" type="text" name="message"/><br/>
-                <input type="submit" />
-
-            </form>
+                <form id="send">
+                    <input name="" id="body" placeholder="" value="" type="search" />
+                </form>
+                <ul id="messages" data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow">
+                </ul>
+            </div>
         </div>
     </div>
-
-
-
-
-
-
-
-
-            </div>
-            <div data-theme="a" data-role="footer">
-                <h1>
-                    Input options?
-                </h1>
-            </div>
-        </div>
-
-
-
-
-
-
     </body>
 </html>
 

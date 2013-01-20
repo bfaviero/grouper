@@ -2,8 +2,27 @@ var socket;
 var groupid, username;
 var latitude = 0, longitude = 0, havegeo;
 $(function() {
+    var updateGeo = function() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                latitude = position.coords.latitude;
+                longitude = position.coords.longitude;
+                console.log('geo success');
+                havegeo = true;
+            },
+            function() {
+                console.log('geo fail');
+                havegeo = false;
+            });
+            return havegeo;
+            console.log(""+latitude+" "+longitude);
+        }
+    }
     console.log($.cookie("email"));
     console.log($.cookie("token"));
+    if (document.URL.indexOf("#") > -1) {
+        location.href = '/';
+    }
     if ($.cookie("username")) {
         $("#username").attr('value',$.cookie("username"));
     }
@@ -30,22 +49,6 @@ $(function() {
             return false;
         });
     });
-    var updateGeo = function() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                latitude = position.coords.latitude;
-                longitude = position.coords.longitude;
-                console.log('geo success');
-                havegeo = true;
-            },
-            function() {
-                console.log('geo fail');
-                havegeo = false;
-            });
-            return havegeo;
-            console.log(""+latitude+" "+longitude);
-        }
-    }
     updateGeo();
     $("#usernameform").submit(function(e) {
         $("#joinbutton").click();
@@ -65,7 +68,7 @@ $(function() {
                     var obj = jQuery.parseJSON(response);
                     $("#localgrouplist").empty();
                     for(var i=0;i<obj.length;i++) {
-                        $("#localgrouplist").append("<li value="+obj[i]._id+">"+obj[i].name+"</li>");
+                        $("#localgrouplist").append("<li><a value="+obj[i]._id+" href='#groupchat'>"+obj[i].name+"</a></li>");
                     }
                     $("#localgrouplist").listview("refresh");
                 });
@@ -81,6 +84,7 @@ $(function() {
             }
             else {
                 alert("Error: Need Geolocation data to search for nearby");
+                return false;
             }
         }
     });
@@ -152,14 +156,47 @@ $(function() {
         return false;
     });
 
-    $('#chat').submit(function() {
+    $("#send").submit(function(e) {
+        e.preventDefault();
         console.log("sending");
-            if (updateGeo()) {
-                socket.emit('message', {group: groupid, name: username, body: $("#msg").val(), type: 'text', lat: latitude, lon: longitude});
-            }
-            else {
-                socket.emit('message', {group: groupid, name: username, body: $("#msg").val(), type: 'text'});
-            }
+        if (updateGeo()) {
+            socket.emit('message', {group: groupid, name: username, body: $("#body").val(), type: 'text', lat: latitude, lon: longitude});
+        }
+        else {
+            socket.emit('message', {group: groupid, name: username, body: $("#body").val(), type: 'text'});
+        }
+        $("#body").val("");
+        return false;
     });
 
+    $("#chattitle").on('click', function(e) {$("#messages").empty();});
+
+    $("#localgrouplist").on('click', 'li div div a', function(e) {
+        e.preventDefault();
+        console.log("zomg");
+        groupid = $(this).attr('value');
+        $("#chattitle").text($(this).text());
+        socket = io.connect("http://localhost");
+        socket.on('connect', function() {
+            username = $("#username").val();
+            socket.emit('connect', {group: groupid, name: username}); // auth later
+        });
+        socket.on('connectresponse', function(data) {
+            // Do something?
+        });
+        socket.on('message', function(data) {
+            console.log("message");
+            var d = new Date(data.date);
+            var ampm = d.getHours() >=12 ? "pm" : "am";
+            var seconds=d.getSeconds()<10?"0"+d.getSeconds():d.getSeconds();
+            $("#messages").append("<li>"+data.username+" ("+(d.getMonth()+1)+"/"+(d.getDate())+"/"+(d.getFullYear()%100)+" "+((d.getHours()+12)%12)+":"+d.getMinutes()+":"+seconds+" "+ampm+"): "+data.body+"</li>");
+        });
+        socket.on('messageresponse', function(data) {
+            if (!data.success) {
+                alert("Message failed to send");
+            } else {
+                console.log("yay");
+            }
+        });
+    });
 });
