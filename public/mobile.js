@@ -82,8 +82,8 @@ $(function() {
     console.log(latitude);
     console.log(longitude);
     person = new google.maps.LatLng(latitude, longitude);
-    groupmap = new google.maps.Map($("#groupmapcanvas")[0], {zoom: 30, center: person, mapTypeControl: true, navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, mapTypeId: google.maps.MapTypeId.ROADMAP});
-    peermap = new google.maps.Map($("#peermapcanvas")[0], {zoom: 30, center: person, mapTypeControl: true, navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, mapTypeId: google.maps.MapTypeId.ROADMAP});
+    groupmap = new google.maps.Map($("#groupmapcanvas")[0], {zoom: 19, center: person, mapTypeControl: true, navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, mapTypeId: google.maps.MapTypeId.SATELLITE});
+    peermap = new google.maps.Map($("#peermapcanvas")[0], {zoom: 19, center: person, mapTypeControl: true, navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, mapTypeId: google.maps.MapTypeId.SATELLITE});
     //alert(latitude);
     //alert(longitude);
     /*
@@ -155,9 +155,9 @@ $(function() {
                     var obj = jQuery.parseJSON(response);
                     $("#localgrouplist").empty();
                     for(var i=0;i<obj.length;i++) {
-                        icon = "<img src='http://png-1.findicons.com/files/icons/1743/ecqlipse/128/wifi.png' class='ui-li-icon ui-li-thumb'>"
+                        var icon = "<img src='http://png-1.findicons.com/files/icons/1743/ecqlipse/128/wifi.png' class='ui-li-icon ui-li-thumb'>"
                         if (obj[i].pinned) {
-                        icon = "<img src='http://a.dryicons.com/images/icon_sets/stickers_icon_set/png/128x128/lock.png' class='ui-li-icon ui-li-thumb'>"
+                            icon = "<img src='http://a.dryicons.com/images/icon_sets/stickers_icon_set/png/128x128/lock.png' class='ui-li-icon ui-li-thumb'>"
                         }
                         var str="<a id='groupchatconnect' pinned="+obj[i].pinned+" groupid='"+obj[i]._id+"' href='#groupchat'>"+icon+" "+obj[i].name+"</a>";
                         $("#localgrouplist").append("<li>"+str+"</li>");
