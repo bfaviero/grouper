@@ -123,6 +123,6 @@ io.sockets.on('connection', function(socket) {
     // Need to geolocate chat room members
 });
 
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 80;
 server.listen(port);
 console.log('Express started on port ' + port);
