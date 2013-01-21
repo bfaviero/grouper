@@ -352,7 +352,7 @@ $(function() {
         groupid = $(this).attr('groupid');
         var title = $(this).text();
         var pinned = $(this).attr('pinned');
-        socket = io.connect("http://localhost");
+        socket = io.connect("http://talkgrouper.com");
         socket.on('connect', function() {
             username = $("#username").val();
             var obj={group: groupid, name: username};
