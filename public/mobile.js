@@ -74,7 +74,7 @@ $(function() {
                 console.log('geo fail');
                 havegeo = false;
                 alert("This doesn't work with your phone.")
-            }, { enableHighAccuracy: true}
+            }
             );
             return havegeo;
             console.log(""+latitude+" "+longitude);
@@ -155,7 +155,7 @@ $(function() {
                 if (obj[i].pinned) {
                     icon = "<img src='http://a.dryicons.com/images/icon_sets/stickers_icon_set/png/128x128/lock.png' class='ui-li-icon ui-li-thumb'>"
                 }
-                var str="<a style='opacity:1;' class='groupchatconnect' id='groupchatconnect' pinned="+obj[i].pinned+" groupid='"+obj[i]._id+"' href='#groupchat'>"+icon+" "+obj[i].name+"</a>";
+                var str="<a style='opacity:.9;' class='groupchatconnect' id='groupchatconnect' pinned="+obj[i].pinned+" groupid='"+obj[i]._id+"' href='#groupchat'>"+icon+" "+obj[i].name+"</a>";
                 $("#localgrouplist").append("<li style='opacity:1;'>"+str+"</li>");
                 var lonlat=obj[i].loc;
                 //addMarker(groupmap, lonlat[1], lonlat[0], "<div>Lat: "+lonlat[1]+"</div><div>Lon: "+lonlat[0]+"</div>"+"<a id='groupchatconnect' groupid='"+obj[i]._id+"' href='#groupchat'>"+obj[i].name+"</a>");
@@ -178,6 +178,8 @@ $(function() {
     }
 
 
+
+
     $(document).on('ready', function(event) {
         if ($.cookie("username")) {
         $("#username").attr('value',$.cookie("username"));  
@@ -190,6 +192,7 @@ $(function() {
         
             
     });
+
 
 
     $("#loginbutton").click(function(e) {

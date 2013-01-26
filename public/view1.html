@@ -4,6 +4,8 @@
         <title>Grouper Demo App</title>
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0-beta.1/jquery.mobile-1.3.0-beta.1.min.css" />
         <link rel="stylesheet" type="text/css" href="style.css">
+        <script type="text/javascript" src="blur.js"></script>
+
         <script type="text/javascript" src="jquery-1.9.0.min.js"></script>
         <script type="text/javascript" src="socket.io/socket.io.js"></script>
         <script src="http://code.jquery.com/mobile/1.3.0-beta.1/jquery.mobile-1.3.0-beta.1.min.js"></script>
@@ -21,13 +23,58 @@
    		<div data-role="page" data-theme="c" id="page1">
 
         	<div data-theme="d" data-role="header" class="header" data-tap-toggle="false">
-                <a href="#login" class = 'addbtn' data-icon="gear" style="color:black;text-decoration:none;"  data-direction="reverse" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all  ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Login">Login</a>
+                <a id="loginbtn" href="#loginpopup" class='sqnav' data-rel="popup" class = 'addbtn' data-icon="gear" style="color:black;text-decoration:none;"  data-direction="reverse" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all  ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Login">Login</a>
+
+                <div data-position-to="window" data-role="popup" id="loginpopup" data-theme="a" data-overlay-theme="a" style="padding: 5px; float:center; opacity:0.95;">
+                        <label for="loginemail">
+                        </label>
+                        <input data-theme="b" name="" id="loginemail" placeholder="Email" value="" type="email" />
+                        <label for="loginpassword">
+                        </label>
+                        <input data-theme="b" name="" id="loginpassword" placeholder="Password" value="" type="password" />
+                <a id="loginbutton" data-mini="true" data-role="button" data-theme="b" href="/">Login</a>
+                <a id="registerbutton" data-role="button" data-mini="true" data-theme="b" href="/">Register</a>
+            </div>
+            
+
                 <h3>
                     Grouper
                 </h3>
-              <a href="#pagecreate" class = 'pagecreatbtn' data-icon="plus" style="color:black;text-decoration:none;"  data-direction="reverse" class="ui-btn-right ui-btn ui-shadow ui-btn-corner-all  ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" data-iconpos="right"  title="Login">Create</a>
+              <a href="#createpopup" data-rel="popup" class = 'sqnav'class = 'pagecreatbtn' data-icon="plus" style="color:black;text-decoration:none;"  data-direction="reverse" class="ui-btn-right ui-btn ui-shadow ui-btn-corner-all  ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" data-iconpos="right"  title="Login">Create</a>
+
+              <div data-position-to="window" data-role="popup" id="createpopup" data-theme="a" data-overlay-theme="a" style="padding: 5px; float:center; opacity:0.95;">
+
+                        <label for="textinput3">
+                        </label>
+                        <input name="" id="creategroupname" placeholder="Group name..." value="" type="text" />
+
+
+                        <legend >
+                            Choose:
+                        </legend>
+                        <input data-mini="true" data-theme="a" id="radio1" name="" value="private"  type="radio" checked="checked" />
+                        <label for="radio1">
+                            Private
+                        </label>
+                        <input  data-mini="true" data-theme="a" id="radio2" name="" value="public" type="radio" />
+                        <label for="radio2">
+                            Public
+                        </label>
+
+                <div id="pin" data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <label for="textinput5">
+                        </label>
+                        <input  id="creategrouppass" name="" placeholder="password... (if private)" value="" type="password" />
+                    </fieldset>
+                </div>
+                <a  data-mini="true" data-theme="a" id="creategroup" data-role="button" href="#">Create</a>
             </div>
-            <div data-role="content" style="margin-top:50px;" >
+
+
+
+            </div>
+            <div data-role="content" style="margin-top:50px;" id="page1content" >
 
                 
                         <div style="margin:0px; z-index:1; width:100%;" id="groupmapcanvas"></div>
@@ -36,9 +83,9 @@
         
                 <div>
                 <img style="z-index:0;" class='grouperimg' id='grouperpic' src='grouper.png'>
-                <div id="emailholder" style="margin-bottom:15px; opacity:.9;" ><input style="width:100%;" class="round ui-input-text ui-body-c" name="" id="username" placeholder="Enter nickname..." type="text"></div>
+                <div id="emailholder" style="margin-bottom:15px; opacity:.9;" ><input style="width:100%;" class=" ui-input-text ui-body-c" class='sqnav' name="" id="username" placeholder="Enter nickname..." type="text"></div>
 
-                <ul style="margin-top:15; opacity:.9;" id="localgrouplist" class="sq" data-role="listview" data-filter="true" data-filter-placeholder="Find a group!" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow">
+                <ul style="margin-top:15; opacity:.9;" id="localgrouplist" class="sqnav" data-role="listview" data-filter="true" data-filter-placeholder="Find a group!" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow">
                 </ul>
             </div>
                
@@ -171,77 +218,6 @@
             </div>
             </div>
 
-            <div data-role="page" id="login" >
-            <div data-theme="d" data-role="header">
-                <h3>
-                    Grouper
-                </h3>
-                
-            
-            </div>
-            <div data-role="content">
-                <div data-role="fieldcontain">
-                    <fieldset data-role="controlgroup">
-                        <label for="loginemail">
-                        </label>
-                        <input name="" id="loginemail" placeholder="Email" value="" type="email" />
-                    </fieldset>
-                </div>
-                <div data-role="fieldcontain">
-                    <fieldset data-role="controlgroup">
-                        <label for="loginpassword">
-                        </label>
-                        <input name="" id="loginpassword" placeholder="Password" value="" type="password" />
-                    </fieldset>
-                </div>
-                <a id="loginbutton" data-role="button" data-theme="b" href="/">Login</a>
-            </div>
-            </div>
-
-            <div data-role="page" id="pagecreate" >
-            <div data-theme="d" data-role="header">
-                <h3>
-                    Grouper
-                </h3>
-                
-            
-            </div>
-            <div data-role="content">
-                <div data-role="fieldcontain">
-                    <fieldset data-role="controlgroup">
-                        <label for="textinput3">
-                        </label>
-                        <input name="" id="creategroupname" placeholder="Group Name" value="" type="text" />
-                    </fieldset>
-                </div>
-                <div data-role="fieldcontain">
-                    <fieldset data-role="controlgroup" data-type="vertical">
-                        <legend>
-                            Choose:
-                        </legend>
-                        <input id="radio1" name="" value="private"  type="radio" checked="checked" />
-                        <label for="radio1">
-                            Private
-                        </label>
-                        <input  id="radio2" name="" value="public" type="radio" />
-                        <label for="radio2">
-                            Public
-                        </label>
-                    </fieldset>
-                </div>
-                <div id="pin" data-role="fieldcontain">
-                    <fieldset data-role="controlgroup">
-                        <label for="textinput5">
-                        </label>
-                        <input  id="creategrouppass" name="" placeholder="password (if private)" value="" type="password" />
-                    </fieldset>
-                </div>
-
-                <div data-role="fieldcontain">
-                </div>
-                <a id="creategroup" data-role="button" data-theme="b" href="#">Create</a>
-            </div>
-            </div>
 
             <!-- <div data-role="page" id="groupmap" >
             <div data-theme="d" data-role="header">
@@ -288,7 +264,7 @@
             <div data-role="navbar">
                     <ul>
                         <li>
-                            <a class="chattitle" id="chattitle" href="#showpeers" data-transition="fade" data-theme="" >
+                            <a class="chattitle" id="chattitle" href="#showpeers" data-transition="flip" data-theme="" >
                             </a>
                         </li>
                     </ul>
@@ -316,8 +292,7 @@
             <div data-role="navbar">
                     <ul>
                         <li>
-                            <a class="chattitle" id="chattitle" href="#groupchat" data-transition="fade" data-theme="" >
-                            </a>
+                            <a class="chattitle" id="chattitle" href="#groupchat" data-transition="flip                            </a>
                         </li>
                     </ul>
             </div>

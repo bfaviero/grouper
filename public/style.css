@@ -5,6 +5,10 @@
 	margin-right:auto;
 }
 
+.sqnav {
+	border-radius:0.2em;
+}
+
 .round {
 	border-radius: 0.5em;
 }
@@ -68,9 +72,9 @@ h3 {
 }
 
 #userinfo {
-	background-color:#ffffff;
-	border:1px solid black;
-	opacity:0.9;
+	background-color:#f6f6f6;
+	padding:10px;
+	opacity:0.98;
 	filter:alpha(opacity=60); /* For IE8 and earlier */
 }
 
