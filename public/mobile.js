@@ -57,6 +57,8 @@ var rsz = function() {
     }
 }
 $(window).resize(rsz);
+
+
 $(function() {
     var updateGeo = function() {
         if (navigator.geolocation) {
@@ -265,6 +267,7 @@ $(function() {
     });
 
     $("#send").submit(function(e) {
+        alert("submitted");
         e.preventDefault();
         console.log("sending");
         if (updateGeo()) {
