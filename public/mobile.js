@@ -412,7 +412,7 @@ $(function() {
             $(".messagesdiv").hide();
             $("#selectedmessage").attr("id","");
             $("#messageswrapperdiv").append('<div class="messagesdiv" id="selectedmessage" style="height:100px;"><ul id="'+groupid+'"data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow"></ul></div>');
-            $('#selectedmessage').height($(window).height()*.7+"px");
+            $('#selectedmessage').height($(window).height()*.5+"px");
             username = $("#username").val();
             var obj={group: groupid, name: username};
             console.log("pinned?");
