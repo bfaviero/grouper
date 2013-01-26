@@ -1,7 +1,6 @@
 var socket;
 var groupid, username;
-var latitude, longitude, havegeo;
-
+var latitude = 42.3616447, longitude = -71.0899869, havegeo;
 var groupmap, peermap, person, curPop;
 var addMarkerIcon = function(icon, map, lat, lon, html, open) {
     console.log(html);
@@ -39,7 +38,6 @@ var addMarker = function(map, lat, lon, html) {
     addMarkerIcon(icon, map, lat, lon, html);
 }
 var rsz = function() {
-
     $("#peermapcanvas").width($(window).width()*.9+"px");
     $("#peermapcanvas").height($(window).height()*.4+"px");
     $("#groupmapcanvas").width($(window).width()*.9+"px");
@@ -65,17 +63,11 @@ $(function() {
                 longitude = position.coords.longitude;
                 console.log('geo success');
                 havegeo = true;
-                person = new google.maps.LatLng(latitude, longitude);
-                groupmap = new google.maps.Map($("#groupmapcanvas")[0], {zoom: 19, center: person, mapTypeControl: true, navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, mapTypeId: google.maps.MapTypeId.SATELLITE});
-                peermap = new google.maps.Map($("#peermapcanvas")[0], {zoom: 19, center: person, mapTypeControl: true, navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, mapTypeId: google.maps.MapTypeId.SATELLITE});
-                plotmap();
             },
             function() {
                 console.log('geo fail');
                 havegeo = false;
-                alert("This doesn't work with your phone.")
-            }, { enableHighAccuracy: true}
-            );
+            });
             return havegeo;
             console.log(""+latitude+" "+longitude);
         }
@@ -87,8 +79,12 @@ $(function() {
     if ($.cookie("token") === "null") {
         $.removeCookie("token");
     }
-   
-    
+    updateGeo();
+    console.log(latitude);
+    console.log(longitude);
+    person = new google.maps.LatLng(latitude, longitude);
+    groupmap = new google.maps.Map($("#groupmapcanvas")[0], {zoom: 19, center: person, mapTypeControl: true, navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, mapTypeId: google.maps.MapTypeId.SATELLITE});
+    peermap = new google.maps.Map($("#peermapcanvas")[0], {zoom: 19, center: person, mapTypeControl: true, navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}, mapTypeId: google.maps.MapTypeId.SATELLITE});
     //alert(latitude);
     //alert(longitude);
     /*
@@ -113,10 +109,9 @@ $(function() {
 
     if ($.cookie("email") && $.cookie("token")) {
         console.log("hi there");
-
-        $('#emailholder').prepend("<div id='userinfo' class='sq'><h3>Hello, "+$.cookie("email")+"</h3>"+
+        $("<h3>Hello, "+$.cookie("email")+"</h3>"+
             "<p id='align'><a id='logout' data-role='button' data-inline='true' data-mini='true' data-icon='arrow-r' data-iconpos='right' href='/'>Logout</a>"+
-            "<a id='updatelink' data-role='button' data-icon='arrow-r' data-iconpos='right' href='#update'>Update Info</a></p></div>");
+            "<a id='updatelink' data-role='button' data-icon='arrow-r' data-iconpos='right' href='#update'>Update Info</a></p>").insertBefore("#usernamelabel");
     }
     $("#updatelink").click(function(e) {
         $("#updateemail").attr('value',($.cookie("email")));
@@ -135,47 +130,11 @@ $(function() {
             return false;
         });
     });
-
+    updateGeo();
 
     $('.homebtn').on('click', function(event) {
         window.location = 'http://talkgrouper.com';
     });
-
-    var plotmap = function() {
-        addMarkerIcon(icon, groupmap, latitude, longitude, "<div>My Location</div>", true);
-        var icon = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/micons/yen.png", new google.maps.Size(64, 32), new google.maps.Point(0, 0), new google.maps.Point(16, 32));
-        var request = $.ajax({url: "/search", type: "post", data: "lat="+latitude+"&lon="+longitude});
-        request.done(function (response, textStatus, jqXHR){
-            console.log(response);
-            var obj = jQuery.parseJSON(response);
-            $("#localgrouplist").empty();
-
-            for(var i=0;i<obj.length;i++) {
-                var icon = "<img src='http://png-1.findicons.com/files/icons/1743/ecqlipse/128/wifi.png' class='ui-li-icon ui-li-thumb'>"
-                if (obj[i].pinned) {
-                    icon = "<img src='http://a.dryicons.com/images/icon_sets/stickers_icon_set/png/128x128/lock.png' class='ui-li-icon ui-li-thumb'>"
-                }
-                var str="<a style='opacity:1;' class='groupchatconnect' id='groupchatconnect' pinned="+obj[i].pinned+" groupid='"+obj[i]._id+"' href='#groupchat'>"+icon+" "+obj[i].name+"</a>";
-                $("#localgrouplist").append("<li style='opacity:1;'>"+str+"</li>");
-                var lonlat=obj[i].loc;
-                //addMarker(groupmap, lonlat[1], lonlat[0], "<div>Lat: "+lonlat[1]+"</div><div>Lon: "+lonlat[0]+"</div>"+"<a id='groupchatconnect' groupid='"+obj[i]._id+"' href='#groupchat'>"+obj[i].name+"</a>");
-                addMarker(groupmap, lonlat[1], lonlat[0], str);
-                console.log(lonlat);
-            }
-            $("#localgrouplist").listview("refresh");
-
-        });
-        // callback handler that will be called on failure
-        request.fail(function (jqXHR, textStatus, errorThrown){
-            alert("Error!");
-            // log the error to the console
-            console.error(
-                "The following error occured: "+
-                textStatus, errorThrown
-            );
-        });
-
-    }
 
 
     $(document).on('ready', function(event) {
@@ -183,12 +142,44 @@ $(function() {
         $("#username").attr('value',$.cookie("username"));  
         
         }
-        updateGeo();
-
         setTimeout(rsz, 500);
-        
-        
-            
+        addMarkerIcon(icon, groupmap, latitude, longitude, "<div>My Location</div>", true);
+        var icon = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/micons/yen.png", new google.maps.Size(64, 32), new google.maps.Point(0, 0), new google.maps.Point(16, 32));
+
+        updateGeo();
+            //if (updateGeo()) {
+            if (true) {
+                var request = $.ajax({url: "/search", type: "post", data: "lat="+latitude+"&lon="+longitude});
+                request.done(function (response, textStatus, jqXHR){
+                    console.log(response);
+                    var obj = jQuery.parseJSON(response);
+                    $("#localgrouplist").empty();
+
+                    for(var i=0;i<obj.length;i++) {
+                        var icon = "<img src='http://png-1.findicons.com/files/icons/1743/ecqlipse/128/wifi.png' class='ui-li-icon ui-li-thumb'>"
+                        if (obj[i].pinned) {
+                            icon = "<img src='http://a.dryicons.com/images/icon_sets/stickers_icon_set/png/128x128/lock.png' class='ui-li-icon ui-li-thumb'>"
+                        }
+                        var str="<a style='opacity:1;' class='groupchatconnect' id='groupchatconnect' pinned="+obj[i].pinned+" groupid='"+obj[i]._id+"' href='#groupchat'>"+icon+" "+obj[i].name+"</a>";
+                        $("#localgrouplist").append("<li style='opacity:1;'>"+str+"</li>");
+                        var lonlat=obj[i].loc;
+                        //addMarker(groupmap, lonlat[1], lonlat[0], "<div>Lat: "+lonlat[1]+"</div><div>Lon: "+lonlat[0]+"</div>"+"<a id='groupchatconnect' groupid='"+obj[i]._id+"' href='#groupchat'>"+obj[i].name+"</a>");
+                        addMarker(groupmap, lonlat[1], lonlat[0], str);
+                        console.log(lonlat);
+                    }
+                    $("#localgrouplist").listview("refresh");
+
+                });
+                // callback handler that will be called on failure
+                request.fail(function (jqXHR, textStatus, errorThrown){
+                    alert("Error!");
+                    // log the error to the console
+                    console.error(
+                        "The following error occured: "+
+                        textStatus, errorThrown
+                    );
+                });
+            }
     });
 
 
