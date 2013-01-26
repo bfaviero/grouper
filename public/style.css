@@ -106,3 +106,10 @@ h3 {
   #messagesdiv {
     overflow-y:auto;
   }
+  #messages {
+      padding-top:100%;
+  }
+  .messageimg {
+      width: 100%;
+      display: block;
+  }
