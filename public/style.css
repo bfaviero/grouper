@@ -103,10 +103,10 @@ h3 {
   color:#000000;
   }
 
-  #messagesdiv {
+  .messagesdiv {
     overflow-y:auto;
   }
-  #messages {
+  .messagesdiv ul {
       padding-top:100%;
   }
   .messageimg {

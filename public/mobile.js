@@ -39,7 +39,7 @@ var addMarker = function(map, lat, lon, html) {
     addMarkerIcon(icon, map, lat, lon, html);
 }
 var rsz = function() {
-    $('#messagesdiv').height($(window).height()*.7+"px");
+    $('.messagesdiv').height($(window).height()*.7+"px");
     $("#peermapcanvas").width($(window).width()*.9+"px");
     $("#peermapcanvas").height($(window).height()*.4+"px");
     $("#groupmapcanvas").width($(window).width()*.9+"px");
@@ -436,7 +436,8 @@ $(function() {
             }
         });
         socket.on('message', function(data) {
-            console.log("message");
+            console.log("messaging");
+            console.log(data);
             var d = new Date(data.date);
             var ampm = d.getHours() >=12 ? "pm" : "am";
             var seconds=d.getSeconds()<10?"0"+d.getSeconds():d.getSeconds();
@@ -462,11 +463,11 @@ $(function() {
 
             if (body.length)
             {
-                $("#messages").append(
+                $(".messagesdiv ul").append(
                     "<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'><p style='display:inline; margin:0px;' id='nameinchat' >"+data.username+":&nbsp;</p><span style='margin:0px; display:block; float:right; position:relative;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+" "+ampm+"</span><p style='font-weight:normal; margin:0px; ' id='chatinchat'> "+body+"</p> </div><div style='clear:both;'></div></li>"
                 );
             }
-            $("#messagesdiv").animate({scrollTop:$("#messagesdiv").prop("scrollHeight")}, 500);
+            $(".messagesdiv").animate({scrollTop:$(".messagesdiv").prop("scrollHeight")}, 500);
         });
         socket.on('messageresponse', function(data) {
             if (!data.success) {
