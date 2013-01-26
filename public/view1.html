@@ -219,7 +219,7 @@
             </div>
 
         <div data-role="page" id="groupchat" >
-            <div data-theme="d" data-role="header">
+            <div data-theme="d" data-role="header" class="header">
                 <a href="#" class = 'homebtn' data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-notext ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Home"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-home ui-icon-shadow">&nbsp;</span></span></a>
                 <a href="#" data-iconpos="notext" data-rel="dialog" data-transition="fade" class="ui-btn-right ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-notext ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Search"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Search</span><span class="ui-icon ui-icon-gear ui-icon-shadow"></span></span></a>
                 <h3>
@@ -237,12 +237,6 @@
                     </ul>
             </div>
             <div data-role="content">
-                <form data-ajax="false" id="send">
-                    <input name="" id="body" data-mini="true" data-icon="gear" data-iconpos="left" placeholder="type..." value="" type="text" />
-                     <div style="width:75%; float:left;" data-inline="true" ><input data-inline="true" data-mini="true" id = "picinput" type="file" name="image" accept="image/*" capture></div>
-                     <div style="float:left; width:5%;" data-inline="true" ><input type="submit" data-mini="true" value="Upload" class="sqnav" data-role="button" data-inline="true"></div>
-                     <div style="clear:both;"></div>
-                </form>
 
                 <!--<form action="server.cgi" method="post" enctype="multipart/form-data">
                   <input type="file" name="image" accept="image/*" capture>
@@ -252,8 +246,16 @@
 
 
                
-                <ul id="messages" data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow">
-                </ul>
+                <div id="messagesdiv"><ul id="messages" data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow">
+                </ul></div>
+            </div>
+            <div data-theme="d" data-role="footer" class="footer">
+                <form data-ajax="false" id="send">
+                    <input name="" id="body" data-mini="true" data-icon="gear" data-iconpos="left" placeholder="type..." value="" type="text" />
+                     <div style="width:75%; float:left;" data-inline="true" ><input data-inline="true" data-mini="true" id = "picinput" type="file" name="image" accept="image/*" capture></div>
+                     <div style="float:left; width:5%;" data-inline="true" ><input type="submit" data-mini="true" value="Upload" class="sqnav" data-role="button" data-inline="true"></div>
+                     <div style="clear:both;"></div>
+                </form>
             </div>
         </div>
 

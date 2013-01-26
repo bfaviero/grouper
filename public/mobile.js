@@ -146,7 +146,7 @@ $(function() {
 
     var plotmap = function() {
         var icon = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/micons/blue.png", new google.maps.Size(64, 32), new google.maps.Point(0, 0), new google.maps.Point(16, 32));
-        
+
         var customMarker = new google.maps.Marker({
             position: new google.maps.LatLng(latitude, longitude),
             map: groupmap,
@@ -189,8 +189,8 @@ $(function() {
 
 
 
-
     $(document).on('ready', function(event) {
+        $.mobile.touchOverflowEnabled = true;
         if ($.cookie("username")) {
         $("#username").attr('value',$.cookie("username"));  
         
@@ -202,6 +202,7 @@ $(function() {
         
             
     });
+
 
 
 
@@ -422,8 +423,9 @@ $(function() {
             var ampm = d.getHours() >=12 ? "pm" : "am";
             var seconds=d.getSeconds()<10?"0"+d.getSeconds():d.getSeconds();
             var minutes=d.getMinutes()<10?"0"+d.getMinutes():d.getMinutes();
-
+            $('#messagesdiv').scrollTop($('#messagesdiv').scrollHeight);
             $("#messages").prepend(
+
                 //"<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'><p style='float:left;'>"+data.username+":&nbsp;</p><p style='font-weight:normal'> "+data.body+"</p> <span class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+" "+ampm+"</span></li>"
                 //"<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'><div class='ui-grid-a'><div class='ui-block-a'>"+data.username+": "+data.body+"</div><div class='ui-block-b'></div>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+" "+ampm+"</div><span class='ui-li-count ui-btn-up-c ui-btn-corner-all'></span></li>" 
             //"<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'><table data-role='table' data-mode='reflow' class='ui-responsive table-stroke ui-table ui-table-reflow'><tbody><tr><td valign='top'><p style='margin: 0px; padding: 0px;'>name</p> <p style='font-weight: 200; font-size: 12px; margin: 0px; padding: 0px;'>"+((d.getHours()+12)%12)+":"+minutes+"</p></td><td style='font-weight: normal;'>content</td></tr></li>"

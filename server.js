@@ -55,7 +55,7 @@ io.sockets.on('connection', function(socket) {
                     socket.join(data.group);
                     retval = socket.id
                     
-                    message.body = "sup niggas";
+                    message.body = message.user + " has joined this chat.";
                     message.type = 'text';
 
                     io.sockets.in(user.group).emit('message', message.toJSON());

@@ -63,6 +63,13 @@ h3 {
 	top:0%;
 	z-index:2;
 }
+.footer {
+  position:fixed;
+  width:100%;
+  bottom:0%;
+  z-index:2;
+  margin:0;
+}
 
 #groupmapcanvas, #peermapcanvas {
     margin-bottom: 40px;
