@@ -435,7 +435,7 @@ $(function() {
             if (data.id < 0) {
                 alert("Error connecting. Refresh and try again");
             } else {
-                $("#groupchat div h3").text("Connected: "+title);
+                $("#groupchat div h3").text(title);
             }
         });
         socket.on('message', function(data) {
