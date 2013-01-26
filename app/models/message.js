@@ -8,7 +8,7 @@ var MessageSchema = new Schema({
     body: {type: String, required: true},
     type: {type: String, enum: ['text','image'], required: true},
     loc: {type: [Number], index: '2d'},
-    date: {type: Date, default: Date.now, required: true}
+    socketid: {type: String}
 });
 
 module.exports = mongoose.model('Message', MessageSchema);
