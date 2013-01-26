@@ -16,6 +16,10 @@ exports.create = function(req, res) {
         group.name = req.body.name;
         group.loc = [Number(req.body.lon), Number(req.body.lat)];
         var bad = false;
+        if (req.body.radius)
+        {
+            group.radius = Number(req.body.radius);
+        }
         if (req.body.email && req.body.email.length && req.body.token && req.body.token.length) {
             middleware.auth(req, res, function(success, doc) {
                 if (success) {
