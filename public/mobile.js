@@ -1,5 +1,5 @@
 var socket;
-var groupid, username;
+var username;
 var latitude, longitude, havegeo;
 
 var groupmap, peermap, person, curPop;
@@ -39,7 +39,6 @@ var addMarker = function(map, lat, lon, html) {
     addMarkerIcon(icon, map, lat, lon, html);
 }
 var rsz = function() {
-    $('.messagesdiv').height($(window).height()*.7+"px");
     $("#peermapcanvas").width($(window).width()*.9+"px");
     $("#peermapcanvas").height($(window).height()*.4+"px");
     $("#groupmapcanvas").width($(window).width()*.9+"px");
@@ -286,10 +285,10 @@ $(function() {
             reader.onloadend = function() {
                 var result = this.result
                 if (updateGeo()) {
-                    socket.emit('message', {group: groupid, name: username, body: ($("#body").val()+"|"+result), type: 'image', lat: latitude, lon: longitude});
+                    socket.emit('message', {group: $("#selectedmessage ul").attr("id"), name: username, body: ($("#body").val()+"|"+result), type: 'image', lat: latitude, lon: longitude});
                 }
                 else {
-                    socket.emit('message', {group: groupid, name: username, body: $("#body").val()+"|"+result, type: 'image'});
+                    socket.emit('message', {group: $("#selectedmessage ul").attr("id"), name: username, body: $("#body").val()+"|"+result, type: 'image'});
                 }
                 $("#body").val("");
                 var file = $('#picinput').val("");
@@ -298,10 +297,10 @@ $(function() {
         }
         else {
             if (updateGeo()) {
-                socket.emit('message', {group: groupid, name: username, body: $("#body").val(), type: 'text', lat: latitude, lon: longitude});
+                socket.emit('message', {group: $("#selectedmessage ul").attr("id"), name: username, body: $("#body").val(), type: 'text', lat: latitude, lon: longitude});
             }
             else {
-                socket.emit('message', {group: groupid, name: username, body: $("#body").val(), type: 'text'});
+                socket.emit('message', {group: $("#selectedmessage ul").attr("id"), name: username, body: $("#body").val(), type: 'text'});
             }
             $("#body").val("");
         }
@@ -405,11 +404,15 @@ $(function() {
         
 
         e.preventDefault();
-        groupid = $(this).attr('groupid');
+        var groupid = $(this).attr('groupid');
         var title = $(this).text();
         var pinned = $(this).attr('pinned');
         socket = io.connect("http://talkgrouper.com");
         socket.on('connect', function() {
+            $(".messagesdiv").hide();
+            $("#selectedmessage").attr("id","");
+            $("#messageswrapperdiv").append('<div class="messagesdiv" id="selectedmessage" style="height:100px;"><ul id="'+groupid+'"data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow"></ul></div>');
+            $('#selectedmessage').height($(window).height()*.7+"px");
             username = $("#username").val();
             var obj={group: groupid, name: username};
             console.log("pinned?");
@@ -432,7 +435,7 @@ $(function() {
             if (data.id < 0) {
                 alert("Error connecting. Refresh and try again");
             } else {
-                $(".chattitle").text("Connected: "+title);
+                $("#groupchat div h3").text("Connected: "+title);
             }
         });
         socket.on('message', function(data) {
@@ -463,11 +466,11 @@ $(function() {
 
             if (body.length)
             {
-                $(".messagesdiv ul").append(
+                $("#"+data._group).append(
                     "<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'><p style='display:inline; margin:0px;' id='nameinchat' >"+data.username+":&nbsp;</p><span style='margin:0px; display:block; float:right; position:relative;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+" "+ampm+"</span><p style='font-weight:normal; margin:0px; ' id='chatinchat'> "+body+"</p> </div><div style='clear:both;'></div></li>"
                 );
             }
-            $(".messagesdiv").animate({scrollTop:$(".messagesdiv").prop("scrollHeight")}, 500);
+            $("#selectedmessage").animate({scrollTop:$("#selectedmessage").prop("scrollHeight")}, 200);
         });
         socket.on('messageresponse', function(data) {
             if (!data.success) {

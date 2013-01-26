@@ -108,6 +108,7 @@ h3 {
   }
   .messagesdiv ul {
       padding-top:100%;
+      padding-left: 0px;
   }
   .messageimg {
       width: 100%;
