@@ -230,6 +230,7 @@ $(function() {
                 var obj = jQuery.parseJSON(response);
                 $.cookie("email", obj.email);
                 $.cookie("token", obj.token);
+                window.location="/";
             });
             // callback handler that will be called on failure
             request.fail(function (jqXHR, textStatus, errorThrown){
