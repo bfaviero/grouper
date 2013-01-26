@@ -266,10 +266,12 @@ $(function() {
         return false;
     });
 
+   
+
     $("#send").submit(function(e) {
-        alert("submitted");
         e.preventDefault();
-        console.log("sending");
+        console.log("sendinggg");
+        var imgpath = $('#picinput').val();
         if (updateGeo()) {
             socket.emit('message', {group: groupid, name: username, body: $("#body").val(), type: 'text', lat: latitude, lon: longitude});
         }
