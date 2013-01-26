@@ -401,9 +401,6 @@ $(function() {
             if (data.id < 0) {
                 alert("Error connecting. Refresh and try again");
             } else {
-                console.log("hi there");
-                console.log("hi there");
-                console.log(title);
                 $(".chattitle").text("Connected: "+title);
             }
         });
