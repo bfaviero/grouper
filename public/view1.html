@@ -237,10 +237,11 @@
                     </ul>
             </div>
             <div data-role="content">
-                <form id="send">
-                    <input name="" id="body" data-icon="gear" data-iconpos="left" placeholder="type..." value="" type="text" />
-                     <input data-inline="true" id = "picinput" type="file" name="image" accept="image/*" capture>
-                     <input type="submit" value="Upload" data-role="button" data-inline="true">
+                <form data-ajax="false" id="send">
+                    <input name="" id="body" data-mini="true" data-icon="gear" data-iconpos="left" placeholder="type..." value="" type="text" />
+                     <div style="width:95%; float:left;" data-inline="true" ><input data-inline="true" data-mini="true" id = "picinput" type="file" name="image" accept="image/*" capture></div>
+                     <div style="float:right; width:5%;" data-inline="true" ><input type="submit" data-mini="true" value="Upload" class="sqnav" data-role="button" data-inline="true"></div>
+                     <div style="clear:both;"></div>
                 </form>
 
                 <!--<form action="server.cgi" method="post" enctype="multipart/form-data">
