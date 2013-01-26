@@ -68,7 +68,7 @@ h3 {
   width:100%;
   bottom:0%;
   z-index:2;
-  margin:0;
+  margin-bottom: -5;
 }
 
 #groupmapcanvas, #peermapcanvas {

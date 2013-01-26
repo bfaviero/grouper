@@ -20,9 +20,9 @@
         
     </head>
     <body>
-   		<div data-role="page" data-theme="c" id="page1">
+        <div data-role="page" data-theme="c" id="page1">
 
-        	<div data-theme="d" data-role="header" class="header" data-tap-toggle="false">
+            <div data-theme="d" data-role="header" class="header" data-tap-toggle="false">
                 <a id="loginbtn" href="#loginpopup" class='sqnav' data-rel="popup" class = 'addbtn' data-icon="gear" style="color:black;text-decoration:none;"  data-direction="reverse" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all  ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Login">Login</a>
 
                 <div data-position-to="window" data-role="popup" id="loginpopup" data-theme="a" data-overlay-theme="a" style="padding: 5px; float:center; opacity:0.95;">
@@ -222,21 +222,22 @@
 
         <div data-role="page" id="groupchat" >
             <div data-theme="d" data-role="header" class="header">
+
+
                 <a href="#" class = 'homebtn' data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-notext ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Home"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-home ui-icon-shadow">&nbsp;</span></span></a>
-                <a href="#" data-iconpos="notext" data-rel="dialog" data-transition="fade" class="ui-btn-right ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-notext ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Search"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Search</span><span class="ui-icon ui-icon-gear ui-icon-shadow"></span></span></a>
+                
+
+              
+
+
+                <a href="#showpeers" class = 'sqnav' data-icon="forward" style="color:black;text-decoration:none;"  data-direction="reverse" class="ui-btn-right ui-btn ui-shadow ui-btn-corner-all  ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" data-iconpos="right" data-transition="fade" title="Map">Map</a>
+
+
                 <h3>
                     Grouper
                 </h3>
                 
             
-            </div>
-            <div data-role="navbar">
-                    <ul>
-                        <li>
-                            <a class="chattitle" id="chattitle" href="#showpeers" data-transition="flip" data-theme="" >
-                            </a>
-                        </li>
-                    </ul>
             </div>
             <div data-role="content">
 
@@ -264,18 +265,11 @@
         <div data-role="page" id="showpeers" >
             <div data-theme="d" data-role="header">
                 <a href="#" class = 'homebtn' data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-notext ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Home"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-home ui-icon-shadow">&nbsp;</span></span></a>
-                <a href="#" data-iconpos="notext" data-rel="dialog" data-transition="fade" class="ui-btn-right ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-notext ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Search"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Search</span><span class="ui-icon ui-icon-gear ui-icon-shadow"></span></span></a>
+                <a href="#groupchat" class = 'sqnav' data-transition="fade" data-icon="forward" style="color:black;text-decoration:none;"  data-direction="reverse" class="ui-btn-right ui-btn ui-shadow ui-btn-corner-all  ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" data-iconpos="right"  title="Map">Chat</a>
                 <h3>
                     Grouper
                 </h3>
-                <div data-role="navbar">
-                    <ul>
-                        <li>
-                            <a class="chattitle" id="chattitle" href="#groupchat" data-transition="flip" data-theme="" >
-                            </a>
-                        </li>
-                    </ul>
-            </div>
+                
             
             </div>
 
