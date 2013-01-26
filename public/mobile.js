@@ -145,8 +145,15 @@ $(function() {
 
 
     var plotmap = function() {
-        addMarkerIcon(icon, groupmap, latitude, longitude, "<div>My Location</div>", true);
-        var icon = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/micons/yen.png", new google.maps.Size(64, 32), new google.maps.Point(0, 0), new google.maps.Point(16, 32));
+        var icon = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/micons/blue.png", new google.maps.Size(64, 32), new google.maps.Point(0, 0), new google.maps.Point(16, 32));
+
+        var customMarker = new google.maps.Marker({
+            position: new google.maps.LatLng(latitude, longitude),
+            map: groupmap,
+            title:"My Location",
+            icon: icon
+         });
+
         var request = $.ajax({url: "/search", type: "post", data: "lat="+latitude+"&lon="+longitude});
         request.done(function (response, textStatus, jqXHR){
             console.log(response);
