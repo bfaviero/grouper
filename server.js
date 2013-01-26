@@ -31,17 +31,22 @@ io.sockets.on('connection', function(socket) {
         Group.findOne({_id: data.group}, function(err, doc) {
             if (!err && doc) {
                 if (!(doc.pin && doc.pin.length) || (data.pin && doc.pin === data.pin)) {
+                    var message = new Message();
                     user.group = data.group;
+                    message._group = user.group;
                     user.name = data.name;
-                    user.lasttime = new Date(Date.now);
+                    message.username = user.name;
+                    user.lasttime = new Date(Date.now());
                     if (data.lat && data.lon) {
                         user.loc = [data.lon, data.lat];
+                        message.loc = [Number(data.lon), Number(data.lat)];
                     }
                     if (data.user && data.token) {
                         middleware.auth(req, res, function(success, doc) {
                             if (success)
                             {
                                 user.userid = doc._id;
+                                message._user = user.userid;
                             }
                         });
                     }
@@ -49,6 +54,11 @@ io.sockets.on('connection', function(socket) {
                     clients[socket.id] = user;
                     socket.join(data.group);
                     retval = socket.id
+                    
+                    message.body = "sup niggas";
+                    message.type = 'text';
+
+                    io.sockets.in(doc).emit('message', message.toJSON());
                 }
                 else {
                     console.log(data);
