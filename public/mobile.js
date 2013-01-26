@@ -165,8 +165,8 @@ $(function() {
                 if (obj[i].pinned) {
                     icon = "<img src='http://a.dryicons.com/images/icon_sets/stickers_icon_set/png/128x128/lock.png' class='ui-li-icon ui-li-thumb'>"
                 }
-                var str="<a style='opacity:.9;' class='groupchatconnect' id='groupchatconnect' pinned="+obj[i].pinned+" groupid='"+obj[i]._id+"' href='#groupchat'>"+icon+" "+obj[i].name+"</a>";
-                $("#localgrouplist").append("<li style='opacity:1;'>"+str+"</li>");
+                var str="<a style='opacity:.9;' class='groupchatconnect' id='groupchatconnect' pinned="+obj[i].pinned+" groupid='"+obj[i]._id+"' href='#groupchat'>"+icon+" "+obj[i].name+"</a><span style='margin:0px; display:block; float:right; position:relative;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+obj[i].dist+"</span>";
+                $("#localgrouplist").append("<li style='opacity:1;' ui-li-has-count>"+str+"</li>");
                 var lonlat=obj[i].loc;
                 //addMarker(groupmap, lonlat[1], lonlat[0], "<div>Lat: "+lonlat[1]+"</div><div>Lon: "+lonlat[0]+"</div>"+"<a id='groupchatconnect' groupid='"+obj[i]._id+"' href='#groupchat'>"+obj[i].name+"</a>");
                 addMarker(groupmap, lonlat[1], lonlat[0], str);
