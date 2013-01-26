@@ -222,8 +222,9 @@ $(function() {
         });
     });
     $("#registerbutton").click(function(e) {
-        if ($("#registerpassword").val() === $("#registerpassword2").val()) {
-            var request = $.ajax({url: "/register", type: "post", data: "email="+$("#registeremail").val()+"&password="+$("#registerpassword").val()});
+        //if ($("#registerpassword").val() === $("#registerpassword2").val()) {
+        if (true) {
+            var request = $.ajax({url: "/register", type: "post", data: "email="+$("#loginemail").val()+"&password="+$("#loginpassword").val()});
             request.done(function (response, textStatus, jqXHR){
                 console.log(response);
                 var obj = jQuery.parseJSON(response);
