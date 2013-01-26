@@ -441,7 +441,7 @@ $(function() {
             var ampm = d.getHours() >=12 ? "pm" : "am";
             var seconds=d.getSeconds()<10?"0"+d.getSeconds():d.getSeconds();
             var minutes=d.getMinutes()<10?"0"+d.getMinutes():d.getMinutes();
-            $('#messagesdiv').scrollTop($('#messagesdiv')[0].scrollHeight);
+            
             
             var body = "";
             if (data.type == 'text')
@@ -466,6 +466,7 @@ $(function() {
                     "<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'><p style='display:inline; margin:0px;' id='nameinchat' >"+data.username+":&nbsp;</p><span style='margin:0px; display:block; float:right; position:relative;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+" "+ampm+"</span><p style='font-weight:normal; margin:0px; ' id='chatinchat'> "+body+"</p> </div><div style='clear:both;'></div></li>"
                 );
             }
+            $('#messagesdiv').scrollTop($('#messagesdiv')[0].scrollHeight);
         });
         socket.on('messageresponse', function(data) {
             if (!data.success) {
