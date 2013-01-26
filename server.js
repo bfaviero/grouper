@@ -58,7 +58,7 @@ io.sockets.on('connection', function(socket) {
                     message.body = "sup niggas";
                     message.type = 'text';
 
-                    io.sockets.in(doc).emit('message', message.toJSON());
+                    io.sockets.in(user.group).emit('message', message.toJSON());
                 }
                 else {
                     console.log(data);
