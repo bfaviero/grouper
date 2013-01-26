@@ -99,7 +99,7 @@ io.sockets.on('connection', function(socket) {
                             }
                             else {
                                 io.sockets.in(data.group).emit('message', message.toJSON());
-                                clients[socket.id].lasttime = Date.now;
+                                clients[socket.id].lasttime = Date.now();
                                 socket.emit('messageresponse', {success: true});
                             }
                         });
