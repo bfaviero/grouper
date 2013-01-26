@@ -35,7 +35,7 @@ io.sockets.on('connection', function(socket) {
                     user.group = data.group;
                     message._group = user.group;
                     user.name = data.name;
-                    message.username = user.name;
+                    message.username = user.name
                     user.lasttime = new Date(Date.now());
                     if (data.lat && data.lon) {
                         user.loc = [data.lon, data.lat];
@@ -55,8 +55,10 @@ io.sockets.on('connection', function(socket) {
                     socket.join(data.group);
                     retval = socket.id
                     
-                    message.body = message.username + " has joined this chat.";
+                    message.body = user.name + " has joined this chat.";
                     message.type = 'text';
+                    console.log("message");
+                    console.log(message.toJSON());
 
                     io.sockets.in(user.group).emit('message', message.toJSON());
                 }
