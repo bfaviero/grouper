@@ -273,19 +273,37 @@ $(function() {
         return false;
     });
 
-   
 
     $("#send").submit(function(e) {
         e.preventDefault();
         console.log("sendinggg");
-        var imgpath = $('#picinput').val();
-        if (updateGeo()) {
-            socket.emit('message', {group: groupid, name: username, body: $("#body").val(), type: 'text', lat: latitude, lon: longitude});
+        var file = $('#picinput')[0].files[0];
+        console.log($("#body").val());
+        if (file)
+        {
+            var reader = new FileReader();
+            reader.onloadend = function() {
+                var result = this.result
+                if (updateGeo()) {
+                    socket.emit('message', {group: groupid, name: username, body: ($("#body").val()+"|"+result), type: 'image', lat: latitude, lon: longitude});
+                }
+                else {
+                    socket.emit('message', {group: groupid, name: username, body: $("#body").val()+"|"+result, type: 'image'});
+                }
+                $("#body").val("");
+                var file = $('#picinput').val("");
+            }
+            reader.readAsDataURL(file);
         }
         else {
-            socket.emit('message', {group: groupid, name: username, body: $("#body").val(), type: 'text'});
+            if (updateGeo()) {
+                socket.emit('message', {group: groupid, name: username, body: $("#body").val(), type: 'text', lat: latitude, lon: longitude});
+            }
+            else {
+                socket.emit('message', {group: groupid, name: username, body: $("#body").val(), type: 'text'});
+            }
+            $("#body").val("");
         }
-        $("#body").val("");
         return false;
     });
 
@@ -422,16 +440,29 @@ $(function() {
             var ampm = d.getHours() >=12 ? "pm" : "am";
             var seconds=d.getSeconds()<10?"0"+d.getSeconds():d.getSeconds();
             var minutes=d.getMinutes()<10?"0"+d.getMinutes():d.getMinutes();
+            var body = "";
+            if (data.type == 'text')
+            {
+                body = data.body;
+            }
+            else if (data.type == 'image')
+            {
+                console.log(data.body);
+                var elems = data.body.split("|");
+                console.log(elems);
+                body = "<img class='messageimg' src='"+elems[1]+"' /><br />"+elems[0];
+            }
+            else
+            {
+                alert("Invalid data type " + data.type);
+            }
 
-            $("#messages").prepend(
-                //"<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'><p style='float:left;'>"+data.username+":&nbsp;</p><p style='font-weight:normal'> "+data.body+"</p> <span class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+" "+ampm+"</span></li>"
-                //"<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'><div class='ui-grid-a'><div class='ui-block-a'>"+data.username+": "+data.body+"</div><div class='ui-block-b'></div>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+" "+ampm+"</div><span class='ui-li-count ui-btn-up-c ui-btn-corner-all'></span></li>" 
-            //"<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'><table data-role='table' data-mode='reflow' class='ui-responsive table-stroke ui-table ui-table-reflow'><tbody><tr><td valign='top'><p style='margin: 0px; padding: 0px;'>name</p> <p style='font-weight: 200; font-size: 12px; margin: 0px; padding: 0px;'>"+((d.getHours()+12)%12)+":"+minutes+"</p></td><td style='font-weight: normal;'>content</td></tr></li>"
-        //"<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'><table data-role='table' data-mode='reflow' class='ui-responsive table-stroke ui-table ui-table-reflow'><thead style='visibility:hidden;'><tr style='visibility:hidden; padding:0px; margin:0px;'><th style='width:20%;'></th><th style='width:80%;'></th></tr></thead><tbody><tr><td valign='top'><p style='margin: 0px; font-size=10; padding: 0px;'><strong>"+data.username+"</strong></p> <p style='font-weight: 200; font-size: 12px; margin: 0px; padding: 0px; line-height: 1.5;'>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+"</p></td><td style='text-align:left; font-weight: normal;''>"+data.body+"</td></tr></tbody></table></li>"
-        //"<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'><p style='display:inline; position:relative; float:left; margin:0px;' id='nameinchat' >"+data.username+":&nbsp;</p><span style='margin:0px; display:inline; float:right; position:relative;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+" "+ampm+"</span><p style='font-weight:normal; margin:0px; display:inline; position:relative; float:left;' id='chatinchat'> "+data.body+"</p> </div><div style='clear:both;'></div></li>"
-        "<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'><p style='display:inline; margin:0px;' id='nameinchat' >"+data.username+":&nbsp;</p><span style='margin:0px; display:block; float:right; position:relative;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+" "+ampm+"</span><p style='font-weight:normal; margin:0px; ' id='chatinchat'> "+data.body+"</p> </div><div style='clear:both;'></div></li>"
-
-        );
+            if (body.length)
+            {
+                $("#messages").prepend(
+                    "<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'><p style='display:inline; margin:0px;' id='nameinchat' >"+data.username+":&nbsp;</p><span style='margin:0px; display:block; float:right; position:relative;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+" "+ampm+"</span><p style='font-weight:normal; margin:0px; ' id='chatinchat'> "+body+"</p> </div><div style='clear:both;'></div></li>"
+                );
+            }
         });
         socket.on('messageresponse', function(data) {
             if (!data.success) {
