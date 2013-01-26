@@ -453,7 +453,7 @@ $(function() {
                 console.log(data.body);
                 var elems = data.body.split("|");
                 console.log(elems);
-                body = "<img class='messageimg' src='"+elems[1]+"' /><br />"+elems[0];
+                body = "<div class='picwrapper'><img class='messageimg' src='"+elems[1]+"' /></div>"+elems[0];
             }
             else
             {

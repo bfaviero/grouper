@@ -109,3 +109,7 @@ h3 {
   #messages {
       padding-top:100%;
   }
+  .messageimg {
+      width: 100%;
+      display: block;
+  }
