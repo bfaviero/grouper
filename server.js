@@ -128,7 +128,7 @@ io.sockets.on('connection', function(socket) {
     socket.on('request', function(data) {
         console.log("YAY REQUEST");
         console.log(data);
-        var to = io.sockets.sockdts[data.to];
+        var to = io.sockets.sockets[data.to];
         var room = socket.id+"|"+data.to;
         socket.join(room);
         to.join(room);
