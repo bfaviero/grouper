@@ -141,6 +141,7 @@ $(function() {
         window.location = 'http://talkgrouper.com';
     });
 
+
     var plotmap = function() {
         addMarkerIcon(icon, groupmap, latitude, longitude, "<div>My Location</div>", true);
         var icon = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/micons/yen.png", new google.maps.Size(64, 32), new google.maps.Point(0, 0), new google.maps.Point(16, 32));

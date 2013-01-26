@@ -218,39 +218,6 @@
             </div>
             </div>
 
-
-            <!-- <div data-role="page" id="groupmap" >
-            <div data-theme="d" data-role="header">
-                <a href="#" class = 'homebtn' data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-notext ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Home"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-home ui-icon-shadow">&nbsp;</span></span></a>
-                <a href="#" data-iconpos="notext" data-rel="dialog" data-transition="fade" class="ui-btn-right ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-notext ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Search"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Search</span><span class="ui-icon ui-icon-gear ui-icon-shadow"></span></span></a>
-                <h3>
-                    Grouper
-                </h3>
-
-                
-            
-            </div>
-            <div data-role="content">
-                <a data-role="button" data-inline="true" data-theme="b" href="#groupchat" data-icon="gear" data-iconpos="left">
-                </a>
-                <div data-role="fieldcontain">
-                    <fieldset data-role="controlgroup">
-                        <label for="toggleswitch1">
-                            Broadcast Location:
-                        </label>
-                        <select name="toggleswitch1" id="toggleswitch1" data-theme="b" data-role="slider" data-mini="true">
-                            <option value="off">
-                                Off
-                            </option>
-                            <option value="on">
-                                On
-                            </option>
-                        </select>
-                    </fieldset>
-                </div>
-            </div>
-        </div> -->
-
         <div data-role="page" id="groupchat" >
             <div data-theme="d" data-role="header">
                 <a href="#" class = 'homebtn' data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-notext ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Home"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-home ui-icon-shadow">&nbsp;</span></span></a>
@@ -272,7 +239,17 @@
             <div data-role="content">
                 <form id="send">
                     <input name="" id="body" data-icon="gear" data-iconpos="left" placeholder="type..." value="" type="text" />
+                     <input data-inline="true" id = "picinput" type="file" name="image" accept="image/*" capture>
+                     <input type="submit" value="Upload" data-role="button" data-inline="true">
                 </form>
+
+                <!--<form action="server.cgi" method="post" enctype="multipart/form-data">
+                  <input type="file" name="image" accept="image/*" capture>
+                  <input type="submit" value="Upload PHOTO">
+                </form>-->
+
+
+
                
                 <ul id="messages" data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow">
                 </ul>
