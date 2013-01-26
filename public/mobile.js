@@ -146,7 +146,7 @@ $(function() {
 
     var plotmap = function() {
         var icon = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/micons/blue.png", new google.maps.Size(64, 32), new google.maps.Point(0, 0), new google.maps.Point(16, 32));
-
+        
         var customMarker = new google.maps.Marker({
             position: new google.maps.LatLng(latitude, longitude),
             map: groupmap,
