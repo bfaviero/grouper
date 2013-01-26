@@ -90,8 +90,7 @@ exports.search = function(req, res) {
         }
         else
         {
-            var out = "[";
-            var first = true;
+            var arrs = []
             for(var i=0;i<docs.length;i++)
             {
             console.log(docs[i]);
@@ -102,16 +101,10 @@ exports.search = function(req, res) {
                 console.log(dist);
                 if (dist <= docs[i].radius)
                 {
-                    out += docs[i].distjson(dist);
-                    if (first)
-                    {
-                        out += ", ";
-                        first = false;
-                    }
+                    arrs.push(docs[i].distjson(dist));
                 }
             }
-            out += "]";
-            res.send(out);
+            res.send("["+arrs.join(",")+"]");
         }
     };
     if (req.body.user) {
