@@ -40,14 +40,17 @@ exports.post = function(req, res) {
           req.body.username.length && req.body.body && req.body.body.length &&
           req.body.type && req.body.type.length &&
           Message.schema.path('type').enumValues.indexOf(req.body.type) >= 0)) {
+        console.log('awwman');
         res.send(400);
     }
     else {
         Group.findOne({_id: req.body.group}, function(err, doc) {
             if (err) {
+                console.log("ohno");
                 res.send(500);
             }
             else if (!doc) {
+                console.log("asdf");
                 res.send(400);
             }
             else {
@@ -67,6 +70,7 @@ exports.post = function(req, res) {
                         }
                         else {
                             bad = true;
+                            console.log("poop");
                             res.send(400);
                         }
                     });
@@ -80,7 +84,7 @@ exports.post = function(req, res) {
                         }
                         else {
                             console.log(message);
-                            doc.lastused = Date.now;
+                            doc.lastused = Date.now();
                             doc.save(function(err) {
                                 if (err) {
                                     console.log(err);
