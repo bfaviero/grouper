@@ -1,7 +1,8 @@
 var mongoose = require('mongoose')
 , Group = mongoose.model('Group')
 , middleware = require('../../config/middleware')
-, PAGE_SIZE=20;
+, PAGE_SIZE=20
+, MAX_RADIUS=5.0/69.0;
 
 exports.create = function(req, res) {
     console.log(req.body);
@@ -77,6 +78,38 @@ exports.search = function(req, res) {
             res.send(400);
         }
     };
+    var callcallback = function(err, docs) {
+        console.log(docs);
+        if (err)
+        {
+            res.send(500);
+        }
+        else
+        {
+            var out = "[";
+            var first = true;
+            for(var i=0;i<docs.length;i++)
+            {
+            console.log(docs[i]);
+                var latlon = docs[i].loc;
+                console.log(req.body.lon);
+                console.log(req.body.lat);
+                var dist = Math.sqrt(Math.pow((latlon[0] - Number(req.body.lon)),2) + Math.pow((latlon[1] - Number(req.body.lat)),2))*69.0;
+                console.log(dist);
+                if (dist <= docs[i].radius)
+                {
+                    out += docs[i].distjson(dist);
+                    if (first)
+                    {
+                        out += ", ";
+                        first = false;
+                    }
+                }
+            }
+            out += "]";
+            res.send(out);
+        }
+    };
     if (req.body.user) {
         Group.find({_user: req.body.id}, callback);
     }
@@ -89,7 +122,7 @@ exports.search = function(req, res) {
         if (req.body.name && req.body.name.length) {
             var term = req.body.name.toLowerCase()
             if (hasloc) {
-                Group.find({name: new RegExp(term), loc: { $near: [Number(req.body.lon), Number(req.body.lat)]}}).skip(start).limit(PAGE_SIZE).exec(callback);
+                Group.find({name: new RegExp(term), loc: { $near: [Number(req.body.lon), Number(req.body.lat)], $maxDistance: MAX_RADIUS}}, callcallback);
             }
             else {
                 //Group.find({name: /term/}).skip(start).limit(PAGE_SIZE).sort("-lastused").all(callback);
@@ -102,7 +135,7 @@ exports.search = function(req, res) {
             }
             else {
                 //Group.find({geoNear: "loc", near: [Number(req.body.lon), Number(req.body.lat)]}).skip(start).limit(PAGE_SIZE).exec(callback);
-                Group.find({"loc": {$near: [Number(req.body.lon), Number(req.body.lat)]}}).skip(start).limit(PAGE_SIZE).exec(callback);
+                Group.find({loc: { $near: [Number(req.body.lon), Number(req.body.lat)], $maxDistance: MAX_RADIUS}}, callcallback);
             }
         }
     }
