@@ -56,10 +56,7 @@ var rsz = function() {
     }
 }
 $(window).resize(rsz);
- $('#pagecreatebtn').click(function(e) {
-        alert("reg");
-        $('#creategrouppass').hide();
-    });
+ 
 
 $(function() {
     var updateGeo = function() {
@@ -92,7 +89,6 @@ $(function() {
         $.removeCookie("token");
     }
    
-    
     //alert(latitude);
     //alert(longitude);
     /*
