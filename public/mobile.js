@@ -441,7 +441,7 @@ $(function() {
             var ampm = d.getHours() >=12 ? "pm" : "am";
             var seconds=d.getSeconds()<10?"0"+d.getSeconds():d.getSeconds();
             var minutes=d.getMinutes()<10?"0"+d.getMinutes():d.getMinutes();
-            $('#messagesdiv').scrollTop($('#messagesdiv').scrollHeight);
+            $('#messagesdiv').scrollTop($('#messagesdiv')[0].scrollHeight);
             
             var body = "";
             if (data.type == 'text')
