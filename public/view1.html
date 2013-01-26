@@ -156,21 +156,19 @@
                         <legend >
                             Choose:
                         </legend>
-                        <input data-mini="true" data-theme="b" id="radio1" name="" value="private"  type="radio" checked="checked" />
+                        <input data-mini="true" data-theme="b" id="radio1" name="" value="private"  type="radio"  />
                         <label for="radio1">
                             Private
                         </label>
-                        <input  data-mini="true" data-theme="b" id="radio2" name="" value="public" type="radio" />
+                        <input  data-mini="true" data-theme="b" id="radio2" name="" value="public" type="radio" checked="checked" />
                         <label for="radio2">
                             Public
                         </label>
-                <div id="pin" data-role="fieldcontain">
-                    <fieldset data-role="controlgroup">
                         <label for="textinput5">
                         </label>
                         <input  id="creategrouppass" name="" placeholder="password... (if private)" value="" type="password" />
-                    </fieldset>
-                </div>
+                        <label for="rslider">Radius (in miles):</label>
+                        <input type="range" name="rslider" id="rslider" value=".25" min="0" max="5" step=".25"/>
                 <a  data-mini="true" data-theme="b" id="creategroup" data-role="button" href="#">Create</a>
             </div>
     </div>

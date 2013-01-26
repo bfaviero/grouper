@@ -186,8 +186,6 @@ $(function() {
 
     }
 
-
-
     $(document).on('ready', function(event) {
         $.mobile.touchOverflowEnabled = true;
         if ($.cookie("username")) {
@@ -202,8 +200,7 @@ $(function() {
             
     });
 
-
-
+    $('#radio1').live('change', function() { alert('wtf'); });
 
     $("#loginbutton").click(function(e) {
         var request = $.ajax({url: "/login", type: "post", data: "email="+$("#loginemail").val()+"&password="+$("#loginpassword").val()});
@@ -222,6 +219,7 @@ $(function() {
         });
     });
     $("#registerbutton").click(function(e) {
+        $('#creategrouppass').hide();
         //if ($("#registerpassword").val() === $("#registerpassword2").val()) {
         if (true) {
             var request = $.ajax({url: "/register", type: "post", data: "email="+$("#loginemail").val()+"&password="+$("#loginpassword").val()});
@@ -421,6 +419,9 @@ $(function() {
             if (pinned && pinned !== "false") {
                 console.log($(this).attr('pinned'));
                 var pinval = prompt("Enter the pin","");
+                if (!pinval) {
+                    window.location="/";
+                }
                 console.log(pinval);
                 obj.pin=pinval;
                 console.log(obj);
