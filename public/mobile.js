@@ -56,7 +56,10 @@ var rsz = function() {
     }
 }
 $(window).resize(rsz);
-
+ $('#pagecreatebtn').click(function(e) {
+        alert("reg");
+        $('#creategrouppass').hide();
+    });
 
 $(function() {
     var updateGeo = function() {
@@ -200,7 +203,7 @@ $(function() {
             
     });
 
-    $('#radio1').live('change', function() { alert('wtf'); });
+
 
     $("#loginbutton").click(function(e) {
         var request = $.ajax({url: "/login", type: "post", data: "email="+$("#loginemail").val()+"&password="+$("#loginpassword").val()});
@@ -219,7 +222,6 @@ $(function() {
         });
     });
     $("#registerbutton").click(function(e) {
-        $('#creategrouppass').hide();
         //if ($("#registerpassword").val() === $("#registerpassword2").val()) {
         if (true) {
             var request = $.ajax({url: "/register", type: "post", data: "email="+$("#loginemail").val()+"&password="+$("#loginpassword").val()});
@@ -313,6 +315,7 @@ $(function() {
         var icon = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/micons/purple.png", new google.maps.Size(64, 32), new google.maps.Point(0, 0), new google.maps.Point(16, 32));
         addMarkerIcon(icon, peermap, latitude, longitude, "<div>My Location</div>", true);
     });
+
     $("#pagecreate").on('click', function(e) {
         if (!updateGeo()) {
             alert("Geo location info needed to create a group. Try reloading the page");
@@ -386,13 +389,6 @@ $(function() {
     $(".gohome").on('click', function(e) {
         console.log('homing missile');
         location.href = '/';
-        return false;
-    });
-
-    $("#messageswrapperdiv").on('click', 'div ul li a.nameinchat',function(e) {
-        e.preventDefault();
-        alert("lulz");
-        socket.emit('request',{to: $(this).socketid});
         return false;
     });
 
@@ -476,19 +472,11 @@ $(function() {
 
             if (body.length)
             {
-                var taggedusername = (data.username === username) ? "<p style='display:inline; margin:0px;' id='nameinchat'>"+data.username+":&nbsp;</p>" : "<a style='display:inline; margin:0px;' class='nameinchat' data-rel='popup' socketid='"+data.socketid+"' href='#'>"+data.username+":&nbsp;</a>";
                 $("#"+data._group).append(
-                    "<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'>"+taggedusername+"<span style='margin:0px; display:block; float:right; position:relative;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+" "+ampm+"</span><p style='font-weight:normal; margin:0px; ' id='chatinchat'> "+body+"</p> </div><div style='clear:both;'></div></li>"
+                    "<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'><p style='display:inline; margin:0px;' id='nameinchat' >"+data.username+":&nbsp;</p><span style='margin:0px; display:block; float:right; position:relative;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+" "+ampm+"</span><p style='font-weight:normal; margin:0px; ' id='chatinchat'> "+body+"</p> </div><div style='clear:both;'></div></li>"
                 );
             }
             $("#selectedmessage").animate({scrollTop:$("#selectedmessage").prop("scrollHeight")}, 200);
-        });
-        socket.on('requestreply', function(data) {
-            console.log("REQUEST REPLY RECEIVED");
-            $(".messagesdiv").hide();
-            $("#selectedmessage").attr("id","");
-            $("#messageswrapperdiv").append('<div class="messagesdiv" id="selectedmessage" style="height:100px;"><ul id="'+data.name+'"data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow"></ul></div>');
-            $('#selectedmessage').height($(window).height()*.7+"px");
         });
         socket.on('messageresponse', function(data) {
             if (!data.success) {
