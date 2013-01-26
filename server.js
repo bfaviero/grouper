@@ -53,6 +53,7 @@ io.sockets.on('connection', function(socket) {
                     console.log(user);
                     clients[socket.id] = user;
                     socket.join(data.group);
+                    message.socketid = socket.id;
                     retval = socket.id
                     
                     message.body = user.name + " has joined this chat.";
@@ -89,6 +90,7 @@ io.sockets.on('connection', function(socket) {
                     message.username = data.name;
                     message.body = data.body;
                     message.type = data.type;
+                    message.socketid = socket.id;
                     if (data.lat && !isNaN(data.lat) && data.lon && !isNaN(data.lon)) {
                         message.loc = [Number(data.lon), Number(data.lat)];
                     }
@@ -122,6 +124,16 @@ io.sockets.on('connection', function(socket) {
                 }
             });
         }
+    });
+    socket.on('request', function(data) {
+        console.log("YAY REQUEST");
+        console.log(data);
+        var to = io.sockets.sockdts[data.to];
+        var room = socket.id+"|"+data.to;
+        socket.join(room);
+        to.join(room);
+        to.emit('requestreply', {room: room, name: clients[socket.id].name});
+        socket.emit('requestreply', {room: room, name: clients[data.to].name});
     });
     socket.on('remove', function() {
         // socket.leave already called
