@@ -34,7 +34,7 @@ io.sockets.on('connection', function(socket) {
                     var message = new Message();
                     user.group = data.group;
                     message._group = user.group;
-                    user.name = data.name;
+                    user.name = new String(data.name);
                     message.username = user.name
                     user.lasttime = new Date(Date.now());
                     if (data.lat && data.lon) {
@@ -80,7 +80,23 @@ io.sockets.on('connection', function(socket) {
         });
     });
     socket.on('message', function(data) {
-        if (clients[socket.id]) {
+console.log(data);
+console.log(data.group);
+        if (data.group.indexOf("|") > -1)
+        {
+            var message = new Message();
+            message._group = data.group;
+console.log("asfd" + message._group + "fdsa");
+            message.username = data.name;
+            message.body = data.body;
+            message.type = data.type;
+            message.socketid = socket.id;
+            if (data.lat && !isNaN(data.lat) && data.lon && !isNaN(data.lon)) {
+                message.loc = [Number(data.lon), Number(data.lat)];
+            }
+            io.sockets.in(data.group).emit('message', message.toJSON());
+        }
+        else if (clients[socket.id]) {
             Group.findOne({_id: data.group}, function(err, doc) {
                 if (!err && doc) {
                     console.log("good message");
@@ -129,11 +145,11 @@ io.sockets.on('connection', function(socket) {
         console.log("YAY REQUEST");
         console.log(data);
         var to = io.sockets.sockets[data.to];
-        var room = socket.id+"|"+data.to;
+        var room = "|"+socket.id+data.to;
         socket.join(room);
         to.join(room);
-        to.emit('requestreply', {room: room, name: clients[socket.id].name});
-        socket.emit('requestreply', {room: room, name: clients[data.to].name});
+        to.emit('requestreply', {room: room, name: clients[socket.id].username});
+        socket.emit('requestreply', {room: room, name: clients[data.to].username});
     });
     socket.on('remove', function() {
         // socket.leave already called
