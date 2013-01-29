@@ -460,7 +460,7 @@ $(function() {
                 alert("Error connecting. Refresh and try again");
             } else {
                 $("#chatname").text(title);
-$("#panelgrouplist").append("<li><a href='#'>"+title+"</a></li>");
+                $("#panelgrouplist").append("<li><a href='#'>"+title+"</a></li>");
             }
         });
         socket.on('message', function(data) {

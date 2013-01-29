@@ -158,31 +158,33 @@ io.sockets.on('connection', function(socket) {
         delete clients[socket.id];
     });
     socket.on('disconnect', function() {
-        user = clients[socket.id];
-        var message = new Message();
-        if (user.loc) {
-            message.loc = loc;
-        }
-        message.socketid = socket.id;
-        message.username = user.name
-        message.body = user.name + " has left this chat.";
-        message.type = 'text';
-        console.log("leaving message");
-        console.log(message.toJSON());
-        var rooms = io.sockets.manager.roomClients[socket.id];
-        for(room in rooms)
-        {
-            if (room && rooms[room])
-            {
-                message._group = room.substring(1);
-                io.sockets.in(room.substring(1)).emit('message', message.toJSON());
-                console.log("Disconnecting");
-                console.log(socket.id);
-                socket.leave(clients[socket.id].group);
+        var user = clients[socket.id];
+        if (user) {
+            var message = new Message();
+            if (user.loc) {
+                message.loc = loc;
             }
+            message.socketid = socket.id;
+            message.username = user.name
+            message.body = user.name + " has left this chat.";
+            message.type = 'text';
+            console.log("leaving message");
+            console.log(message.toJSON());
+            var rooms = io.sockets.manager.roomClients[socket.id];
+            for(room in rooms)
+            {
+                if (room && rooms[room])
+                {
+                    message._group = room.substring(1);
+                    io.sockets.in(room.substring(1)).emit('message', message.toJSON());
+                    console.log("Disconnecting");
+                    console.log(socket.id);
+                    socket.leave(clients[socket.id].group);
+                }
+            }
+            socket.removeListener(clients[socket.id].group, function(data) {console.log(data)});
+            delete clients[socket.id]; // memory leak?
         }
-        socket.removeListener(clients[socket.id].group, function(data) {console.log(data)});
-        delete clients[socket.id]; // memory leak?
     });
     // Need to geolocate chat room members
 });
