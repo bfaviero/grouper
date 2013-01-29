@@ -185,7 +185,7 @@ $(function() {
 
     }
 
-    
+
 
     $(document).on('ready', function(event) {
         $.mobile.touchOverflowEnabled = true;
@@ -343,7 +343,6 @@ $(function() {
                         var request = $.ajax({url: "/create", type: "post", data: "email="+$.cookie("email")+"&token="+$.cookie("token")+"&lat="+latitude+"&lon="+longitude+"&name="+name});
                         request.done(function (response, textStatus, jqXHR){
                             console.log(response);
-                            alert("\""+name+"\" Created Successfully");
                             location.reload();
                         });
                         // callback handler that will be called on failure
