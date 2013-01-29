@@ -450,6 +450,7 @@ $(function() {
                 alert("Error connecting. Refresh and try again");
             } else {
                 $("#groupchat div h3").text(title);
+$("#panelgrouplist").append("<li><a href='#'>"+title+"</a></li>");
             }
         });
         socket.on('message', function(data) {
@@ -502,6 +503,7 @@ data._group = "\\"+data._group; }
             $("#messageswrapperdiv").append('<div class="messagesdiv" id="selectedmessage" style="height:100px;"><ul id="'+data.room+'"data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow"></ul></div>');
             $('#selectedmessage').height($(window).height()*.5+"px");
             $("#groupchat div h3").text("Private Chat: "+data.name);
+$("#panelgrouplist").append("<li><a href='#'>"+title+"</a></li>");
         });
         socket.on('messageresponse', function(data) {
             if (!data.success) {
