@@ -180,10 +180,8 @@ console.log("asfd" + message._group + "fdsa");
         {
             if (room && rooms[room])
             {
-                console.log(i);
-                console.log(rooms[i]);
-                message._group = rooms[i].substring(1);
-                io.sockets.in(rooms[i].substring(1)).emit('message', message.toJSON());
+                message._group = room.substring(1);
+                io.sockets.in(room.substring(1)).emit('message', message.toJSON());
                 console.log("Disconnecting");
                 console.log(socket.id);
             }
