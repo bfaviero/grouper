@@ -70,7 +70,7 @@ h3 {
 	z-index:2;
 }
 .footer {
-  position:fixed;
+  position:absolute;
   width:100%;
   bottom:0%;
   z-index:2;
