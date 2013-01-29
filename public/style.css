@@ -1,7 +1,4 @@
-.ui-page {
-    background: transparent url('grouper.png') no-repeat center bottom;
-    background-size: 100%;
-}
+
 
 #grouppanel {
     background: #aaa;
@@ -128,3 +125,4 @@ h3 {
       width: 100%;
       display: block;
   }
+
