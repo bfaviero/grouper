@@ -104,7 +104,7 @@ exports.search = function(req, res) {
                 if (dist <= docs[i].radius)
                 {
                     var obj = docs[i].distjson(dist);
-                    obj.count = io.sockets.clients(docs[i]._id);
+                    obj.count = io.sockets.clients(docs[i]._id).length;
                     arrs.push(obj);
                 }
             }
