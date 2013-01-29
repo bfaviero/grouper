@@ -208,7 +208,11 @@ $(function() {
     });
 
         
+    $("#groupchat").swiperight(function() {
+        $("#grouppanelbutton").click();
+    });
 
+    
 
     
 
