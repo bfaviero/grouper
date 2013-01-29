@@ -1,6 +1,12 @@
 .ui-page {
     background: transparent url('grouper.png') no-repeat center bottom;
+    background-size: 100%;
 }
+
+#grouppanel {
+    background: #aaa;
+}
+
 .sq{
 	border-radius:0.2em;
 	width:80%;
