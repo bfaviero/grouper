@@ -1,10 +1,11 @@
-module.exports = function(app) {
+module.exports = function(app, io) {
     // API - JSON based
     // NOTE: destinations are read-only through this interface
     var misc = require('../app/controllers/misc');
     var users = require('../app/controllers/users');
     var messages = require('../app/controllers/messages');
     var groups = require('../app/controllers/groups');
+    groups.setsocketio(io);
     app.get('/', misc.home);
     app.get('/demo', misc.demo);
 

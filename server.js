@@ -19,7 +19,7 @@ var app = express()
 , io = require('socket.io').listen(server);
 io.set('transports', ['websocket', 'xhr-polling']);
 require('./config/express')(app, config);
-require('./config/routes')(app);
+require('./config/routes')(app, io);
 
 // Assume data is good for now, fix bugs later
 io.sockets.on('connection', function(socket) {
@@ -32,8 +32,7 @@ io.sockets.on('connection', function(socket) {
             if (!err && doc) {
                 if (!(doc.pin && doc.pin.length) || (data.pin && doc.pin === data.pin)) {
                     var message = new Message();
-                    user.group = data.group;
-                    message._group = user.group;
+                    message._group = data.group
                     user.name = new String(data.name);
                     message.username = user.name
                     user.lasttime = new Date(Date.now());
@@ -61,7 +60,7 @@ io.sockets.on('connection', function(socket) {
                     console.log("message");
                     console.log(message.toJSON());
 
-                    io.sockets.in(user.group).emit('message', message.toJSON());
+                    io.sockets.in(data.group).emit('message', message.toJSON());
                 }
                 else {
                     console.log(data);
@@ -80,13 +79,10 @@ io.sockets.on('connection', function(socket) {
         });
     });
     socket.on('message', function(data) {
-console.log(data);
-console.log(data.group);
         if (data.group.indexOf("|") > -1)
         {
             var message = new Message();
             message._group = data.group;
-console.log("asfd" + message._group + "fdsa");
             message.username = data.name;
             message.body = data.body;
             message.type = data.type;
@@ -159,8 +155,6 @@ console.log("asfd" + message._group + "fdsa");
     });
     socket.on('remove', function() {
         // socket.leave already called
-        socket.leave(clients[socket.id].group);
-        socket.removeListener(clients[socket.id].group, function(data) {console.log(data)});
         delete clients[socket.id];
     });
     socket.on('disconnect', function() {
@@ -184,8 +178,10 @@ console.log("asfd" + message._group + "fdsa");
                 io.sockets.in(room.substring(1)).emit('message', message.toJSON());
                 console.log("Disconnecting");
                 console.log(socket.id);
+                socket.leave(clients[socket.id].group);
             }
         }
+        socket.removeListener(clients[socket.id].group, function(data) {console.log(data)});
         delete clients[socket.id]; // memory leak?
     });
     // Need to geolocate chat room members
