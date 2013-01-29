@@ -1,7 +1,7 @@
 var socket;
 var username;
 var latitude, longitude, havegeo;
-
+var login = false;
 var groupmap, peermap, person, curPop;
 var addMarkerIcon = function(icon, map, lat, lon, html, open) {
     console.log(html);
@@ -185,6 +185,8 @@ $(function() {
 
     }
 
+    
+
     $(document).on('ready', function(event) {
         $.mobile.touchOverflowEnabled = true;
         if ($.cookie("username")) {
@@ -199,9 +201,13 @@ $(function() {
             
     });
 
+        
 
+
+    
 
     $("#loginbutton").click(function(e) {
+        var login = false;
         var request = $.ajax({url: "/login", type: "post", data: "email="+$("#loginemail").val()+"&password="+$("#loginpassword").val()});
         request.done(function (response, textStatus, jqXHR){
             console.log(response);
@@ -218,6 +224,7 @@ $(function() {
         });
     });
     $("#registerbutton").click(function(e) {
+        var login = false;
         //if ($("#registerpassword").val() === $("#registerpassword2").val()) {
         if (true) {
             var request = $.ajax({url: "/register", type: "post", data: "email="+$("#loginemail").val()+"&password="+$("#loginpassword").val()});
