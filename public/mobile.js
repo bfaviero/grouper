@@ -424,7 +424,7 @@ $(function() {
             $("#chatpanellist").append('<li ui-li-has-count ><a href="#" class="panelselector" group="'+groupid+'">'+title+'</a><a data-theme="f"> </a><span class="ui-li-count">0</span></li>');
             $("#chatpanellist").listview("refresh");
             $('#selectedmessage').height($(window).height()*.5+"px");
-            $("#selectedmessage").animate({scrollTop:$("#selectedmessage").prop("scrollHeight")}, 200);
+            setTimeout(function(){$("#selectedmessage").scrollTop($(window).height())}, 500);
             username = $("#username").val();
             var obj={group: groupid, name: username};
             console.log("pinned?");
@@ -515,7 +515,7 @@ $(function() {
             $("#"+groupid).parent().show();
             $("#"+groupid).parent().attr("id","selectedmessage");
             $('#selectedmessage').height($(window).height()*.5+"px");
-            $("#groupchat div h3").text($(this).text());
+            $("#chatname").text($(this).text());
         });
 
         socket.on('requestreply', function(data) {
@@ -529,7 +529,7 @@ $(function() {
                 $("#chatpanellist").append('<li ui-li-has-count ><a href="#" class="panelselector" group="'+data.room+'">'+data.name+'</a><a data-theme="f"> </a><span class="ui-li-count">0</span></li>');
                 $("#chatpanellist").listview("refresh");
                 $('#selectedmessage').height($(window).height()*.5+"px");
-                $("#groupchat div h3").text("Private Chat: "+data.name);
+                $("#chatname").text("Private Chat: "+data.name);
             }
             else
             {
