@@ -405,145 +405,147 @@ $(function() {
         if (!(username && username.length)) {
             alert("Enter a username to continue");
             return false;
-        } else {
+        }
+        else
+        {
             $.cookie("username", username);
             console.log(username);
             console.log('set');
-  
-        
 
-        e.preventDefault();
-        var groupid = $(this).attr('groupid');
-        var title = $(this).text();
-        var pinned = $(this).attr('pinned');
-        socket = io.connect("http://talkgrouper.com");
-        socket.on('connect', function() {
-            $(".messagesdiv").hide();
-            $("#selectedmessage").attr("id","");
-            $("#messageswrapperdiv").append('<div class="messagesdiv" id="selectedmessage" style="height:100px;"><ul id="'+groupid+'"data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow"></ul></div>');
-            $("#chatpanellist").append('<li ui-li-has-count ><a href="#" class="panelselector" group="'+groupid+'">'+title+'</a><a data-theme="f"> </a><span class="ui-li-count">0</span></li>');
-            $("#chatpanellist").listview("refresh");
-            $('#selectedmessage').height(($(window).height()-130)+"px");
-            setTimeout(function(){$("#selectedmessage").scrollTop($(window).height())}, 500);
-            username = $("#username").val();
-            var obj={group: groupid, name: username};
-            console.log("pinned?");
-            if (pinned && pinned !== "false") {
-                console.log($(this).attr('pinned'));
-                var pinval = prompt("Enter the pin","");
-                if (!pinval) {
-                    window.location="/";
-                }
-                console.log(pinval);
-                obj.pin=pinval;
-                console.log(obj);
-            }
-            if ($.cookie("email") && $.cookie("token")) {
-                obj.email = $.cookie("email");
-                obj.token = $.cookie("token");
-            }
-            console.log(obj);
-            socket.emit('connect',obj);
-        });
-        socket.on('connectresponse', function(data) {
-            console.log(data);
-            if (data.id < 0) {
-                alert("Error connecting. Refresh and try again");
-            } else {
-                $("#chatname").text(title);
-            }
-        });
-        socket.on('message', function(data) {
-            console.log("messaging");
-            console.log(data);
-            var d = new Date(data.date);
-            var ampm = d.getHours() >=12 ? "pm" : "am";
-            var seconds=d.getSeconds()<10?"0"+d.getSeconds():d.getSeconds();
-            var minutes=d.getMinutes()<10?"0"+d.getMinutes():d.getMinutes();
-            
-            
-            var body = "";
-            if (data.type == 'text')
-            {
-                body = data.body;
-            }
-            else if (data.type == 'image')
-            {
-                console.log(data.body);
-                var elems = data.body.split("|");
-                console.log(elems);
-                body = "<div class='picwrapper'><img class='messageimg' src='"+elems[1]+"' /></div>"+elems[0];
-            }
-            else
-            {
-                alert("Invalid data type " + data.type);
-            }
-
-            if (body.length)
-            {
-                console.log(data);
-                var taggedusername = (data.username === username) ? "<p style='display:inline; margin:0px;' id='nameinchat'>"+data.username+":&nbsp;</p>" : "<a style='display:inline; margin:0px;' class='nameinchat' data-rel='popup' socketid='"+data.socketid+"' href='#'>"+data.username+":&nbsp;</a>";
-                console.log("a"+data.username+"f");
-                console.log(username);
-                console.log(data.username === username);
-                console.log(taggedusername);
-                if (data._group.indexOf("|") > -1) {
-                    data._group = "\\"+data._group;
-                }
-                $("#"+data._group).append(
-                    "<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'>"+taggedusername+"<span style='margin:0px; display:block; float:right; position:relative;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+" "+ampm+"</span><p style='font-weight:normal; margin:0px; ' id='chatinchat'> "+body+"</p> </div><div style='clear:both;'></div></li>"
-                );
-                if ($("#"+data._group).parent().attr("id") != "selectedmessage")
-                {
-                    var line=$(".panelselector[group="+data._group+"]");
-                    line.next().text(Number(line.next().text())+1)
-                }
-            }
-            $("#selectedmessage").animate({scrollTop:$("#selectedmessage").prop("scrollHeight")}, 200);
-        });
-
-        $("#chatpanellist").on('click', 'li div div a.panelselector', function(e)
-        {
-            var groupid = $(this).attr('group');
-            console.log(groupid);
-            if (groupid.indexOf("|") > -1) {
-                groupid = "\\"+groupid;
-            }
-            $(this).next().text("0");
-            $(".messagesdiv").hide();
-            $("#selectedmessage").attr("id","");
-            $("#"+groupid).parent().show();
-            $("#"+groupid).parent().attr("id","selectedmessage");
-            $('#selectedmessage').height(($(window).height()-130)+"px");
-            $("#chatname").text($(this).text());
-        });
-
-        socket.on('requestreply', function(data) {
-            console.log("REQUEST REPLY RECEIVED");
-            console.log(data);
-            if (data.success)
-            {
+            e.preventDefault();
+            var groupid = $(this).attr('groupid');
+            var title = $(this).text();
+            var pinned = $(this).attr('pinned');
+            socket = io.connect("http://talkgrouper.com");
+            socket.on('connect', function() {
                 $(".messagesdiv").hide();
                 $("#selectedmessage").attr("id","");
-                $("#messageswrapperdiv").append('<div class="messagesdiv" id="selectedmessage" style="height:100px;"><ul id="'+data.room+'"data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow"></ul></div>');
-                $("#chatpanellist").append('<li ui-li-has-count ><a href="#" class="panelselector" group="'+data.room+'">'+data.name+'</a><a data-theme="f"> </a><span class="ui-li-count">0</span></li>');
+                $("#messageswrapperdiv").append('<div class="messagesdiv" id="selectedmessage" style="height:100px;"><ul id="'+groupid+'"data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow"></ul></div>');
+                $("#chatpanellist").append('<li ui-li-has-count ><a href="#" class="panelselector" group="'+groupid+'">'+title+'</a><a data-theme="f"> </a><span class="ui-li-count">0</span></li>');
                 $("#chatpanellist").listview("refresh");
                 $('#selectedmessage').height(($(window).height()-130)+"px");
-                $("#chatname").text("Private Chat: "+data.name);
-            }
-            else
+                setTimeout(function(){$("#selectedmessage").scrollTop($(window).height())}, 500);
+                username = $("#username").val();
+                var obj={group: groupid, name: username};
+                console.log("pinned?");
+                if (pinned && pinned !== "false") {
+                    console.log($(this).attr('pinned'));
+                    var pinval = prompt("Enter the pin","");
+                    if (!pinval) {
+                        window.location="/";
+                    }
+                    console.log(pinval);
+                    obj.pin=pinval;
+                    console.log(obj);
+                }
+                if ($.cookie("email") && $.cookie("token")) {
+                    obj.email = $.cookie("email");
+                    obj.token = $.cookie("token");
+                }
+                console.log(obj);
+                socket.emit('connect',obj);
+            });
+            socket.on('connectresponse', function(data) {
+                console.log(data);
+                if (data.id < 0) {
+                    alert("Error connecting. Refresh and try again");
+                } else {
+                    $("#chatname").text(title);
+                }
+            });
+            socket.on('message', function(data) {
+                console.log("messaging");
+                console.log(data);
+                var d = new Date(data.date);
+                var ampm = d.getHours() >=12 ? "pm" : "am";
+                var seconds=d.getSeconds()<10?"0"+d.getSeconds():d.getSeconds();
+                var minutes=d.getMinutes()<10?"0"+d.getMinutes():d.getMinutes();
+                
+                
+                var body = "";
+                if (data.type == 'text')
+                {
+                    body = data.body;
+                }
+                else if (data.type == 'image')
+                {
+                    console.log(data.body);
+                    var elems = data.body.split("|");
+                    console.log(elems);
+                    body = "<div class='picwrapper'><img class='messageimg' src='"+elems[1]+"' /></div>"+elems[0];
+                }
+                else
+                {
+                    alert("Invalid data type " + data.type);
+                }
+
+                if (body.length)
+                {
+                    console.log(data);
+                    var taggedusername = (data.username === username) ? "<p style='display:inline; margin:0px;' id='nameinchat'>"+data.username+":&nbsp;</p>" : "<a style='display:inline; margin:0px;' class='nameinchat' data-rel='popup' socketid='"+data.socketid+"' href='#'>"+data.username+":&nbsp;</a>";
+                    console.log("a"+data.username+"f");
+                    console.log(username);
+                    console.log(data.username === username);
+                    console.log(taggedusername);
+                    if (data._group.indexOf("|") > -1) {
+                        data._group = "\\"+data._group;
+                    }
+                    $("#"+data._group).append(
+                        "<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'>"+taggedusername+"<span style='margin:0px; display:block; float:right; position:relative;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+" "+ampm+"</span><p style='font-weight:normal; margin:0px; ' id='chatinchat'> "+body+"</p> </div><div style='clear:both;'></div></li>"
+                    );
+                    if ($("#"+data._group).parent().attr("id") != "selectedmessage")
+                    {
+                        var line=$(".panelselector[group="+data._group+"]");
+                        line.next().text(Number(line.next().text())+1)
+                    }
+                }
+                $("#selectedmessage").animate({scrollTop:$("#selectedmessage").prop("scrollHeight")}, 200);
+            });
+
+            $("#chatpanellist").on('click', 'li div div a.panelselector', function(e)
             {
-                alert("User is not online");
-            }
-        });
-        socket.on('messageresponse', function(data) {
-            if (!data.success) {
-                alert("Message failed to send");
-            } else {
-                console.log("yay");
-            }
-        });
-    }
+                var groupid = $(this).attr('group');
+                console.log(groupid);
+                if (groupid.indexOf("|") > -1) {
+                    groupid = "\\"+groupid;
+                }
+                $(this).next().text("0");
+                $(".messagesdiv").hide();
+                $("#selectedmessage").attr("id","");
+                $("#"+groupid).parent().show();
+                $("#"+groupid).parent().attr("id","selectedmessage");
+                $('#selectedmessage').height(($(window).height()-130)+"px");
+                $("#selectedmessage").animate({scrollTop:$("#selectedmessage").prop("scrollHeight")}, 200);
+                $("#chatname").text($(this).text());
+            });
+
+            socket.on('requestreply', function(data) {
+                console.log("REQUEST REPLY RECEIVED");
+                console.log(data);
+                if (data.success)
+                {
+                    $(".messagesdiv").hide();
+                    $("#selectedmessage").attr("id","");
+                    $("#messageswrapperdiv").append('<div class="messagesdiv" id="selectedmessage" style="height:100px;"><ul id="'+data.room+'"data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow"></ul></div>');
+                    $("#chatpanellist").append('<li ui-li-has-count ><a href="#" class="panelselector" group="'+data.room+'">'+data.name+'</a><a data-theme="f"> </a><span class="ui-li-count">0</span></li>');
+                    $("#chatpanellist").listview("refresh");
+                    $('#selectedmessage').height(($(window).height()-130)+"px");
+                    $("#selectedmessage").animate({scrollTop:$("#selectedmessage").prop("scrollHeight")}, 200);
+                    $("#chatname").text("Private Chat: "+data.name);
+                }
+                else
+                {
+                    alert("User is not online");
+                }
+            });
+            socket.on('messageresponse', function(data) {
+                if (!data.success) {
+                    alert("Message failed to send");
+                } else {
+                    console.log("yay");
+                }
+            });
+        }
     }
     $("#groupmapcanvas").on('click', 'div > a#groupchatconnect', conn);
     $("#localgrouplist").on('click', 'li div div a', conn);

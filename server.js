@@ -51,16 +51,37 @@ io.sockets.on('connection', function(socket) {
                     }
                     console.log(user);
                     clients[socket.id] = user;
-                    socket.join(data.group);
-                    message.socketid = socket.id;
-                    retval = socket.id
-                    
-                    message.body = user.name + " has joined this chat.";
-                    message.type = 'text';
-                    console.log("message");
-                    console.log(message.toJSON());
+                    // TODO (ebakan): move this up above before we do queries, etc. to save time
+                    var rooms = io.sockets.manager.roomClients[socket.id];
+                    var bad = false;
+                    for(room in rooms)
+                    {
+                        if (room && rooms[room])
+                        {
+                            if (room.substring(1) == data.group)
+                            {
+                                bad = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!bad)
+                    {
+                        socket.join(data.group);
+                        message.socketid = socket.id;
+                        retval = socket.id
+                        
+                        message.body = user.name + " has joined this chat.";
+                        message.type = 'text';
+                        console.log("message");
+                        console.log(message.toJSON());
 
-                    io.sockets.in(data.group).emit('message', message.toJSON());
+                        io.sockets.in(data.group).emit('message', message.toJSON());
+                    }
+                    else
+                    {
+                        console.log("already tried to connect");
+                    }
                 }
                 else {
                     console.log(data);
