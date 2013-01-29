@@ -487,9 +487,9 @@ $("#panelgrouplist").append("<li><a href='#'>"+title+"</a></li>");
                 console.log(username);
                 console.log(data.username === username);
                 console.log(taggedusername);
-if (data._group.indexOf("|") > -1) {
-data._group = "\\"+data._group; }
-                $("#"+data._group).append(
+                if (data._group.indexOf("|") > -1) {
+                    data._group = "\\"+data._group; }
+                    $("#"+data._group).append(
                     "<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'>"+taggedusername+"<span style='margin:0px; display:block; float:right; position:relative;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+" "+ampm+"</span><p style='font-weight:normal; margin:0px; ' id='chatinchat'> "+body+"</p> </div><div style='clear:both;'></div></li>"
                 );
             }
@@ -498,12 +498,19 @@ data._group = "\\"+data._group; }
 
         socket.on('requestreply', function(data) {
             console.log("REQUEST REPLY RECEIVED");
-            $(".messagesdiv").hide();
-            $("#selectedmessage").attr("id","");
-            $("#messageswrapperdiv").append('<div class="messagesdiv" id="selectedmessage" style="height:100px;"><ul id="'+data.room+'"data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow"></ul></div>');
-            $('#selectedmessage').height($(window).height()*.5+"px");
-            $("#groupchat div h3").text("Private Chat: "+data.name);
-$("#panelgrouplist").append("<li><a href='#'>"+title+"</a></li>");
+            if (data.success)
+            {
+                $(".messagesdiv").hide();
+                $("#selectedmessage").attr("id","");
+                $("#messageswrapperdiv").append('<div class="messagesdiv" id="selectedmessage" style="height:100px;"><ul id="'+data.room+'"data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow"></ul></div>');
+                $('#selectedmessage').height($(window).height()*.5+"px");
+                $("#groupchat div h3").text("Private Chat: "+data.name);
+                $("#panelgrouplist").append("<li><a href='#'>"+title+"</a></li>");
+            }
+            else
+            {
+                alert("User is not online");
+            }
         });
         socket.on('messageresponse', function(data) {
             if (!data.success) {
