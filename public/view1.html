@@ -1,7 +1,7 @@
 <html>
     <head>
         <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-        <title>Grouper Demo App</title>
+        <title>Grouper: Real Time Location-Based Chat</title>
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0-beta.1/jquery.mobile-1.3.0-beta.1.min.css" />
         <link rel="stylesheet" type="text/css" href="style.css">
         <script type="text/javascript" src="jquery-1.9.0.min.js"></script>
@@ -15,10 +15,10 @@
     </head>
     <body>
         <div data-role="page" data-theme="c" id="home">
-            <div data-theme="d" data-role="header" class="header" data-tap-toggle="false" style="opacity:.9; background:#7300af;">
+            <div data-theme="d" data-role="header" class="header" data-tap-toggle="false">
                 <a id="loginbtn" href="#loginpage" class='sqnav' data-rel="dialog" class = 'addbtn' data-icon="gear" style="color:black;text-decoration:none; background:white;"  data-direction="reverse" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all  ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Login">Login</a>
                 
-                <h2 style="color:white;">
+                <h2>
                     Grouper
                 </h2>
               <a id="pagecreatebtn" href="#createpage"  data-rel="dialog" class = 'sqnav'class = 'pagecreatbtn' data-icon="plus" style="color:black;text-decoration:none; background:white;"  data-direction="reverse" class="ui-btn-right ui-btn ui-shadow ui-btn-corner-all  ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" data-iconpos="right"  title="Login">Create</a>
@@ -34,7 +34,7 @@
                         <label for="username" id="usernamelabel">
                         </label>
                 <div>
-                <img style="z-index:0; display:block;" class='grouperimg' id='grouperpic' src='grouper.png'>
+                    <div id="grouperdiv" style="width:100%; text-align:center"><img style="z-index:0; display:block;" class='grouperimg' id='grouperpic' src='grouper.png'></div>
                 <div id="emailholder" style="margin-bottom:15px; opacity:.9;" ><input style="width:100%;" class=" ui-input-text ui-body-c" class='sqnav' name="" id="username" placeholder="Enter your nickname..." type="text"></div>
                 <ul style="margin-top:15; opacity:.9; margin-bottom:25px;" id="localgrouplist" class="sqnav" data-corners="false" data-role="listview" data-inset="true" class="ui-listview ui-corner-all ui-shadow">
                 </ul>

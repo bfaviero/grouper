@@ -45,11 +45,9 @@ h3 {
 
 
 .grouperimg {
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+    margin-left: 33%;
     position: fixed;
-    max-width: 90%;
+    width: 30%;
     bottom: 5%;
     border:none;
 
