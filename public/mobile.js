@@ -121,6 +121,12 @@ $(function() {
     $("#updatelink").click(function(e) {
         $("#updateemail").attr('value',($.cookie("email")));
     });
+
+    $("#grouppanelbutton").click(function(e) {
+        $('#chatpanellist').height($(window).height()*.9+"px");
+
+    });
+
     $("#logout").click(function(e) {
         var request = $.ajax({url: "/logout", type: "post", data: "email="+$.cookie("email")+"&token="+$.cookie("token")});
         request.done(function (response, textStatus, jqXHR){
@@ -449,7 +455,7 @@ $(function() {
             if (data.id < 0) {
                 alert("Error connecting. Refresh and try again");
             } else {
-                $("#groupchat div h3").text(title);
+                $("#chatname").text(title);
 $("#panelgrouplist").append("<li><a href='#'>"+title+"</a></li>");
             }
         });

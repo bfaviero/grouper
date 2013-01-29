@@ -103,6 +103,11 @@ h3 {
   color:#000000;
   }
 
+  .panellistdiv {
+    overflow-y:auto;
+  }
+
+
   .messagesdiv {
     overflow-y:auto;
   }
