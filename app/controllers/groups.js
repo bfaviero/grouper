@@ -99,13 +99,14 @@ exports.search = function(req, res) {
             var arrs = []
             for(var i=0;i<docs.length;i++)
             {
+                docs[i].count = io.sockets.clients(docs[i]._id).length;
+                docs[i].save();
+                console.log(docs[i].distjson(dist));
                 var latlon = docs[i].loc;
                 var dist = Math.sqrt(Math.pow((latlon[0] - Number(req.body.lon)),2) + Math.pow((latlon[1] - Number(req.body.lat)),2))*69.0;
                 if (dist <= docs[i].radius)
                 {
-                    var obj = docs[i].distjson(dist);
-                    obj.count = io.sockets.clients(docs[i]._id).length;
-                    arrs.push(obj);
+                    arrs.push(docs[i].distjson(dist));
                 }
             }
             res.send("["+arrs.join(",")+"]");
