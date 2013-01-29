@@ -8,7 +8,7 @@ module.exports = function(app, config) {
     app.set('view engine', 'jade');
 
     app.configure(function() {
-        app.use(express.cookieParser());
+        app.use(express.cookieParser("omnomnom"));
         app.use(express.session({ cookie: { maxAge: 60000 }}));
         app.use(flash());
         app.use(express.bodyParser());

@@ -176,15 +176,17 @@ console.log("asfd" + message._group + "fdsa");
         console.log("leaving message");
         console.log(message.toJSON());
         var rooms = io.sockets.manager.roomClients[socket.id];
-        console.log(rooms);
-        for(var i=0; i < rooms.length; i++)
+        for(room in rooms)
         {
-            console.log(i);
-            console.log(rooms[i]);
-            message._group = rooms[i].substring(1);
-            io.sockets.in(rooms[i].substring(1)).emit('message', message.toJSON());
-            console.log("Disconnecting");
-            console.log(socket.id);
+            if (room && rooms[room])
+            {
+                console.log(i);
+                console.log(rooms[i]);
+                message._group = rooms[i].substring(1);
+                io.sockets.in(rooms[i].substring(1)).emit('message', message.toJSON());
+                console.log("Disconnecting");
+                console.log(socket.id);
+            }
         }
         delete clients[socket.id]; // memory leak?
     });
