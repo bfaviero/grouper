@@ -418,13 +418,13 @@ $(function() {
         var pinned = $(this).attr('pinned');
         socket = io.connect("http://talkgrouper.com");
         socket.on('connect', function() {
-            alert("connecting: "+title);
             $(".messagesdiv").hide();
             $("#selectedmessage").attr("id","");
             $("#messageswrapperdiv").append('<div class="messagesdiv" id="selectedmessage" style="height:100px;"><ul id="'+groupid+'"data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow"></ul></div>');
             $("#chatpanellist").append('<li ui-li-has-count ><a href="#" class="panelselector" group="'+groupid+'">'+title+'</a><a data-theme="f"> </a><span class="ui-li-count">0</span></li>');
             $("#chatpanellist").listview("refresh");
             $('#selectedmessage').height($(window).height()*.5+"px");
+            $("#selectedmessage").animate({scrollTop:$("#selectedmessage").prop("scrollHeight")}, 200);
             username = $("#username").val();
             var obj={group: groupid, name: username};
             console.log("pinned?");
@@ -488,10 +488,16 @@ $(function() {
                 console.log(data.username === username);
                 console.log(taggedusername);
                 if (data._group.indexOf("|") > -1) {
-                    data._group = "\\"+data._group; }
-                    $("#"+data._group).append(
+                    data._group = "\\"+data._group;
+                }
+                $("#"+data._group).append(
                     "<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'>"+taggedusername+"<span style='margin:0px; display:block; float:right; position:relative;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+" "+ampm+"</span><p style='font-weight:normal; margin:0px; ' id='chatinchat'> "+body+"</p> </div><div style='clear:both;'></div></li>"
                 );
+                if ($("#"+data._group).parent().attr("id") != "selectedmessage")
+                {
+                    var line=$(".panelselector[group="+data._group+"]");
+                    line.next().text(Number(line.next().text())+1)
+                }
             }
             $("#selectedmessage").animate({scrollTop:$("#selectedmessage").prop("scrollHeight")}, 200);
         });
@@ -500,11 +506,16 @@ $(function() {
         {
             var groupid = $(this).attr('group');
             console.log(groupid);
+            if (groupid.indexOf("|") > -1) {
+                groupid = "\\"+groupid;
+            }
+            $(this).next().text("0");
             $(".messagesdiv").hide();
             $("#selectedmessage").attr("id","");
             $("#"+groupid).parent().show();
             $("#"+groupid).parent().attr("id","selectedmessage");
             $('#selectedmessage').height($(window).height()*.5+"px");
+            $("#groupchat div h3").text($(this).text());
         });
 
         socket.on('requestreply', function(data) {
