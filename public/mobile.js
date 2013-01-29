@@ -4,7 +4,6 @@ var latitude, longitude, havegeo;
 var login = false;
 var groupmap, peermap, person, curPop;
 var addMarkerIcon = function(icon, map, lat, lon, html, open) {
-    console.log(html);
     var loc = new google.maps.LatLng(lat, lon);
     var marker = new google.maps.Marker({ position: loc, map: map});
     var popup;
@@ -143,10 +142,6 @@ $(function() {
     });
 
 
-    $('.homebtn').on('click', function(event) {
-        window.location = 'http://talkgrouper.com';
-    });
-
 
     var plotmap = function() {
         var icon = new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/micons/blue.png", new google.maps.Size(64, 32), new google.maps.Point(0, 0), new google.maps.Point(16, 32));
@@ -174,7 +169,6 @@ $(function() {
                 var lonlat=obj[i].loc;
                 //addMarker(groupmap, lonlat[1], lonlat[0], "<div>Lat: "+lonlat[1]+"</div><div>Lon: "+lonlat[0]+"</div>"+"<a id='groupchatconnect' groupid='"+obj[i]._id+"' href='#groupchat'>"+obj[i].name+"</a>");
                 addMarker(groupmap, lonlat[1], lonlat[0], str);
-                console.log(lonlat);
             }
             $("#localgrouplist").listview("refresh");
 
@@ -398,12 +392,6 @@ $(function() {
         return false;
     });
 
-    $(".gohome").on('click', function(e) {
-        console.log('homing missile');
-        location.href = '/';
-        return false;
-    });
-
     $("#messageswrapperdiv").on('click', 'div ul li a.nameinchat',function(e) {
         e.preventDefault();
         socket.emit('request',{to: $(this).attr("socketid")});
@@ -430,9 +418,12 @@ $(function() {
         var pinned = $(this).attr('pinned');
         socket = io.connect("http://talkgrouper.com");
         socket.on('connect', function() {
+            alert("connecting: "+title);
             $(".messagesdiv").hide();
             $("#selectedmessage").attr("id","");
             $("#messageswrapperdiv").append('<div class="messagesdiv" id="selectedmessage" style="height:100px;"><ul id="'+groupid+'"data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow"></ul></div>');
+            $("#chatpanellist").append('<li ui-li-has-count ><a href="#" class="panelselector" group="'+groupid+'">'+title+'</a><a data-theme="f"> </a><span class="ui-li-count">0</span></li>');
+            $("#chatpanellist").listview("refresh");
             $('#selectedmessage').height($(window).height()*.5+"px");
             username = $("#username").val();
             var obj={group: groupid, name: username};
@@ -508,14 +499,16 @@ $(function() {
 
         socket.on('requestreply', function(data) {
             console.log("REQUEST REPLY RECEIVED");
+            console.log(data);
             if (data.success)
             {
                 $(".messagesdiv").hide();
                 $("#selectedmessage").attr("id","");
                 $("#messageswrapperdiv").append('<div class="messagesdiv" id="selectedmessage" style="height:100px;"><ul id="'+data.room+'"data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow"></ul></div>');
+                $("#chatpanellist").append('<li ui-li-has-count ><a href="#" class="panelselector" group="'+data.room+'">'+data.name+'</a><a data-theme="f"> </a><span class="ui-li-count">0</span></li>');
+                $("#chatpanellist").listview("refresh");
                 $('#selectedmessage').height($(window).height()*.5+"px");
                 $("#groupchat div h3").text("Private Chat: "+data.name);
-                $("#panelgrouplist").append("<li><a href='#'>"+title+"</a></li>");
             }
             else
             {

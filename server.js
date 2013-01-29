@@ -146,8 +146,8 @@ io.sockets.on('connection', function(socket) {
             var room = "|"+socket.id+data.to;
             socket.join(room);
             to.join(room);
-            to.emit('requestreply', {success: true, room: room, name: clients[socket.id].username});
-            socket.emit('requestreply', {success: true, room: room, name: clients[data.to].username});
+            to.emit('requestreply', {success: true, room: room, name: clients[socket.id].name});
+            socket.emit('requestreply', {success: true, room: room, name: clients[data.to].name});
         }
         else {
             socket.emit('requestreply', {success: false});
