@@ -145,11 +145,17 @@ console.log("asfd" + message._group + "fdsa");
         console.log("YAY REQUEST");
         console.log(data);
         var to = io.sockets.sockets[data.to];
-        var room = "|"+socket.id+data.to;
-        socket.join(room);
-        to.join(room);
-        to.emit('requestreply', {room: room, name: clients[socket.id].username});
-        socket.emit('requestreply', {room: room, name: clients[data.to].username});
+        if (to)
+        {
+            var room = "|"+socket.id+data.to;
+            socket.join(room);
+            to.join(room);
+            to.emit('requestreply', {success: true, room: room, name: clients[socket.id].username});
+            socket.emit('requestreply', {success: true, room: room, name: clients[data.to].username});
+        }
+        else {
+            socket.emit('requestreply', {success: false});
+        }
     });
     socket.on('remove', function() {
         // socket.leave already called
@@ -158,6 +164,20 @@ console.log("asfd" + message._group + "fdsa");
         delete clients[socket.id];
     });
     socket.on('disconnect', function() {
+        user = clients[socket.id];
+        var message = new Message();
+        message._group = user.group;
+        if (user.loc) {
+            message.loc = loc;
+        }
+        message.socketid = socket.id;
+        message.body = user.name + " has left this chat.";
+        message.type = 'text';
+        console.log("leaving message");
+        console.log(message.toJSON());
+        io.sockets.in(data.group).emit('message', message.toJSON());
+        console.log("Disconnecting");
+        console.log(socket.id);
         delete clients[socket.id]; // memory leak?
     });
     // Need to geolocate chat room members
