@@ -165,9 +165,9 @@ $(function() {
             $("#localgrouplist").empty();
 
             for(var i=0;i<obj.length;i++) {
-                var icon = "<img src='http://png-1.findicons.com/files/icons/1743/ecqlipse/128/wifi.png' class='ui-li-icon ui-li-thumb'>"
+                var icon = "<img src='openlock.png' class='ui-li-icon ui-li-thumb'>"
                 if (obj[i].pinned) {
-                    icon = "<img src='http://a.dryicons.com/images/icon_sets/stickers_icon_set/png/128x128/lock.png' class='ui-li-icon ui-li-thumb'>"
+                    icon = "<img src='lock.png' class='ui-li-icon ui-li-thumb'>"
                 }
                 var str="<a style='opacity:.9;' class='groupchatconnect' id='groupchatconnect' pinned="+obj[i].pinned+" groupid='"+obj[i]._id+"' href='#groupchat'>"+icon+" "+obj[i].name+"</a><span style='margin:0px; display:inline; float:right; margin-top:-20px !important;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+obj[i].count + " users</span><span style='margin:0px; display:inline; float:right; margin-top:0px !important;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+(obj[i].dist).toFixed(2)+" mi</span>";
                 $("#localgrouplist").append("<li style='opacity:1;' ui-li-has-count>"+str+"</li>");
