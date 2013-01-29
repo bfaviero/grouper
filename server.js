@@ -171,6 +171,7 @@ console.log("asfd" + message._group + "fdsa");
             message.loc = loc;
         }
         message.socketid = socket.id;
+        message.username = user.name
         message.body = user.name + " has left this chat.";
         message.type = 'text';
         console.log("leaving message");
