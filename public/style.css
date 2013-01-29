@@ -1,3 +1,6 @@
+.ui-page {
+    background: transparent url('grouper.png') no-repeat center bottom;
+}
 .sq{
 	border-radius:0.2em;
 	width:80%;

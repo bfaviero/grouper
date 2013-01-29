@@ -4,6 +4,12 @@ var mongoose = require('mongoose')
 , PAGE_SIZE=20
 , MAX_RADIUS=5.0/69.0;
 
+var io;
+
+exports.setsocketio = function(socketio) {
+    io = socketio;
+}
+
 exports.create = function(req, res) {
     console.log(req.body);
     var group = new Group();
@@ -93,15 +99,13 @@ exports.search = function(req, res) {
             var arrs = []
             for(var i=0;i<docs.length;i++)
             {
-            console.log(docs[i]);
                 var latlon = docs[i].loc;
-                console.log(req.body.lon);
-                console.log(req.body.lat);
                 var dist = Math.sqrt(Math.pow((latlon[0] - Number(req.body.lon)),2) + Math.pow((latlon[1] - Number(req.body.lat)),2))*69.0;
-                console.log(dist);
                 if (dist <= docs[i].radius)
                 {
-                    arrs.push(docs[i].distjson(dist));
+                    var obj = docs[i].distjson(dist);
+                    obj.count = io.sockets.clients(docs[i]._id).length;
+                    arrs.push(obj);
                 }
             }
             res.send("["+arrs.join(",")+"]");
