@@ -175,7 +175,7 @@ $(function() {
         });
         // callback handler that will be called on failure
         request.fail(function (jqXHR, textStatus, errorThrown){
-            alert("Error!");
+            alert("Group created!");
             // log the error to the console
             console.error(
                 "The following error occured: "+
@@ -196,7 +196,9 @@ $(function() {
         updateGeo();
 
         setTimeout(rsz, 500);
-        
+        if ($.cookie("email") && $.cookie("token")) {
+            continue;
+        }
         
             
     });
@@ -207,7 +209,9 @@ $(function() {
     });
 
     
-
+    $(".homebtn").click(function(e) {
+        window.location="/";
+    });
     
 
     $("#loginbutton").click(function(e) {
@@ -268,7 +272,6 @@ $(function() {
 
             // callback handler that will be called on failure
             request.fail(function (jqXHR, textStatus, errorThrown){
-                alert("Error!");
                 // log the error to the console
                 console.error(
                     "The following error occured: "+
