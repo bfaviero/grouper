@@ -451,7 +451,6 @@ $(function() {
                 alert("Error connecting. Refresh and try again");
             } else {
                 $("#chatname").text(title);
-                $("#panelgrouplist").append("<li><a href='#'>"+title+"</a></li>");
             }
         });
         socket.on('message', function(data) {
@@ -495,6 +494,17 @@ $(function() {
                 );
             }
             $("#selectedmessage").animate({scrollTop:$("#selectedmessage").prop("scrollHeight")}, 200);
+        });
+
+        $("#chatpanellist").on('click', 'li div div a.panelselector', function(e)
+        {
+            var groupid = $(this).attr('group');
+            console.log(groupid);
+            $(".messagesdiv").hide();
+            $("#selectedmessage").attr("id","");
+            $("#"+groupid).parent().show();
+            $("#"+groupid).parent().attr("id","selectedmessage");
+            $('#selectedmessage').height($(window).height()*.5+"px");
         });
 
         socket.on('requestreply', function(data) {

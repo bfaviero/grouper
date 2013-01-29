@@ -79,7 +79,7 @@ io.sockets.on('connection', function(socket) {
         });
     });
     socket.on('message', function(data) {
-        if (data.group.indexOf("|") > -1)
+        if (data.group && data.group.indexOf("|") > -1)
         {
             var message = new Message();
             message._group = data.group;
