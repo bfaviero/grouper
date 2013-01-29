@@ -1,4 +1,5 @@
-var express = require('express');
+var express = require('express')
+, flash = require('connect-flash');
 module.exports = function(app, config) {
     app.set('showStackError', true);
     app.use(express.static(config.root+'/public'));
@@ -8,6 +9,8 @@ module.exports = function(app, config) {
 
     app.configure(function() {
         app.use(express.cookieParser());
+        app.use(express.session({ cookie: { maxAge: 60000 }}));
+        app.use(flash());
         app.use(express.bodyParser());
         app.use(express.methodOverride());
         app.use(express.favicon());

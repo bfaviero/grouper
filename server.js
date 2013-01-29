@@ -166,7 +166,6 @@ console.log("asfd" + message._group + "fdsa");
     socket.on('disconnect', function() {
         user = clients[socket.id];
         var message = new Message();
-        message._group = user.group;
         if (user.loc) {
             message.loc = loc;
         }
@@ -176,9 +175,17 @@ console.log("asfd" + message._group + "fdsa");
         message.type = 'text';
         console.log("leaving message");
         console.log(message.toJSON());
-        io.sockets.in(data.group).emit('message', message.toJSON());
-        console.log("Disconnecting");
-        console.log(socket.id);
+        var rooms = io.sockets.manager.roomClients[socket.id];
+        console.log(rooms);
+        for(var i=0; i < rooms.length; i++)
+        {
+            console.log(i);
+            console.log(rooms[i]);
+            message._group = rooms[i].substring(1);
+            io.sockets.in(rooms[i].substring(1)).emit('message', message.toJSON());
+            console.log("Disconnecting");
+            console.log(socket.id);
+        }
         delete clients[socket.id]; // memory leak?
     });
     // Need to geolocate chat room members
