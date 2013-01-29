@@ -112,7 +112,10 @@ $(function() {
 
     if ($.cookie("email") && $.cookie("token")) {
         $("#loginbtn").attr("id","logout").attr("href","#");
-        $("#logout ui-btn-inner ui-btn-text ").text("Logout");
+
+        $("#logout ui-btn-inner ui-btn-text ").text("");
+        $('#logout').text('');
+        $('#logout').append("<span class='ui-btn-inner'><span class='ui-btn-text'>Logout</span><span class='ui-icon ui-icon-gear ui-icon-shadow'>&nbsp;</span></span>");
 
         $('#emailholder').prepend("<div id='userinfo' class='sq'><h3>Hello, "+$.cookie("email")+"</h3>"+
             "<p id='align'>"+
@@ -204,9 +207,6 @@ $(function() {
         updateGeo();
 
         setTimeout(rsz, 500);
-        if ($.cookie("email") && $.cookie("token")) {
-            continue;
-        }
         
             
     });
