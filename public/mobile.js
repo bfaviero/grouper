@@ -423,7 +423,7 @@ $(function() {
             $("#messageswrapperdiv").append('<div class="messagesdiv" id="selectedmessage" style="height:100px;"><ul id="'+groupid+'"data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow"></ul></div>');
             $("#chatpanellist").append('<li ui-li-has-count ><a href="#" class="panelselector" group="'+groupid+'">'+title+'</a><a data-theme="f"> </a><span class="ui-li-count">0</span></li>');
             $("#chatpanellist").listview("refresh");
-            $('#selectedmessage').height($(window).height()*.5+"px");
+            $('#selectedmessage').height(($(window).height()-130)+"px");
             setTimeout(function(){$("#selectedmessage").scrollTop($(window).height())}, 500);
             username = $("#username").val();
             var obj={group: groupid, name: username};
@@ -514,7 +514,7 @@ $(function() {
             $("#selectedmessage").attr("id","");
             $("#"+groupid).parent().show();
             $("#"+groupid).parent().attr("id","selectedmessage");
-            $('#selectedmessage').height($(window).height()*.5+"px");
+            $('#selectedmessage').height(($(window).height()-130)+"px");
             $("#chatname").text($(this).text());
         });
 
@@ -528,7 +528,7 @@ $(function() {
                 $("#messageswrapperdiv").append('<div class="messagesdiv" id="selectedmessage" style="height:100px;"><ul id="'+data.room+'"data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow"></ul></div>');
                 $("#chatpanellist").append('<li ui-li-has-count ><a href="#" class="panelselector" group="'+data.room+'">'+data.name+'</a><a data-theme="f"> </a><span class="ui-li-count">0</span></li>');
                 $("#chatpanellist").listview("refresh");
-                $('#selectedmessage').height($(window).height()*.5+"px");
+                $('#selectedmessage').height(($(window).height()-130)+"px");
                 $("#chatname").text("Private Chat: "+data.name);
             }
             else
