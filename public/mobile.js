@@ -111,10 +111,11 @@ $(function() {
     }
 
     if ($.cookie("email") && $.cookie("token")) {
-        console.log("hi there");
+        $("#loginbtn").attr("id","logout").attr("href","#");
+        $("#logout ui-btn-inner ui-btn-text ").text("Logout");
 
         $('#emailholder').prepend("<div id='userinfo' class='sq'><h3>Hello, "+$.cookie("email")+"</h3>"+
-            "<p id='align'><a id='logout' data-role='button' data-inline='true' data-mini='true' data-icon='arrow-r' data-iconpos='right' href='/'>Logout</a>"+
+            "<p id='align'>"+
             "<a id='updatelink' data-role='button' data-icon='arrow-r' data-iconpos='right' href='#update'>Update Info</a></p></div>");
     }
     $("#updatelink").click(function(e) {
@@ -126,7 +127,9 @@ $(function() {
 
     });
 
-    $("#logout").click(function(e) {
+    $("[data-role=header]").on('click', 'a#logout', function(e) {
+        alert("hi");
+        e.preventDefault();
         var request = $.ajax({url: "/logout", type: "post", data: "email="+$.cookie("email")+"&token="+$.cookie("token")});
         request.done(function (response, textStatus, jqXHR){
             console.log(response);
@@ -137,8 +140,8 @@ $(function() {
         // callback handler that will be called on failure
         request.fail(function (jqXHR, textStatus, errorThrown){
             alert("Logout Failed.");
-            return false;
         });
+        return false;
     });
 
 
@@ -164,7 +167,12 @@ $(function() {
                 if (obj[i].pinned) {
                     icon = "<img src='lock.png' class='ui-li-icon ui-li-thumb'>"
                 }
-                var str="<a style='opacity:.9;' class='groupchatconnect' id='groupchatconnect' pinned="+obj[i].pinned+" groupid='"+obj[i]._id+"' href='#groupchat'>"+icon+" "+obj[i].name+"</a><span style='margin:0px; display:inline; float:right; margin-top:-20px !important;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+obj[i].count + " users</span><span style='margin:0px; display:inline; float:right; margin-top:0px !important;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+(obj[i].dist).toFixed(2)+" mi</span>";
+                var numusers = obj[i].count+" user";
+                if (obj[i].count != 1)
+                {
+                    numusers += "s";
+                }
+                var str="<a style='opacity:.9;' class='groupchatconnect' id='groupchatconnect' pinned="+obj[i].pinned+" groupid='"+obj[i]._id+"' href='#groupchat'>"+icon+" "+obj[i].name+"</a><span style='margin:0px; display:inline; float:right; margin-top:-20px !important;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+numusers+"</span><span style='margin:0px; display:inline; float:right; margin-top:0px !important;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+(obj[i].dist).toFixed(2)+" mi</span>";
                 $("#localgrouplist").append("<li style='opacity:1;' ui-li-has-count>"+str+"</li>");
                 var lonlat=obj[i].loc;
                 //addMarker(groupmap, lonlat[1], lonlat[0], "<div>Lat: "+lonlat[1]+"</div><div>Lon: "+lonlat[0]+"</div>"+"<a id='groupchatconnect' groupid='"+obj[i]._id+"' href='#groupchat'>"+obj[i].name+"</a>");
@@ -408,143 +416,158 @@ $(function() {
         }
         else
         {
-            $.cookie("username", username);
-            console.log(username);
-            console.log('set');
-
-            e.preventDefault();
-            var groupid = $(this).attr('groupid');
+            var found = false;
             var title = $(this).text();
-            var pinned = $(this).attr('pinned');
-            socket = io.connect("http://talkgrouper.com");
-            socket.on('connect', function() {
-                $(".messagesdiv").hide();
-                $("#selectedmessage").attr("id","");
-                $("#messageswrapperdiv").append('<div class="messagesdiv" id="selectedmessage" style="height:100px;"><ul id="'+groupid+'"data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow"></ul></div>');
-                $("#chatpanellist").append('<li ui-li-has-count ><a href="#" class="panelselector" group="'+groupid+'">'+title+'</a><a data-theme="f"> </a><span class="ui-li-count">0</span></li>');
-                $("#chatpanellist").listview("refresh");
-                $('#selectedmessage').height(($(window).height()-130)+"px");
-                setTimeout(function(){$("#selectedmessage").scrollTop($(window).height())}, 500);
-                username = $("#username").val();
-                var obj={group: groupid, name: username};
-                console.log("pinned?");
-                if (pinned && pinned !== "false") {
-                    console.log($(this).attr('pinned'));
-                    var pinval = prompt("Enter the pin","");
-                    if (!pinval) {
-                        window.location="/";
-                    }
-                    console.log(pinval);
-                    obj.pin=pinval;
-                    console.log(obj);
-                }
-                if ($.cookie("email") && $.cookie("token")) {
-                    obj.email = $.cookie("email");
-                    obj.token = $.cookie("token");
-                }
-                console.log(obj);
-                socket.emit('connect',obj);
-            });
-            socket.on('connectresponse', function(data) {
-                console.log(data);
-                if (data.id < 0) {
-                    alert("Error connecting. Refresh and try again");
-                } else {
-                    $("#chatname").text(title);
-                }
-            });
-            socket.on('message', function(data) {
-                console.log("messaging");
-                console.log(data);
-                var d = new Date(data.date);
-                var ampm = d.getHours() >=12 ? "pm" : "am";
-                var seconds=d.getSeconds()<10?"0"+d.getSeconds():d.getSeconds();
-                var minutes=d.getMinutes()<10?"0"+d.getMinutes():d.getMinutes();
-                
-                
-                var body = "";
-                if (data.type == 'text')
-                {
-                    body = data.body;
-                }
-                else if (data.type == 'image')
-                {
-                    console.log(data.body);
-                    var elems = data.body.split("|");
-                    console.log(elems);
-                    body = "<div class='picwrapper'><img class='messageimg' src='"+elems[1]+"' /></div>"+elems[0];
-                }
-                else
-                {
-                    alert("Invalid data type " + data.type);
-                }
-
-                if (body.length)
-                {
-                    console.log(data);
-                    var taggedusername = (data.username === username) ? "<p style='display:inline; margin:0px;' id='nameinchat'>"+data.username+":&nbsp;</p>" : "<a style='display:inline; margin:0px;' class='nameinchat' data-rel='popup' socketid='"+data.socketid+"' href='#'>"+data.username+":&nbsp;</a>";
-                    console.log("a"+data.username+"f");
-                    console.log(username);
-                    console.log(data.username === username);
-                    console.log(taggedusername);
-                    if (data._group.indexOf("|") > -1) {
-                        data._group = "\\"+data._group;
-                    }
-                    $("#"+data._group).append(
-                        "<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'>"+taggedusername+"<span style='margin:0px; display:block; float:right; position:relative;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+" "+ampm+"</span><p style='font-weight:normal; margin:0px; ' id='chatinchat'> "+body+"</p> </div><div style='clear:both;'></div></li>"
-                    );
-                    if ($("#"+data._group).parent().attr("id") != "selectedmessage")
-                    {
-                        var line=$(".panelselector[group="+data._group+"]");
-                        line.next().text(Number(line.next().text())+1)
-                    }
-                }
-                $("#selectedmessage").animate({scrollTop:$("#selectedmessage").prop("scrollHeight")}, 200);
-            });
-
-            $("#chatpanellist").on('click', 'li div div a.panelselector', function(e)
-            {
-                var groupid = $(this).attr('group');
+            var groupid = $(this).attr('groupid');
+            console.log("asdfasdfasdf");
+            $(".messagesdiv ul").each(function(i,e) {
+                console.log($(e).attr("id"));
                 console.log(groupid);
-                if (groupid.indexOf("|") > -1) {
-                    groupid = "\\"+groupid;
-                }
-                $(this).next().text("0");
-                $(".messagesdiv").hide();
-                $("#selectedmessage").attr("id","");
-                $("#"+groupid).parent().show();
-                $("#"+groupid).parent().attr("id","selectedmessage");
-                $('#selectedmessage').height(($(window).height()-130)+"px");
-                $("#selectedmessage").animate({scrollTop:$("#selectedmessage").prop("scrollHeight")}, 200);
-                $("#chatname").text($(this).text());
-            });
-
-            socket.on('requestreply', function(data) {
-                console.log("REQUEST REPLY RECEIVED");
-                console.log(data);
-                if (data.success)
+                if ($(e).attr("id") == groupid)
                 {
+                    found = true;
+                }
+            });
+            if (!found) {
+                $.cookie("username", username);
+                console.log(username);
+                console.log('set');
+
+                e.preventDefault();
+                var pinned = $(this).attr('pinned');
+                socket = io.connect("http://talkgrouper.com");
+                socket.on('connect', function() {
                     $(".messagesdiv").hide();
                     $("#selectedmessage").attr("id","");
-                    $("#messageswrapperdiv").append('<div class="messagesdiv" id="selectedmessage" style="height:100px;"><ul id="'+data.room+'"data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow"></ul></div>');
-                    $("#chatpanellist").append('<li ui-li-has-count ><a href="#" class="panelselector" group="'+data.room+'">'+data.name+'</a><a data-theme="f"> </a><span class="ui-li-count">0</span></li>');
+                    $("#messageswrapperdiv").append('<div class="messagesdiv" id="selectedmessage" style="height:100px;"><ul id="'+groupid+'"data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow"></ul></div>');
+                    $("#chatpanellist").append('<li ui-li-has-count ><a href="#" class="panelselector" group="'+groupid+'">'+title+'</a><a data-theme="f"> </a><span class="ui-li-count">0</span></li>');
                     $("#chatpanellist").listview("refresh");
                     $('#selectedmessage').height(($(window).height()-130)+"px");
+                    setTimeout(function(){$("#selectedmessage").scrollTop($(window).height())}, 500);
+                    username = $("#username").val();
+                    var obj={group: groupid, name: username};
+                    console.log("pinned?");
+                    if (pinned && pinned !== "false") {
+                        console.log($(this).attr('pinned'));
+                        var pinval = prompt("Enter the pin","");
+                        if (!pinval) {
+                            window.location="/";
+                        }
+                        console.log(pinval);
+                        obj.pin=pinval;
+                        console.log(obj);
+                    }
+                    if ($.cookie("email") && $.cookie("token")) {
+                        obj.email = $.cookie("email");
+                        obj.token = $.cookie("token");
+                    }
+                    console.log(obj);
+                    socket.emit('connect',obj);
+                });
+                socket.on('connectresponse', function(data) {
+                    console.log(data);
+                    if (data.id < 0) {
+                        alert("Error connecting. Refresh and try again");
+                    } else {
+                        $("#chatname").text(title);
+                    }
+                });
+                socket.on('message', function(data) {
+                    console.log("messaging");
+                    console.log(data);
+                    var d = new Date(data.date);
+                    var ampm = d.getHours() >=12 ? "pm" : "am";
+                    var seconds=d.getSeconds()<10?"0"+d.getSeconds():d.getSeconds();
+                    var minutes=d.getMinutes()<10?"0"+d.getMinutes():d.getMinutes();
+                    
+                    
+                    var body = "";
+                    if (data.type == 'text')
+                    {
+                        body = data.body;
+                    }
+                    else if (data.type == 'image')
+                    {
+                        console.log(data.body);
+                        var elems = data.body.split("|");
+                        console.log(elems);
+                        body = "<div class='picwrapper'><img class='messageimg' src='"+elems[1]+"' /></div>"+elems[0];
+                    }
+                    else
+                    {
+                        alert("Invalid data type " + data.type);
+                    }
+
+                    if (body.length)
+                    {
+                        console.log(data);
+                        var taggedusername = (data.username === username) ? "<p style='display:inline; margin:0px;' id='nameinchat'>"+data.username+":&nbsp;</p>" : "<a style='display:inline; margin:0px;' class='nameinchat' data-rel='popup' socketid='"+data.socketid+"' href='#'>"+data.username+":&nbsp;</a>";
+                        console.log("a"+data.username+"f");
+                        console.log(username);
+                        console.log(data.username === username);
+                        console.log(taggedusername);
+                        if (data._group.indexOf("|") > -1) {
+                            data._group = "\\"+data._group;
+                        }
+                        $("#"+data._group).append(
+                            "<li class='ui-li ui-li-static ui-btn-up-c ui-li-has-count ui-corner-top'>"+taggedusername+"<span style='margin:0px; display:block; float:right; position:relative;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+((d.getHours()+12)%12)+":"+minutes+":"+seconds+" "+ampm+"</span><p style='font-weight:normal; margin:0px; ' id='chatinchat'> "+body+"</p> </div><div style='clear:both;'></div></li>"
+                        );
+                        if ($("#"+data._group).parent().attr("id") != "selectedmessage")
+                        {
+                            var line=$(".panelselector[group="+data._group+"]");
+                            line.next().text(Number(line.next().text())+1)
+                        }
+                    }
                     $("#selectedmessage").animate({scrollTop:$("#selectedmessage").prop("scrollHeight")}, 200);
-                    $("#chatname").text("Private Chat: "+data.name);
-                }
-                else
+                });
+
+                $("#chatpanellist").on('click', 'li div div a.panelselector', function(e)
                 {
-                    alert("User is not online");
-                }
-            });
-            socket.on('messageresponse', function(data) {
-                if (!data.success) {
-                    alert("Message failed to send");
-                } else {
-                    console.log("yay");
-                }
-            });
+                    var groupid = $(this).attr('group');
+                    console.log(groupid);
+                    if (groupid.indexOf("|") > -1) {
+                        groupid = "\\"+groupid;
+                    }
+                    $(this).next().text("0");
+                    $(".messagesdiv").hide();
+                    $("#selectedmessage").attr("id","");
+                    $("#"+groupid).parent().show();
+                    $("#"+groupid).parent().attr("id","selectedmessage");
+                    $('#selectedmessage').height(($(window).height()-130)+"px");
+                    $("#selectedmessage").animate({scrollTop:$("#selectedmessage").prop("scrollHeight")}, 200);
+                    $("#chatname").text($(this).text());
+                });
+
+                socket.on('requestreply', function(data) {
+                    console.log("REQUEST REPLY RECEIVED");
+                    console.log(data);
+                    if (data.success)
+                    {
+                        $(".messagesdiv").hide();
+                        $("#selectedmessage").attr("id","");
+                        $("#messageswrapperdiv").append('<div class="messagesdiv" id="selectedmessage" style="height:100px;"><ul id="'+data.room+'"data-role="listview" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow"></ul></div>');
+                        $("#chatpanellist").append('<li ui-li-has-count ><a href="#" class="panelselector" group="'+data.room+'">'+data.name+'</a><a data-theme="f"> </a><span class="ui-li-count">0</span></li>');
+                        $("#chatpanellist").listview("refresh");
+                        $('#selectedmessage').height(($(window).height()-130)+"px");
+                        $("#selectedmessage").animate({scrollTop:$("#selectedmessage").prop("scrollHeight")}, 200);
+                        $("#chatname").text("Private Chat: "+data.name);
+                    }
+                    else
+                    {
+                        alert("User is not online");
+                    }
+                });
+                socket.on('messageresponse', function(data) {
+                    if (!data.success) {
+                        alert("Message failed to send");
+                    } else {
+                        console.log("yay");
+                    }
+                });
+            }
+            else {
+                alert("You have already joined " + title);
+            }
         }
     }
     $("#groupmapcanvas").on('click', 'div > a#groupchatconnect', conn);
