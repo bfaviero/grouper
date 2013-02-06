@@ -216,10 +216,7 @@ $(function() {
         $("#grouppanelbutton").click();
     });
 
-    
-    $(".homebtn").click(function(e) {
-        window.location="/";
-    });
+
     
 
     $("#loginbutton").click(function(e) {
