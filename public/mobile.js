@@ -4,7 +4,7 @@ var latitude, longitude, havegeo;
 var login = false;
 var groupmap, peermap, person, curPop;
 var addMarkerIcon = function(icon, map, lat, lon, html, open) {
-    var loc = new google.maps.LatLng(lat, lon);
+    var loc = new google.maps.LatLng(lat, lon); 
     var marker = new google.maps.Marker({ position: loc, map: map});
     var popup;
     if (true) {
@@ -131,7 +131,6 @@ $(function() {
     });
 
     $("[data-role=header]").on('click', 'a#logout', function(e) {
-        alert("hi");
         e.preventDefault();
         var request = $.ajax({url: "/logout", type: "post", data: "email="+$.cookie("email")+"&token="+$.cookie("token")});
         request.done(function (response, textStatus, jqXHR){
@@ -422,7 +421,7 @@ $(function() {
             console.log("asdfasdfasdf");
             $(".messagesdiv ul").each(function(i,e) {
                 console.log($(e).attr("id"));
-                console.log(groupid);
+                console.log(groupid + "GROUPID");
                 if ($(e).attr("id") == groupid)
                 {
                     found = true;
@@ -567,6 +566,7 @@ $(function() {
             }
             else {
                 alert("You have already joined " + title);
+                return false
             }
         }
     }
