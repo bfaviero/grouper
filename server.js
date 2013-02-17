@@ -121,7 +121,7 @@ io.sockets.on('connection', function(socket) {
                 }
             }
             console.log(retval);
-            socket.emit('connectresponse', {id: retval}); // -1: error
+            io.sockets.in(data.group).emit('connectresponse', {id: retval}); // -1: error
         });
     });
     //"message" is emitted when a message sent with socket.send is received. 

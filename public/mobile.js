@@ -301,6 +301,7 @@ $(function() {
             reader.onloadend = function() {
                 var result = this.result;
                 if (updateGeo()) {
+                    
                     socket.emit('message', {group: $("#selectedmessage ul").attr("id"), name: username, body: ($("#body").val()+"|"+result), type: 'image', lat: latitude, lon: longitude});
                 }
                 else {
