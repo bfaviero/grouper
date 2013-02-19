@@ -91,6 +91,7 @@
                 <br>
                     <div class="ui-panel-inner" style="padding:0px;">
                         <div data-theme="d" class="ui-header ui-bar-d", role="banner" style="top:0; margin-top:-18px; width:110%;height:38px;">
+
                             <a style="margin-left:5px;" href="#home" class = 'homebtn' data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-notext ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Home"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-home ui-icon-shadow"></span></span></a>
                             <h3 style="position:fixed; top:-9px; left:32px;">Active Chats</h3>
                     
@@ -104,11 +105,13 @@
 
 
             <div data-theme="d" data-role="header" class="header">
-                <a href="#grouppanel" id="grouppanelbutton" class='sqnav' data-icon="arrow-l" style="color:black;text-decoration:none;"  data-direction="reverse" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all  ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Panel">Chats</a>
+                <!-- <a href="#grouppanel" id="grouppanelbutton" class='sqnav' data-icon="arrow-l" style="color:black;text-decoration:none;"  data-direction="reverse" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all  ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Panel">Chats</a> -->
+               
 
+                <button id="homebtn" type="submit" data-theme="f" data-display="inline" data-corners="false" class="sqnav" data-mini="true" class="ui-btn-hidden ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-up-f" aria-disabled="false"><u>Home</u></button>
 
                 <a href="#showpeers" class = 'sqnav' data-icon="forward" style="color:black;text-decoration:none;"  data-direction="reverse" class="ui-btn-right ui-btn ui-shadow ui-btn-corner-all  ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" data-iconpos="right" data-transition="fade" title="Map">Map</a>
-                <h3 id="chatname">
+                <h3 id="chatname" data-groupid="">
                     Grouper
                 </h3>
                 

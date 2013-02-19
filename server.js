@@ -33,6 +33,12 @@ io.sockets.on('connection', function(socket) {
         var retval = -1;
         console.log("data:");
         console.log(data);
+        var allrooms = io.sockets.manager.roomClients[socket.id]
+        for (room in rooms) {
+            socket.leave(room);
+            alert("leave");
+
+        }
         //find a group by the ID used in the connection
         Group.findOne({_id: data.group}, function(err, doc) {
             //If there is no error and the doc is not empty
@@ -106,6 +112,7 @@ io.sockets.on('connection', function(socket) {
                     else
                     {
                         console.log("already tried to connect");
+
                     }
                 }
                 else {

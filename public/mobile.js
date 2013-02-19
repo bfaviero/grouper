@@ -57,6 +57,7 @@ var rsz = function() {
 $(window).resize(rsz);
  
 
+
 $(function() {
     var updateGeo = function() {
         if (navigator.geolocation) {
@@ -165,9 +166,9 @@ $(function() {
             $("#localgrouplist").empty();
 
             for(var i=0;i<obj.length;i++) {
-                var icon = "<img src='openlock.png' class='ui-li-icon ui-li-thumb'>"
+                var icon = "<img src='openlock.png' style='margin-top:10px;' class='ui-li-icon ui-li-thumb'>"
                 if (obj[i].pinned) {
-                    icon = "<img src='lock.png' class='ui-li-icon ui-li-thumb'>"
+                    icon = "<img src='lock.png' style='margin-top:10px;' class='ui-li-icon ui-li-thumb'>"
                 }
                 var numusers = obj[i].count+" user";
                 if (obj[i].count != 1)
@@ -175,10 +176,12 @@ $(function() {
                     numusers += "s";
                 }
                 var str="<a style='opacity:.9;' class='groupchatconnect' id='groupchatconnect' pinned="+obj[i].pinned+" groupid='"+obj[i]._id+"' href='#groupchat'>"+icon+" "+obj[i].name+"</a><span style='margin:0px; display:inline; float:right; margin-top:-20px !important;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+numusers+"</span><span style='margin:0px; display:inline; float:right; margin-top:0px !important;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+(obj[i].dist).toFixed(2)+" mi</span>";
+                var str2="<a style='opacity:.9;' class='groupchatconnect' id='groupchatconnect' pinned="+obj[i].pinned+" groupid='"+obj[i]._id+"' href='#groupchat'><div display='block'>"+obj[i].name+"</div></a><div display='block' style='margin-top:20px'>"+icon+"</div><span style='margin:0px; display:inline; float:right; margin-top:-20px !important;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+numusers+"</span><span style='margin:0px; display:inline; float:right; margin-top:0px !important;' id='timeinchat' class='ui-li-count ui-btn-up-c ui-btn-corner-all'>"+(obj[i].dist).toFixed(2)+" mi</span>";
+
                 $("#localgrouplist").append("<li style='opacity:1;' ui-li-has-count>"+str+"</li>");
                 var lonlat=obj[i].loc;
                 //addMarker(groupmap, lonlat[1], lonlat[0], "<div>Lat: "+lonlat[1]+"</div><div>Lon: "+lonlat[0]+"</div>"+"<a id='groupchatconnect' groupid='"+obj[i]._id+"' href='#groupchat'>"+obj[i].name+"</a>");
-                addMarker(groupmap, lonlat[1], lonlat[0], str);
+                addMarker(groupmap, lonlat[1], lonlat[0], str2);
             }
             $("#localgrouplist").listview("refresh");
 
@@ -195,9 +198,15 @@ $(function() {
 
     }
 
-
+    $('#homebtn').click(function(e) {
+            var id = $('#chatname').data('groupid');
+            
+            $.mobile.changePage( "#home", { transition: "slide"} );
+        });
 
     $(document).on('ready', function(event) {
+        
+
         $.mobile.touchOverflowEnabled = true;
         if ($.cookie("username")) {
         $("#username").attr('value',$.cookie("username"));  
@@ -423,6 +432,8 @@ $(function() {
             $(".messagesdiv ul").each(function(i,e) {
                 console.log($(e).attr("id"));
                 console.log(groupid + "GROUPID");
+                socket.leave(groupid);
+                alert("hi");
                 if ($(e).attr("id") == groupid)
                 {
                     found = true;
@@ -470,6 +481,7 @@ $(function() {
                         alert("Error connecting. Refresh and try again");
                     } else {
                         $("#chatname").text(title);
+                        $('#chatname').data('groupid', groupid);
                     }
                 });
                 socket.on('message', function(data) {
@@ -536,6 +548,7 @@ $(function() {
                     $('#selectedmessage').height(($(window).height()-130)+"px");
                     $("#selectedmessage").animate({scrollTop:$("#selectedmessage").prop("scrollHeight")}, 200);
                     $("#chatname").text($(this).text());
+
                 });
 
                 socket.on('requestreply', function(data) {
@@ -566,8 +579,7 @@ $(function() {
                 });
             }
             else {
-                alert("You have already joined " + title);
-                return false
+                alert("omg");
             }
         }
     }
