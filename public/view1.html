@@ -29,10 +29,17 @@
 
                 <div style="width:100%;"><div style="display:inline; float:left;">1)</div><div style="display:inline; float: left; width: 70%; margin-top: -15; margin-left: 10; width: 90%;"><input name="" id="username" placeholder="nickname" value="" type="text" /></div></div></div>
                 <div data-role="collapsible">
+                <h3>Map</h3>
+                <div style="margin-left:0px; margin-right:0px; margin-bottom:0px; margin-top:20px; z-index:1; width:100%;" id="groupmapcanvas"></div>
+                </div>
+                <div data-role="collapsible">
                 <h3>Group List</h3>
                 <ul style="margin-top:15; opacity:.9; margin-bottom:25px;" id="localgrouplist" class="sqnav" data-corners="false" data-role="listview" data-inset="true" class="ui-listview ui-corner-all ui-shadow">
                 </ul>
                 </div>
+
+
+                
 
                 <a data-role="button" class="sq" data-theme="b" href="#pagecreate">
                     Create a group
@@ -41,6 +48,60 @@
                 <a data-role="button" class="sq"  href="#login">I already have an account</a>
             </div>
 
+        </div>
+
+        <div data-role="page" id="groupchat" >
+
+
+            <div data-role="panel" id="grouppanel">
+                
+
+                <br>
+                    <div class="ui-panel-inner" style="padding:0px;">
+                        <div data-theme="d" class="ui-header ui-bar-d", role="banner" style="top:0; margin-top:-18px; width:110%;height:38px;">
+
+                            <a style="margin-left:5px;" href="#page1" class = 'homebtn' data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-notext ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Home"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-home ui-icon-shadow"></span></span></a>
+                            <h3 style="position:fixed; top:-9px; left:32px;">Active Chats</h3>
+                    
+                        </div>
+                    <div class="panellistdiv" style="margin-top:-10px;">
+                        <ul id="chatpanellist" style="margin-top:10px; opacity:.95;" data-role="listview" data-split-icon="delete" data-icon=""  data-iconpos="right">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+            <div data-theme="d" data-role="header" class="header">
+                <!-- <a href="#grouppanel" id="grouppanelbutton" class='sqnav' data-icon="arrow-l" style="color:black;text-decoration:none;"  data-direction="reverse" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all  ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Panel">Chats</a> -->
+               
+
+                <button id="homebtn" type="submit" data-theme="f" data-display="inline" data-corners="false" class="sqnav" data-mini="true" class="ui-btn-hidden ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-up-f" aria-disabled="false"><u>Home</u></button>
+
+                <a href="#showpeers" class = 'sqnav' data-icon="forward" style="color:black;text-decoration:none;"  data-direction="reverse" class="ui-btn-right ui-btn ui-shadow ui-btn-corner-all  ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" data-iconpos="right" data-transition="fade" title="Map">Map</a>
+                <h3 id="chatname" data-groupid="">
+                    Grouper
+                </h3>
+                
+               
+
+            </div>
+            
+
+
+            <div id="messageswrapperdiv" data-role="content">
+                <!--<form action="server.cgi" method="post" enctype="multipart/form-data">
+                  <input type="file" name="image" accept="image/*" capture>
+                  <input type="submit" value="Upload PHOTO">
+                </form>-->
+            </div>
+            <div data-theme="d" data-role="footer" class="footer">
+                <form data-ajax="false" id="send">
+                    <input name="" id="body" data-mini="true" data-icon="gear" data-iconpos="left" placeholder="type..." value="" type="text" />
+                     <div style="width:75%; float:left;" data-inline="true" ><input data-inline="true" data-mini="true" id = "picinput" type="file" name="image" accept="image/*" capture></div>
+                     <div style="float:left; width:5%;" data-inline="true" ><input type="submit" data-mini="true" value="Upload" class="sqnav" data-role="button" data-inline="true"></div>
+                </form>
+            </div>
         </div>
         <div data-role="page" data-theme="c" id="home">
             <div data-theme="d" data-role="header" class="header" data-tap-toggle="false">
@@ -58,7 +119,7 @@
             </div>
 
             <div data-role="content" style="margin-top:10px;" id="page1content" >
-                        <div style="margin-left:0px; margin-right:0px; margin-bottom:0px; margin-top:20px; z-index:1; width:100%;" id="groupmapcanvas"></div>
+                        <div style="margin-left:0px; margin-right:0px; margin-bottom:0px; margin-top:20px; z-index:1;" id="groupmapcanvas"></div>
                         <label for="username" id="usernamelabel">
                         </label>
                 <div>
@@ -110,59 +171,7 @@
             </div>
             </div>
             
-        <div data-role="page" id="groupchat" >
-
-
-            <div data-role="panel" id="grouppanel">
-                
-
-                <br>
-                    <div class="ui-panel-inner" style="padding:0px;">
-                        <div data-theme="d" class="ui-header ui-bar-d", role="banner" style="top:0; margin-top:-18px; width:110%;height:38px;">
-
-                            <a style="margin-left:5px;" href="#home" class = 'homebtn' data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-notext ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Home"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-home ui-icon-shadow"></span></span></a>
-                            <h3 style="position:fixed; top:-9px; left:32px;">Active Chats</h3>
-                    
-                        </div>
-                    <div class="panellistdiv" style="margin-top:-10px;">
-                        <ul id="chatpanellist" style="margin-top:10px; opacity:.95;" data-role="listview" data-split-icon="delete" data-icon=""  data-iconpos="right">
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-
-            <div data-theme="d" data-role="header" class="header">
-                <!-- <a href="#grouppanel" id="grouppanelbutton" class='sqnav' data-icon="arrow-l" style="color:black;text-decoration:none;"  data-direction="reverse" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all  ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Panel">Chats</a> -->
-               
-
-                <button id="homebtn" type="submit" data-theme="f" data-display="inline" data-corners="false" class="sqnav" data-mini="true" class="ui-btn-hidden ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-up-f" aria-disabled="false"><u>Home</u></button>
-
-                <a href="#showpeers" class = 'sqnav' data-icon="forward" style="color:black;text-decoration:none;"  data-direction="reverse" class="ui-btn-right ui-btn ui-shadow ui-btn-corner-all  ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" data-iconpos="right" data-transition="fade" title="Map">Map</a>
-                <h3 id="chatname" data-groupid="">
-                    Grouper
-                </h3>
-                
-               
-
-            </div>
-            
-
-
-            <div id="messageswrapperdiv" data-role="content">
-                <!--<form action="server.cgi" method="post" enctype="multipart/form-data">
-                  <input type="file" name="image" accept="image/*" capture>
-                  <input type="submit" value="Upload PHOTO">
-                </form>-->
-            </div>
-            <div data-theme="d" data-role="footer" class="footer">
-                <form data-ajax="false" id="send">
-                    <input name="" id="body" data-mini="true" data-icon="gear" data-iconpos="left" placeholder="type..." value="" type="text" />
-                     <div style="width:75%; float:left;" data-inline="true" ><input data-inline="true" data-mini="true" id = "picinput" type="file" name="image" accept="image/*" capture></div>
-                     <div style="float:left; width:5%;" data-inline="true" ><input type="submit" data-mini="true" value="Upload" class="sqnav" data-role="button" data-inline="true"></div>
-                </form>
-            </div>
-        </div>
+        
         <div data-role="page" id="showpeers" >
             <div data-theme="d" data-role="header">
                 <a href="#home" class = 'homebtn' data-icon="home" data-iconpos="notext" data-direction="reverse" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-notext ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Home"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Home</span><span class="ui-icon ui-icon-home ui-icon-shadow">&nbsp;</span></span></a>
