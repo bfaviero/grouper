@@ -201,7 +201,7 @@ $(function() {
     $('#homebtn').click(function(e) {
             var id = $('#chatname').data('groupid');
             
-            $.mobile.changePage( "#page1", { transition: "slide"} );
+            window.location = '/';
         });
 
     $(document).on('ready', function(event) {
