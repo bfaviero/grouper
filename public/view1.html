@@ -15,61 +15,52 @@
         </style>
     </head>
     <body>
-        <div data-role="page" data-theme="c" id="page1">
+        <div data-role="page" id="page1">
+
             <div data-theme="d" data-role="header" class="header" data-tap-toggle="false">
-                <a id="loginbtn" href="#loginpopup" class='sqnav' data-rel="popup" class = 'addbtn' data-icon="gear" style="color:black;text-decoration:none;"  data-direction="reverse" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all  ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Login">Login</a>
-                <div data-position-to="window" data-role="popup" id="loginpopup" data-theme="a" data-overlay-theme="a" style="padding: 5px; float:center; opacity:0.95; padding:5px;">
-                    <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-left">Close</a>
-                        <label for="loginemail">
-                        </label>
-                        <input data-theme="b" name="" id="loginemail" placeholder="Email" value="" type="email" />
-                        <label for="loginpassword">
-                        </label>
-                        <input data-theme="b" name="" id="loginpassword" placeholder="Password" value="" type="password" />
-                <a id="loginbutton" data-mini="true" data-role="button" data-theme="b" href="/">Login</a>
-                <a id="registerbutton" data-role="button" data-mini="true" data-theme="b" href="/">Register</a>
-            </div>
-                <h3>
+                <a id="loginbtn" href="#loginpage" class='sqnav' data-rel="dialog" class = 'addbtn' data-icon="gear" style="color:black;text-decoration:none; background:white;"  data-direction="reverse" class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all  ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" title="Login">Login</a>
+                
+                <h2>
                     Grouper
-                </h3>
-              <a href="#createpopup" data-rel="popup" class = 'sqnav'class = 'pagecreatbtn' data-icon="plus" style="color:black;text-decoration:none;"  data-direction="reverse" class="ui-btn-right ui-btn ui-shadow ui-btn-corner-all  ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" data-iconpos="right"  title="Login">Create</a>
-              <div data-position-to="window" data-role="popup" id="createpopup" data-theme="a" data-overlay-theme="a" style="padding: 5px; float:center; opacity:0.95; padding:5px;">
-                <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
-                        <label for="textinput3">
-                        </label>
-                        <input name="" id="creategroupname" placeholder="Group name..." value="" type="text" />
-                        <legend >
-                            Choose:
-                        </legend>
-                        <input data-mini="true" data-theme="a" id="radio1" name="" value="private"  type="radio" checked="checked" />
-                        <label for="radio1">
-                            Private
-                        </label>
-                        <input  data-mini="true" data-theme="a" id="radio2" name="" value="public" type="radio" />
-                        <label for="radio2">
-                            Public
-                        </label>
-                <div id="pin" data-role="fieldcontain">
-                    <fieldset data-role="controlgroup">
-                        <label for="textinput5">
-                        </label>
-                        <input  id="creategrouppass" name="" placeholder="password... (if private)" value="" type="password" />
-                    </fieldset>
+                </h2>
+              <a id="pagecreatebtn" href="#createpage"  data-rel="dialog" class = 'sqnav'class = 'pagecreatbtn' data-icon="plus" style="color:black;text-decoration:none; background:white;"  data-direction="reverse" class="ui-btn-right ui-btn ui-shadow ui-btn-corner-all  ui-btn-up-f" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="f" data-iconpos="right"  title="Login">Create</a>
+
+              
+
+
+              
+            </div>
+            <div data-role="content"  >
+
+                <img src="grouper.png" style="float:center;position:relative;left:35%;" >
+                <div style="width:50%; margin-left:25%;">
+                    <div style="width:100%;"><div style="display:inline; float:left;">1)</div>
+                        <div>
+                            <div style="display:inline; float: left; width: 70%; margin-top: -15; margin-left: 10; width: 90%;">
+                            <input name="" id="username" placeholder="nickname" value="" type="text" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <a  data-mini="true" data-theme="a" id="creategroup" data-role="button" href="#">Create</a>
+                <div style="clear:both;">
+
+                </div>
+                <div style="width:50%; margin-left:25%;">
+                <div data-role="collapsible">
+                <h3>Map</h3>
+                <div style="margin-left:0px; margin-right:0px; margin-bottom:0px; margin-top:20px; z-index:1; width:100%;" id="groupmapcanvas"></div>
+                </div>
+                </div>  
+                <div style="width:50%; margin-left:25%;">
+                    <div data-role="collapsible">
+                        <h3>Group List</h3>
+                        <ul style="margin-top:15; opacity:.9; margin-bottom:25px;" id="localgrouplist" class="sqnav" data-corners="false" data-role="listview" data-inset="true" class="ui-listview ui-corner-all ui-shadow">
+                        </ul>
+                    </div>
+                </div>
+
             </div>
-            </div>
-            <div data-role="content" style="margin-top:50px;" id="page1content" >
-                        <div style="margin:0px; z-index:1; width:100%;" id="groupmapcanvas"></div>
-                        <label for="username" id="usernamelabel">
-                        </label>
-                <div>
-                <img style="z-index:0;" class='grouperimg' id='grouperpic' src='grouper.png'>
-                <div id="emailholder" style="margin-bottom:15px; opacity:.9;" ><input style="width:100%;" class=" ui-input-text ui-body-c" class='sqnav' name="" id="username" placeholder="Enter nickname..." type="text"></div>
-                <ul style="margin-top:15; opacity:.9;" id="localgrouplist" class="sqnav" data-role="listview" data-filter="true" data-filter-placeholder="Find a group!" data-inset="true" class="ui-listview-inset ui-corner-all ui-shadow">
-                </ul>
-            </div>
-            </div>
+
         </div>
         <div  data-role="page" id="page2l" >
             <div data-theme="d" data-role="header">
