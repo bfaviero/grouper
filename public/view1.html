@@ -32,9 +32,9 @@
             </div>
             <div data-role="content"  >
 
-                <img src="grouper.png" style="float:center;position:relative;left:35%;" width="50%" >
+                <img src="grouper.png" style="float:center;position:relative;left:30%; margin-top:20px;" width="50%" >
                 <div style="width:90%; margin-left:5%;">
-                    <div style="width:100%;"><div style="display:inline; float:left;">1)</div>
+                    <div style="width:100%;">
                         <div>
                             <div style="display:inline; float: left; width: 70%; margin-top: -15; margin-left: 10; width: 90%;">
                             <input class="ui-input-text" data-role="none" name="" id="username" placeholder="nickname" value="" type="text" style="border-radius: 10; border-width: 1;" />
@@ -215,6 +215,51 @@
                 <div id="peermapcanvas"></div>
             </div>
         </div>
+        <div data-role="page" id="loginpage" >
+            <div data-theme="d" data-role="header">
+                <h3>Log in</h3>
+            </div>
+            <div data-theme="d" data-role="content">
+                <form>
+                <label for="loginemail">
+                </label>
+                <input data-theme="b" name="" id="loginemail" placeholder="Email" value="" type="email" />
+                <label for="loginpassword">
+                </label>
+                <input data-theme="b" name="" id="loginpassword"  placeholder="Password" value="" type="password" />
+                <button id="loginbutton" type="submit" data-theme="b" data-corners="false" class="sqnav" data-mini="true" class="ui-btn-hidden" aria-disabled="false"><u>Login</u></button>
+                <a id="registerbutton" data-role="button" style="border-radius: 0em;" data-mini="true"  data-theme="b" href="/">Register</a>
+            </form>
+            </div>
+    </div>
+    <div data-role="page" id="createpage" >
+            <div data-theme="d" data-role="header">
+                <h3>Create a group</h3>
+            </div>
+            <div data-theme="d" data-role="content">
+                        <label for="textinput3">
+                        </label>
+                        <input name="" id="creategroupname" placeholder="Group name..." value="" type="text" />
+                        <legend >
+                            Choose:
+                        </legend>
+                        <input data-mini="true" data-theme="b" id="radio1" name="" value="private"  type="radio"  />
+                        <label for="radio1">
+                            Private
+                        </label>
+                        <input  data-mini="true" data-theme="b" id="radio2" name="" value="public" type="radio" checked="checked" />
+                        <label for="radio2">
+                            Public
+                        </label>
+                        <label for="textinput5">
+                        </label>
+                        <input  id="creategrouppass" name="" placeholder="password... (if private)" value="" type="password" />
+                        <label for="rslider">Visibility radius (in miles):</label>
+                        <input type="range" name="rslider" id="rslider" value=".25" min="0" max="5" step=".25"/>
+                <a  data-mini="true" data-theme="b" id="creategroup" data-role="button" href="#">Create</a>
+            </div>
+    </div>
+
     </div>
     </body>
 </html>
