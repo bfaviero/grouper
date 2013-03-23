@@ -80,7 +80,6 @@ $(function() {
             return havegeo;
             console.log(""+latitude+" "+longitude);
         }
-        rsz();
     }
 
     if ($.cookie("email") === "null") {
@@ -190,7 +189,19 @@ $(function() {
 
 
     $(document).on('ready', function(event) {
+        var text = $('#username').text;
+        if (text==="") {
+            $('#username').hide();
+        }
+        $('#username').blur(function() {
+            if (text==="") {
+                $('#username').hide();
+            }
+        });
 
+        $('#mapcollapse').bind('expand', function () {
+            rsz();
+        });
         $.mobile.touchOverflowEnabled = true;
         if ($.cookie("username")) {
         $("#username").attr('value',$.cookie("username"));  
@@ -198,6 +209,7 @@ $(function() {
         }
         updateGeo();
 
+        setTimeout(rsz, 500);
         
         
             
