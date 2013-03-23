@@ -197,6 +197,17 @@ $(function() {
             if (text==="") {
                 $('#username').hide();
             }
+            else {
+                $('#username').show();
+            }
+        });
+        $('#username').focus(function() {
+            if (text==="") {
+                $('#username').hide();
+            }
+            else {
+                $('#username').show();
+            }
         });
 
         $('#mapcollapse').bind('expand', function () {
