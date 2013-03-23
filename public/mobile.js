@@ -189,27 +189,6 @@ $(function() {
 
 
     $(document).on('ready', function(event) {
-        var text = $('#username').text;
-        if (text==="") {
-            $('#username').hide();
-        }
-        $('#username').blur(function() {
-            if (text==="") {
-                $('#username').hide();
-            }
-            else {
-                $('#username').show();
-            }
-        });
-        $('#username').focus(function() {
-            if (text==="") {
-                $('#username').hide();
-            }
-            else {
-                $('#username').show();
-            }
-        });
-
         $('#mapcollapse').bind('expand', function () {
             rsz();
         });
@@ -221,7 +200,31 @@ $(function() {
         updateGeo();
 
         setTimeout(rsz, 500);
-        
+        var text = $('#username').val();
+        if (text==="") {
+            $('#mapcollapse').hide();
+        }
+        else {
+            $('#mapcollapse').show();
+        }
+        $('#username').blur(function() {
+            var text = $('#username').val();
+            if (text==="") {
+                $('#mapcollapse').hide();
+            }
+            else {
+                $('#mapcollapse').show();
+            }
+        });
+        $('#username').focus(function() {
+            var text = $('#username').val();
+            if (text==="") {
+                $('#mapcollapse').hide();
+            }
+            else {
+                $('#mapcollapse').show();
+            }
+        });
         
             
     });
